@@ -45,7 +45,7 @@ const Navbar = () => {
           {/* Left */}
           <span className="hidden sm:flex items-center gap-1.5 text-primary-foreground/80">
             <Phone size={10} className="shrink-0" />
-            <span>+91 98765 43210</span>
+            <span>8282858285</span>
           </span>
           {/* Center */}
           <span className="flex items-center justify-center gap-2 flex-1 sm:flex-none mx-auto">
@@ -152,7 +152,7 @@ const Navbar = () => {
                 <div className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center">
                   <Phone size={13} className="text-primary" />
                 </div>
-                <span className="hidden xl:inline">+91 98765 43210</span>
+                <span className="hidden xl:inline">82828 58285</span>
               </a>
 
               {/* CTA button — matches site's button style */}
@@ -160,6 +160,8 @@ const Navbar = () => {
                 variant="default"
                 size="sm"
                 className="hidden lg:inline-flex items-center gap-2 group font-semibold px-5"
+                onClick={() => window.open("https://onlinesavaari.com", "_blank")}
+
               >
                 Get Started
                 <motion.span
@@ -250,7 +252,9 @@ const Navbar = () => {
                   transition={{ delay: 0.26 }}
                   className="pt-3 border-t border-border/50 flex flex-col sm:flex-row gap-2"
                 >
-                  <Button variant="default" className="flex-1 gap-2 group font-semibold">
+                  <Button variant="default" className="flex-1 gap-2 group font-semibold" 
+                onClick={() => window.open("https://onlinesavaari.com", "_blank")}
+>
                     Get Started
                     <ArrowRight size={14} className="transition-transform group-hover:translate-x-0.5" />
                   </Button>

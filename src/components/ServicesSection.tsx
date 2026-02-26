@@ -205,9 +205,8 @@ const ServiceCard = ({
             {/* Text */}
             <div className="flex-1">
               <h3
-                className={`font-black text-foreground tracking-tight mb-1.5 ${
-                  isLarge ? "text-xl sm:text-2xl" : "text-lg sm:text-[1.2rem]"
-                }`}
+                className={`font-black text-foreground tracking-tight mb-1.5 ${isLarge ? "text-xl sm:text-2xl" : "text-lg sm:text-[1.2rem]"
+                  }`}
               >
                 {service.title}
               </h3>
@@ -243,11 +242,11 @@ const ServiceCard = ({
 
 /* ─── Main Section ─────────────────────────────────────── */
 const ServicesSection = () => {
-  const ref    = useRef(null);
+  const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
 
   // Split: larges and normals to build bento rows
-  const large   = services.filter(s => s.size === "large");
+  const large = services.filter(s => s.size === "large");
   const normals = services.filter(s => s.size !== "large");
 
   return (
@@ -389,6 +388,8 @@ const ServicesSection = () => {
                 className="relative z-10 shrink-0 flex items-center gap-2.5 px-6 sm:px-8 py-3.5
                            rounded-2xl bg-white text-primary font-black text-sm sm:text-base
                            shadow-[0_8px_30px_rgba(0,0,0,0.15)] transition-all"
+                onClick={() => window.open("https://onlinesavaari.com", "_blank")}
+
               >
                 Get Started
                 <motion.span

@@ -164,7 +164,7 @@ const HeroSection = () => {
           <div className="flex-1 flex flex-col xl:flex-row items-start xl:items-center gap-20 xl:gap-8 justify-between">
 
             {/* LEFT: Copy block */}
-            <div className="flex-1 max-w-xl">
+            <div className="flex-1 max-w-2xl">
               {/* Eyebrow */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -267,13 +267,14 @@ const HeroSection = () => {
                 transition={{ delay: 0.44 }}
                 className="mt-8 flex flex-wrap gap-3"
               >
-                <Button variant="hero" size="xl" className="gap-2.5 group">
+                <Button variant="hero" size="xl" className="gap-2.5 group"  onClick={() => window.open("https://onlinesavaari.com", "_blank")}
+>
                   Start Booking
                   <motion.span animate={{ x: [0, 5, 0] }} transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 2 }}>
                     <ArrowRight size={16} />
                   </motion.span>
                 </Button>
-                <Button variant="heroOutline" size="xl" className="gap-2">
+                <Button variant="heroOutline" size="xl" className="gap-2"  onClick={() => window.open("https://onlinesavaari.com", "_blank")}>
                   View Packages
                   <ArrowUpRight size={14} />
                 </Button>

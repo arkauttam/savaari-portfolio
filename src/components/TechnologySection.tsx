@@ -6,22 +6,22 @@ import {
 } from "lucide-react";
 
 const platformFeatures = [
-  { icon: Zap,      title: "Instant Search",    desc: "Real-time fares from 200+ airlines in milliseconds.",  color: "#F59E0B" },
-  { icon: Globe,    title: "Global Coverage",   desc: "Hotels, flights & packages in 150+ countries.",        color: "#3B82F6" },
-  { icon: Shield,   title: "Secure Checkout",   desc: "256-bit SSL. PCI-DSS compliant payment gateway.",      color: "#10B981" },
-  { icon: Sparkles, title: "AI Recommendations",desc: "Personalized trip suggestions powered by smart tech.", color: "#8B5CF6" },
+  { icon: Zap, title: "Instant Search", desc: "Real-time fares from 200+ airlines in milliseconds.", color: "#F59E0B" },
+  { icon: Globe, title: "Global Coverage", desc: "Hotels, flights & packages in 150+ countries.", color: "#3B82F6" },
+  { icon: Shield, title: "Secure Checkout", desc: "256-bit SSL. PCI-DSS compliant payment gateway.", color: "#10B981" },
+  { icon: Sparkles, title: "AI Recommendations", desc: "Personalized trip suggestions powered by smart tech.", color: "#8B5CF6" },
 ];
 
 const mockItems = [
-  { icon: Plane,       label: "Mumbai → London",   sub: "2 adults · Economy",    badge: "₹32,499", badgeColor: "#3B82F6" },
-  { icon: Hotel,       label: "The Grand Hyatt",   sub: "3 nights · Deluxe Room",badge: "₹18,200", badgeColor: "#10B981" },
-  { icon: MapPin,      label: "Live Tracking",     sub: "Flight AI-304 on time", badge: "On Time",  badgeColor: "#10B981" },
-  { icon: CreditCard,  label: "Payment Complete",  sub: "HDFC •••• 4521",        badge: "Paid",     badgeColor: "#8B5CF6" },
-  { icon: Bell,        label: "Price Drop Alert",  sub: "Mumbai → Dubai ↓18%",   badge: "Save ₹4k", badgeColor: "#F59E0B" },
+  { icon: Plane, label: "Mumbai → London", sub: "2 adults · Economy", badge: "₹32,499", badgeColor: "#3B82F6" },
+  { icon: Hotel, label: "The Grand Hyatt", sub: "3 nights · Deluxe Room", badge: "₹18,200", badgeColor: "#10B981" },
+  { icon: MapPin, label: "Live Tracking", sub: "Flight AI-304 on time", badge: "On Time", badgeColor: "#10B981" },
+  { icon: CreditCard, label: "Payment Complete", sub: "HDFC •••• 4521", badge: "Paid", badgeColor: "#8B5CF6" },
+  { icon: Bell, label: "Price Drop Alert", sub: "Mumbai → Dubai ↓18%", badge: "Save ₹4k", badgeColor: "#F59E0B" },
 ];
 
 const TechnologySection = () => {
-  const ref    = useRef(null);
+  const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
@@ -166,8 +166,10 @@ const TechnologySection = () => {
                 {/* Bottom CTA */}
                 <div className="px-4 pb-4">
                   <div
-                    className="w-full py-3 rounded-2xl text-center text-sm font-bold text-primary-foreground"
+                    className="w-full py-3 rounded-2xl text-center text-sm font-bold text-primary-foreground cursor-pointer"
                     style={{ background: "hsl(var(--primary))", boxShadow: "0 4px 16px hsl(var(--primary)/0.3)" }}
+                    onClick={() => window.open("https://onlinesavaari.com", "_blank")}
+
                   >
                     + Add New Booking
                   </div>
