@@ -1,0 +1,165 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 220 20% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 20% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 20% 10%;
+
+    --primary: 212 93% 57%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 212 71% 29%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 10% 46%;
+
+    --accent: 220 14% 96%;
+    --accent-foreground: 220 20% 10%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 212 93% 57%;
+
+    --radius: 0.75rem;
+
+    /* Brand */
+    --brand-blue: 212 93% 57%;
+    --brand-dark: 212 71% 29%;
+    --brand-light: 212 100% 97%;
+    --brand-ocean: 200 80% 55%;
+    --brand-sky: 195 90% 60%;
+    --brand-indigo: 230 70% 55%;
+    --brand-emerald: 160 70% 45%;
+    --brand-amber: 38 92% 55%;
+    --brand-coral: 12 80% 60%;
+
+    /* Gradients */
+    --gradient-hero: linear-gradient(160deg, hsl(212 100% 97%) 0%, hsl(0 0% 100%) 40%, hsl(195 60% 97%) 100%);
+    --gradient-cta: linear-gradient(135deg, hsl(212 93% 57%) 0%, hsl(230 70% 55%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%) 0%, hsl(220 20% 99%) 100%);
+    --gradient-service: linear-gradient(135deg, hsl(212 93% 57%) 0%, hsl(200 80% 55%) 100%);
+
+    /* Shadows */
+    --shadow-xs: 0 1px 2px hsl(220 20% 10% / 0.04);
+    --shadow-sm: 0 2px 8px hsl(220 20% 10% / 0.06);
+    --shadow-md: 0 4px 24px hsl(220 20% 10% / 0.08);
+    --shadow-lg: 0 8px 40px hsl(212 93% 57% / 0.1);
+    --shadow-xl: 0 16px 56px hsl(212 93% 57% / 0.15);
+    --shadow-nav: 0 1px 20px hsl(220 20% 10% / 0.05);
+    --shadow-button: 0 4px 16px hsl(212 93% 57% / 0.35);
+    --shadow-glow: 0 0 40px hsl(212 93% 57% / 0.12);
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 212 93% 57%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 220 14% 96%;
+    --sidebar-accent-foreground: 220 20% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 212 93% 57%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+  }
+}
+
+@layer components {
+  .glass-nav {
+    @apply backdrop-blur-2xl border-b border-border/40;
+    background: hsl(0 0% 100% / 0.85);
+    box-shadow: var(--shadow-nav);
+  }
+
+  .card-premium {
+    @apply bg-card rounded-2xl border border-border/40;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .card-premium:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-6px);
+    border-color: hsl(var(--primary) / 0.15);
+  }
+
+  .card-glass {
+    @apply rounded-2xl border border-border/30;
+    background: hsl(0 0% 100% / 0.7);
+    backdrop-filter: blur(20px);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .btn-glow {
+    box-shadow: var(--shadow-button);
+    transition: all 0.3s ease;
+  }
+
+  .btn-glow:hover {
+    box-shadow: 0 6px 24px hsl(212 93% 57% / 0.45);
+    transform: translateY(-1px);
+  }
+
+  .section-padding {
+    @apply py-20;
+  }
+
+  .gradient-text {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--brand-ocean)) 50%, hsl(var(--brand-indigo)) 100%);
+  }
+
+  .scroll-progress {
+    @apply fixed top-0 left-0 h-[2px] z-[100];
+    background: linear-gradient(90deg, hsl(var(--primary)), hsl(var(--brand-indigo)));
+  }
+
+  .service-icon-bg {
+    background: linear-gradient(135deg, hsl(var(--primary) / 0.1) 0%, hsl(var(--brand-ocean) / 0.05) 100%);
+  }
+
+  .floating-shape {
+    @apply absolute rounded-full pointer-events-none;
+    filter: blur(60px);
+  }
+
+  .container-tight {
+    @apply max-w-6xl mx-auto;
+  }
+  .container{
+    @apply max-w-7xl mx-auto px-10;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
