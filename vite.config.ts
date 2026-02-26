@@ -18,7 +18,7 @@ export default defineConfig(() => ({
     host: "0.0.0.0",
     port: 3000,
     allowedHosts: [
-      "portfolio-vscode-7buv.onrender.com",
+      "savaari-portfolio.onrender.com",
     ],
   },
 }));
