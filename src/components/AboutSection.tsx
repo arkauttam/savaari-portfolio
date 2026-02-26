@@ -1,247 +1,323 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
 import {
-  Users, Globe, Award, Headphones,
-  ArrowRight, CheckCircle2, MapPin, Sparkles, Zap, Shield,
+  Terminal, Cpu, GitPullRequest, CheckCircle, Users,
+  FolderGit2, Star, Clock, Activity, Wifi, Lock,
+  Zap, Shield, Rocket, Target, Code2, Layers
 } from "lucide-react";
 
-/* ── Animated counter ───────────────────────────────────── */
 const Counter = ({ target, suffix }: { target: number; suffix: string }) => {
   const [count, setCount] = useState(0);
-  const ref  = useRef<HTMLSpanElement>(null);
+  const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true });
-
   useEffect(() => {
     if (!inView) return;
-    let start = 0;
-    const duration = 1800;
-    const increment = target / (duration / 16);
-    const timer = setInterval(() => {
-      start += increment;
-      if (start >= target) { setCount(target); clearInterval(timer); }
-      else setCount(Math.floor(start));
+    let v = 0;
+    const step = target / (1600 / 16);
+    const t = setInterval(() => {
+      v += step;
+      if (v >= target) { setCount(target); clearInterval(t); }
+      else setCount(Math.floor(v));
     }, 16);
-    return () => clearInterval(timer);
+    return () => clearInterval(t);
   }, [inView, target]);
-
-  return <span ref={ref}>{count.toLocaleString()}{suffix}</span>;
+  return <span ref={ref}>{count}{suffix}</span>;
 };
 
-/* ── Data ───────────────────────────────────────────────── */
-const stats = [
-  { icon: Users,       value: 50000,  suffix: "+",  label: "Happy Travelers",   color: "#3B82F6", bg: "#3B82F608" },
-  { icon: Globe,       value: 120,    suffix: "+",  label: "Countries Covered",  color: "#10B981", bg: "#10B98108" },
-  { icon: Award,       value: 99,     suffix: "%",  label: "Satisfaction Rate",  color: "#F59E0B", bg: "#F59E0B08" },
-  { icon: Headphones,  value: 24,     suffix: "/7", label: "Support Available",  color: "#8B5CF6", bg: "#8B5CF608" },
+const STATS = [
+  { icon: Users, val: 50, sfx: "+", label: "Happy Clients", color: "#3b82f6" },
+  { icon: FolderGit2, val: 200, sfx: "+", label: "Projects Shipped", color: "#10b981" },
+  { icon: Star, val: 5, sfx: "★", label: "Avg Client Rating", color: "#f59e0b" },
+  { icon: Clock, val: 24, sfx: "/7", label: "Live Support", color: "#8b5cf6" },
 ];
 
-const pillars = [
-  { icon: Zap,          title: "Instant Booking",      desc: "Confirm flights, hotels & packages in seconds with real-time availability." },
-  { icon: Shield,       title: "100% Secure",           desc: "Bank-grade encryption protects every transaction and personal detail." },
-  { icon: CheckCircle2, title: "Best Price Guarantee",  desc: "We match any lower price — or refund the difference, no questions asked." },
-  { icon: Sparkles,     title: "Curated Experiences",   desc: "Handpicked destinations and packages designed by seasoned travel experts." },
+const METRICS = [
+  { label: "Avg Delivery", val: "4.2 wks", color: "#3b82f6", hint: "kickoff → live" },
+  { label: "Bug-Free Rate", val: "97%", color: "#10b981", hint: "QA before launch" },
+  { label: "On-Time", val: "98%", color: "#f59e0b", hint: "sprint milestones" },
+  { label: "Retention", val: "91%", color: "#8b5cf6", hint: "clients return" },
 ];
 
-/* ── Component ──────────────────────────────────────────── */
-const AboutSection = () => {
-  const ref    = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
+const ACTIVITIES = [
+  { icon: GitPullRequest, text: "PR merged — mobile-app/v2.1", color: "#10b981", time: "2m ago" },
+  { icon: CheckCircle, text: "Deploy successful — client-web", color: "#3b82f6", time: "18m ago" },
+  { icon: Activity, text: "AI model training — 97.2% acc", color: "#8b5cf6", time: "1h ago" },
+  { icon: Wifi, text: "New client onboarded — FoodRush", color: "#f59e0b", time: "3h ago" },
+  { icon: Lock, text: "Security audit passed — fintech", color: "#ef4444", time: "5h ago" },
+];
+
+const PILLARS = [
+  {
+    icon: Rocket,
+    number: "01",
+    title: "Agile 2-Week Sprints",
+    desc: "Working software every fortnight, not promises.",
+    color: "#3b82f6",
+    stats: "98% on-time"
+  },
+  {
+    icon: Shield,
+    number: "02",
+    title: "Quality-First Code",
+    desc: "Senior reviews + automated tests on every PR.",
+    color: "#10b981",
+    stats: "100% coverage"
+  },
+  {
+    icon: Zap,
+    number: "03",
+    title: "Performance Tuned",
+    desc: "Lighthouse 90+, sub-2s loads, 99.9% uptime.",
+    color: "#f59e0b",
+    stats: "90+ score"
+  },
+  {
+    icon: Layers,
+    number: "04",
+    title: "Full-Stack Ownership",
+    desc: "One team. Frontend, backend, mobile & cloud.",
+    color: "#8b5cf6",
+    stats: "end-to-end"
+  },
+];
+
+export default function AboutSection() {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-60px" });
+  const [tick, setTick] = useState(0);
+
+  useEffect(() => {
+    const t = setInterval(() => setTick(n => n + 1), 3200);
+    return () => clearInterval(t);
+  }, []);
 
   return (
-    <section id="about" className="py-20 bg-background overflow-hidden" ref={ref}>
-      <div className="container mx-auto">
+    <section id="about" className="section-padding bg-muted/10 overflow-hidden relative" ref={ref}>
+      <div className="absolute inset-0 pointer-events-none opacity-[0.025]"
+        style={{ backgroundImage: "linear-gradient(hsl(var(--foreground)) 1px,transparent 1px),linear-gradient(90deg,hsl(var(--foreground)) 1px,transparent 1px)", backgroundSize: "48px 48px" }} />
 
-        {/* ── Section label ── */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
+        {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5 }}
-          className="flex items-center gap-3 mb-14"
+          className="flex items-center gap-2 sm:gap-3 mb-8 sm:mb-10 md:mb-12"
         >
-          <div className="h-px flex-1 max-w-[40px] bg-primary/40 rounded-full" />
-          <span className="text-primary font-bold text-xs uppercase tracking-[0.18em]">About Online Savaari</span>
-          <div className="h-px flex-1 bg-border/50 rounded-full" />
+          <div className="h-px w-6 sm:w-8 bg-primary/40" />
+          <span className="text-primary font-bold text-[9px] sm:text-[10px] md:text-[11px] uppercase tracking-[0.15em] sm:tracking-[0.2em] font-mono whitespace-nowrap">
+            // about OS tech labs
+          </span>
+          <div className="h-px flex-1 bg-border/30" />
         </motion.div>
 
-        {/* ══ TOP: Asymmetric hero split ══════════════════════ */}
-        <div className="grid lg:grid-cols-[1fr_1.1fr] gap-10 lg:gap-16 items-start mb-20">
+        <div className="grid lg:grid-cols-[1.05fr_1fr] gap-8 sm:gap-10 lg:gap-16 mb-8 sm:mb-10 items-start">
 
-          {/* LEFT — headline + body + pillars ── */}
+          {/* LEFT COLUMN */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
+            initial={{ opacity: 0, x: -24 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="flex flex-col"
+            transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
           >
-            <h2
-              className="font-extrabold leading-[1.06] tracking-tight text-foreground"
-              style={{ fontSize: "clamp(2rem, 4.5vw, 3.25rem)" }}
+            {/* Title */}
+            <h2 className="font-extrabold leading-[1.06] tracking-tight text-foreground mb-4 sm:mb-5"
+              style={{ fontSize: "clamp(1.8rem, 4vw, 2.5rem) sm:clamp(2rem, 4.5vw, 3.2rem)" }}
             >
-              Your One-Stop{" "}
-              <span className="gradient-text">Travel Platform</span>
-              <br />
-              <span className="text-muted-foreground font-light" style={{ fontSize: "0.6em", letterSpacing: "0.01em" }}>
-                Built for India. Made for the World.
+              Your Dedicated{" "}
+              <span className="gradient-text">Tech Partner</span>
+              <span className="block text-muted-foreground font-light mt-1.5 sm:mt-2" style={{ fontSize: "0.5em" }}>
+                Kolkata · Web · Mobile · AI · Design · Marketing
               </span>
             </h2>
 
-            <p className="mt-6 text-[15px] text-muted-foreground leading-relaxed max-w-lg">
-              Online Savaari simplifies every aspect of travel — from booking flights and hotels
-              to securing travel insurance, purchasing international e-SIMs, applying for visas,
-              reserving airport lounges, and planning dream holidays. All in one seamless platform.
+            {/* Description */}
+            <p className="text-sm sm:text-[15px] text-muted-foreground leading-relaxed mb-6 sm:mb-8 max-w-lg">
+              OS tech labs Infotech is a full-service IT company that designs, builds, and scales digital
+              products. Websites, mobile apps, AI systems, brand identities — all in-house, all under
+              one roof. Zero outsourcing. Maximum accountability.
             </p>
 
-            {/* Pillar grid */}
-            <div className="mt-10 grid sm:grid-cols-2 gap-3">
-              {pillars.map((p, i) => (
-                <motion.div
-                  key={p.title}
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={inView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.5, delay: 0.3 + i * 0.08 }}
-                  className="group flex items-start gap-3.5 p-4 rounded-2xl border border-border/50 bg-muted/30 hover:bg-muted/60 hover:border-primary/15 transition-all duration-300"
-                  style={{ boxShadow: "var(--shadow-xs)" }}
-                >
-                  <div className="w-9 h-9 rounded-xl service-icon-bg flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-300">
-                    <p.icon size={17} className="text-primary" />
-                  </div>
-                  <div>
-                    <div className="text-sm font-bold text-foreground mb-0.5">{p.title}</div>
-                    <div className="text-xs text-muted-foreground leading-relaxed">{p.desc}</div>
-                  </div>
-                </motion.div>
-              ))}
+            {/* REDESIGNED PILLARS - Modern Card Style */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-6 sm:mb-8">
+              {PILLARS.map((p, i) => {
+                const Icon = p.icon;
+                return (
+                  <motion.div
+                    key={p.number}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={inView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ delay: 0.2 + i * 0.1 }}
+                    whileHover={{ y: -4, scale: 1.02 }}
+                    className="group relative"
+                  >
+                    {/* Gradient background on hover */}
+                    <div className="absolute inset-0 bg-gradient-to-r opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl blur-md"
+                      style={{ background: `linear-gradient(135deg, ${p.color}20, transparent)` }} />
+
+                    {/* Card content */}
+                    <div className="relative bg-background border cursor-pointer rounded-xl p-3 sm:p-4 border-primary/30 transition-all duration-10">
+                      <div className="flex items-start gap-3">
+                        {/* Icon with colored background */}
+                        <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center shrink-0"
+                          style={{ background: `${p.color}15` }}>
+                          <Icon size={16} className="sm:w-[18px] sm:h-[18px]" style={{ color: p.color }} />
+                        </div>
+
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="text-[8px] sm:text-[9px] font-mono font-bold px-1.5 py-0.5 rounded"
+                              style={{ background: `${p.color}15`, color: p.color }}>
+                              {p.number}
+                            </span>
+                            <span className="text-[8px] sm:text-[9px] font-mono text-muted-foreground">
+                              {p.stats}
+                            </span>
+                          </div>
+                          <h3 className="text-xs sm:text-sm font-bold text-foreground mb-1">{p.title}</h3>
+                          <p className="text-[10px] sm:text-xs text-muted-foreground line-clamp-2">{p.desc}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })}
             </div>
 
-            {/* CTA */}
-            <motion.a
-              href="#services"
-              initial={{ opacity: 0 }}
-              animate={inView ? { opacity: 1 } : {}}
-              transition={{ delay: 0.65 }}
-              className="mt-8 inline-flex items-center gap-2 text-sm font-bold text-primary hover:gap-3 transition-all duration-300 group"
+            {/* Stats Grid */}
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ delay: 0.45 }}
+              className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3"
             >
-              Explore all services
-              <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" />
-            </motion.a>
+              {STATS.map((s, i) => {
+                const Icon = s.icon;
+                return (
+                  <motion.div
+                    key={s.label}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={inView ? { opacity: 1, scale: 1 } : {}}
+                    transition={{ delay: 0.5 + i * 0.07 }}
+                    whileHover={{ y: -2 }}
+                    className="flex flex-col items-center justify-center p-2.5 sm:p-3 md:p-4 rounded-xl border border-border/30 bg-background hover:bg-muted/20 transition-all text-center gap-0.5 sm:gap-1"
+                  >
+                    <Icon size={14} className="sm:w-4 sm:h-4 md:w-5 md:h-5 mb-0.5 sm:mb-1" style={{ color: s.color }} />
+                    <div className="text-lg sm:text-xl md:text-2xl font-black tracking-tight font-mono" style={{ color: s.color }}>
+                      <Counter target={s.val} suffix={s.sfx} />
+                    </div>
+                    <div className="text-[8px] sm:text-[9px] md:text-[10px] text-muted-foreground leading-tight">{s.label}</div>
+                  </motion.div>
+                );
+              })}
+            </motion.div>
           </motion.div>
 
-          {/* RIGHT — image collage ── */}
+          {/* RIGHT COLUMN - Light White Dashboard Panel (Sticky) */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
+            initial={{ opacity: 0, x: 24 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.85, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
-            className="relative"
+            transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            className=" relative"
           >
-            {/* Main image */}
-            <div className="relative rounded-3xl overflow-hidden aspect-[4/3] shadow-[0_24px_60px_rgba(0,0,0,0.1)]">
-              <img
-                src="/public/img1.webp"
-                alt="Aerial travel destination"
-                className="w-full h-full object-cover"
-                loading="lazy"
-              />
-              {/* Gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-foreground/25" />
-              {/* Bottom left label */}
-              <div className="absolute bottom-4 left-4 flex items-center gap-2 px-3 py-1.5 rounded-xl bg-background/90 backdrop-blur-sm border border-border/40">
-                <MapPin size={12} className="text-primary" />
-                <span className="text-xs font-semibold text-foreground">150+ Destinations</span>
+            <div className="sticky top-24 rounded-xl sm:rounded-2xl overflow-hidden border border-border/40 bg-white shadow-xl"
+              style={{ boxShadow: "0 20px 40px -10px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.02)" }}>
+
+              {/* Chrome bar - Light theme */}
+              <div className="flex items-center justify-between px-3 sm:px-4 py-2 sm:py-3 border-b border-gray-100 bg-gray-100">
+                <div className="flex items-center gap-2 sm:gap-3">
+                  <div className="flex gap-1 sm:gap-1.5">
+                    {["#ef4444", "#f59e0b", "#22c55e"].map(c => (
+                      <div key={c} className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full opacity-70" style={{ background: c }} />
+                    ))}
+                  </div>
+                  <span className="font-mono text-[9px] sm:text-[10px] md:text-[11px] text-gray-500">OS tech labs — live dashboard</span>
+                </div>
+                <div className="flex items-center gap-1 sm:gap-1.5">
+                  <motion.div animate={{ opacity: [0.4, 1, 0.4] }} transition={{ duration: 1.4, repeat: Infinity }}
+                    className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-emerald-500" />
+                  <span className="font-mono text-[8px] sm:text-[9px] md:text-[10px] text-emerald-600">live</span>
+                </div>
+              </div>
+
+              {/* Metric row - Light theme */}
+              <div className="grid grid-cols-4 divide-x divide-gray-100 border-b border-gray-100">
+                {METRICS.map((m, i) => (
+                  <motion.div
+                    key={m.label}
+                    initial={{ opacity: 0 }}
+                    animate={inView ? { opacity: 1 } : {}}
+                    transition={{ delay: 0.4 + i * 0.08 }}
+                    className="px-1.5 sm:px-2 md:px-3 py-2.5 sm:py-3 md:py-4 text-center hover:bg-gray-50 transition-colors "
+                  >
+                    <div className="text-sm sm:text-base md:text-lg font-black font-mono" style={{ color: m.color }}>{m.val}</div>
+                    <div className="text-[7px] sm:text-[8px] md:text-[9px] font-bold text-gray-500 mt-0.5">{m.label}</div>
+                    <div className="text-[7px] sm:text-[8px] md:text-[9px] font-mono text-gray-400 mt-0.5 hidden sm:block">{m.hint}</div>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Activity feed - Light theme */}
+              <div className="p-3 sm:p-4">
+                <div className="flex items-center justify-between mb-2 sm:mb-3">
+                  <span className="font-mono text-[8px] sm:text-[9px] md:text-[10px] text-gray-500 uppercase tracking-wider">Recent Activity</span>
+                  <span className="text-[7px] sm:text-[8px] md:text-[9px] text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">5 updates</span>
+                </div>
+                <div className="space-y-0.5 sm:space-y-1">
+                  {ACTIVITIES.map((a, i) => {
+                    const isActive = i === tick % ACTIVITIES.length;
+                    const Icon = a.icon;
+                    return (
+                      <motion.div
+                        key={a.text}
+                        animate={{
+                          opacity: isActive ? 1 : 0.6,
+                          x: isActive ? 4 : 0,
+                          backgroundColor: isActive ? `${a.color}08` : "transparent"
+                        }}
+                        transition={{ duration: 0.4 }}
+                        className="flex items-center gap-2 sm:gap-3 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg transition-all"
+                      >
+                        <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-md flex items-center justify-center shrink-0"
+                          style={{ background: `${a.color}12` }}>
+                          <Icon size={9} className="sm:w-[10px] sm:h-[10px] md:w-[11px] md:h-[11px]" style={{ color: a.color }} />
+                        </div>
+                        <span className="font-mono text-[9px] sm:text-[10px] md:text-[11px] text-gray-700 flex-1 truncate">{a.text}</span>
+                        <span className="font-mono text-[8px] sm:text-[9px] md:text-[10px] text-gray-400 shrink-0">{a.time}</span>
+                        {isActive && (
+                          <motion.div
+                            animate={{ scale: [1, 1.2, 1] }}
+                            transition={{ duration: 1, repeat: Infinity }}
+                            className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full shrink-0"
+                            style={{ background: a.color }}
+                          />
+                        )}
+                      </motion.div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Footer - Light theme */}
+              <div className="px-3 sm:px-4 py-2 sm:py-3 border-t border-gray-100 flex flex-wrap items-center justify-between gap-2 bg-gray-100/50">
+                <div className="flex items-center gap-2 sm:gap-3 md:gap-4 flex-wrap">
+                  {[
+                    { label: "Projects Live", val: "12", color: "#10b981" },
+                    { label: "Team Online", val: "8", color: "#3b82f6" },
+                    { label: "Uptime", val: "99.9%", color: "#f59e0b" },
+                  ].map(b => (
+                    <div key={b.label} className="flex items-center gap-1 sm:gap-1.5">
+                      <div className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full" style={{ background: b.color }} />
+                      <span className="font-mono text-[8px] sm:text-[9px] md:text-[10px] text-gray-600">
+                        {b.val} <span className="text-gray-400 hidden xs:inline">{b.label}</span>
+                      </span>
+                    </div>
+                  ))}
+                </div>
+                <span className="font-mono text-[7px] sm:text-[8px] md:text-[9px] text-gray-400">onlinesavaari.com</span>
               </div>
             </div>
-
-            {/* Secondary image — overlapping bottom right */}
-            <motion.div
-              animate={{ y: [-6, 6, -6] }}
-              transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -bottom-5 -right-4 sm:-right-6 w-[45%] rounded-2xl overflow-hidden shadow-[0_16px_40px_rgba(0,0,0,0.15)] border-4 border-background"
-            >
-              <img
-                src="/public/img2.jpg"
-                alt="Beach destination"
-                className="w-full aspect-[4/3] object-cover"
-                loading="lazy"
-              />
-            </motion.div>
-
-            {/* Floating trust badge */}
-            <motion.div
-              animate={{ y: [-5, 5, -5] }}
-              transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
-              className="absolute -top-4 -left-4 sm:-left-6 card-glass px-4 py-3 flex items-center gap-3"
-            >
-              <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-                <Award size={17} className="text-primary" />
-              </div>
-              <div>
-                <div className="text-sm font-extrabold text-foreground leading-tight">#1 Rated</div>
-                <div className="text-[11px] text-muted-foreground">Travel Platform in India</div>
-              </div>
-            </motion.div>
-
-            {/* Floating live bookings pill */}
-            <motion.div
-              animate={{ y: [4, -4, 4] }}
-              transition={{ duration: 3.8, repeat: Infinity, ease: "easeInOut", delay: 0.4 }}
-              className="absolute top-[44%] -right-3 sm:-right-5 card-glass px-3.5 py-2.5 flex items-center gap-2"
-            >
-              <motion.span
-                animate={{ scale: [1, 1.5, 1], opacity: [0.6, 1, 0.6] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-                className="w-2 h-2 rounded-full bg-emerald-500 shrink-0"
-              />
-              <span className="text-xs font-bold text-foreground">Live: 247 bookings</span>
-            </motion.div>
           </motion.div>
         </div>
-
-        {/* ══ BOTTOM: Stats bar ═══════════════════════════════ */}
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, delay: 0.4 }}
-          className="relative rounded-3xl border border-border/50 bg-muted/30 overflow-hidden"
-          style={{ boxShadow: "var(--shadow-sm)" }}
-        >
-          {/* Subtle top accent line */}
-          <div
-            className="absolute top-0 left-0 right-0 h-[2px]"
-            style={{ background: "linear-gradient(90deg, transparent, hsl(var(--primary) / 0.6), transparent)" }}
-          />
-
-          <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-y lg:divide-y-0 divide-border/40">
-            {stats.map((stat, i) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 16 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: 0.5 + i * 0.09 }}
-                className="group flex items-center gap-4 px-7 py-7 hover:bg-muted/50 transition-colors duration-300"
-              >
-                {/* Icon circle */}
-                <div
-                  className="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-105"
-                  style={{ background: stat.bg, border: `1px solid ${stat.color}20` }}
-                >
-                  <stat.icon size={19} style={{ color: stat.color }} />
-                </div>
-                <div>
-                  <div
-                    className="text-2xl sm:text-3xl font-black tracking-tight leading-none"
-                    style={{ color: stat.color }}
-                  >
-                    <Counter target={stat.value} suffix={stat.suffix} />
-                  </div>
-                  <div className="text-[12px] text-muted-foreground font-medium mt-1">{stat.label}</div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-
       </div>
     </section>
   );
-};
-
-export default AboutSection;
+}

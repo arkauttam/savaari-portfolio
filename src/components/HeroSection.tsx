@@ -1,230 +1,231 @@
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
-import { useRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
 import {
-  ArrowRight, ArrowUpRight, Plane, Hotel, Shield,
-  Smartphone, Stamp, Armchair, Palmtree,
-  Star, MapPin, ChevronRight, ChevronLeft,
+  ArrowRight, ArrowUpRight, Globe, Smartphone, Brain,
+  Palette, Megaphone, LayoutDashboard,
+  Star, ChevronRight, ChevronLeft, Code2, Zap,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 /* ─── DATA ────────────────────────────────────────────── */
-const destinations = [
+const domains = [
   {
     id: 0,
-    name: "Maldives",
-    country: "Indian Ocean",
-    tagline: "Crystal Waters Await",
-    gradient: "from-cyan-500/20 via-blue-600/15 to-transparent",
-    accentColor: "#06B6D4",
-    price: "₹45,999",
-    duration: "5N/6D",
-    badge: "🏆 Most Booked",
+    name: "Web Development",
+    tagline: "Modern, Fast & Scalable",
+    accentColor: "#3B82F6",
+    price: "Starting ₹15,000",
+    duration: "2–6 weeks",
+    badge: "🏆 Most Popular",
+    icon: Globe,
   },
   {
     id: 1,
-    name: "Bali",
-    country: "Indonesia",
-    tagline: "Island of the Gods",
-    gradient: "from-emerald-500/20 via-teal-600/15 to-transparent",
+    name: "Mobile Apps",
+    tagline: "iOS & Android Excellence",
     accentColor: "#10B981",
-    price: "₹32,499",
-    duration: "4N/5D",
-    badge: "🔥 Trending Now",
+    price: "Starting ₹25,000",
+    duration: "4–10 weeks",
+    badge: "🔥 High Demand",
+    icon: Smartphone,
   },
   {
     id: 2,
-    name: "Dubai",
-    country: "UAE",
-    tagline: "Where Dreams Are Built",
-    gradient: "from-amber-500/20 via-orange-600/15 to-transparent",
-    accentColor: "#F59E0B",
-    price: "₹38,999",
-    duration: "3N/4D",
-    badge: "⚡ Flash Deal",
+    name: "AI / ML Solutions",
+    tagline: "Intelligent Automation",
+    accentColor: "#8B5CF6",
+    price: "Starting ₹40,000",
+    duration: "6–12 weeks",
+    badge: "⚡ Cutting Edge",
+    icon: Brain,
   },
   {
     id: 3,
-    name: "Bangkok",
-    country: "Thailand",
-    tagline: "City of Angels",
-    gradient: "from-violet-500/20 via-purple-600/15 to-transparent",
-    accentColor: "#8B5CF6",
-    price: "₹28,499",
-    duration: "5N/6D",
-    badge: "💎 Premium",
+    name: "Digital Marketing",
+    tagline: "Grow Your Online Presence",
+    accentColor: "#F59E0B",
+    price: "Starting ₹8,000/mo",
+    duration: "Ongoing",
+    badge: "📈 Proven ROI",
+    icon: Megaphone,
   },
 ];
 
+const services = [
+  { icon: Globe, label: "Web Dev" },
+  { icon: Smartphone, label: "Mobile Apps" },
+  { icon: Brain, label: "AI / ML" },
+  { icon: Palette, label: "Graphics" },
+  { icon: LayoutDashboard, label: "UI/UX" },
+  { icon: Megaphone, label: "Marketing" },
+  { icon: Code2, label: "CRM/ERP" },
+];
 
+const stats = [
+  { val: "200+", lbl: "Projects Done" },
+  { val: "50+", lbl: "Happy Clients" },
+  { val: "5★", lbl: "Avg Rating" },
+  { val: "24/7", lbl: "Support" },
+];
 
-/* ─── DESTINATION SLIDE ───────────────────────────────── */
-const DestinationSlide = ({
-  dest, isActive,
-}: { dest: typeof destinations[0]; isActive: boolean }) => (
+/* ─── Background atmosphere ───────────────────────────── */
+const DomainAtmosphere = ({
+  domain, isActive,
+}: { domain: typeof domains[0]; isActive: boolean }) => (
   <motion.div
     initial={false}
-    animate={{ opacity: isActive ? 1 : 0, scale: isActive ? 1 : 0.96, y: isActive ? 0 : 12 }}
-    transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+    animate={{ opacity: isActive ? 1 : 0 }}
+    transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
     className="absolute inset-0 pointer-events-none"
   >
-    {/* Large decorative circle */}
     <div
-      className="absolute top-1/2 right-[5%] -translate-y-1/2 w-[520px] h-[520px] rounded-full opacity-60 pointer-events-none"
+      className="absolute top-1/2 right-[2%] sm:right-[5%] -translate-y-1/2
+                 w-[200px] h-[200px] sm:w-[320px] sm:h-[320px] md:w-[400px] md:h-[400px] lg:w-[540px] lg:h-[540px] rounded-full"
       style={{
-        background: `radial-gradient(circle, ${dest.accentColor}22 0%, transparent 70%)`,
-        filter: "blur(24px)",
+        background: `radial-gradient(circle, ${domain.accentColor}20 10%, transparent 90%)`,
+        filter: "blur(50px) sm:blur(40px)",
       }}
     />
-    {/* Concentric rings */}
     {[380, 280, 180].map((s, i) => (
       <motion.div
         key={s}
         animate={{ rotate: i % 2 === 0 ? 360 : -360 }}
-        transition={{ duration: 30 + i * 10, repeat: Infinity, ease: "linear" }}
-        className="absolute top-1/2 right-[10%] -translate-y-1/2 rounded-full border"
+        transition={{ duration: 28 + i * 12, repeat: Infinity, ease: "linear" }}
+        className="absolute top-1/2 right-[8%] rounded-full border hidden md:block"
         style={{
-          width: s, height: s,
-          marginLeft: -s / 2, marginTop: -s / 2,
-          borderColor: `${dest.accentColor}18`,
+          width: s * 0.5, height: s * 0.5,
+          marginTop: -(s * 0.5) / 2,
+          borderColor: `${domain.accentColor}18`,
           borderStyle: i === 1 ? "dashed" : "solid",
         }}
       />
     ))}
-    {/* Dot on ring */}
     <motion.div
       animate={{ rotate: 360 }}
-      transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
-      className="absolute top-1/2 right-[10%] pointer-events-none"
-      style={{ width: 380, height: 380, marginTop: -190 }}
+      transition={{ duration: 16, repeat: Infinity, ease: "linear" }}
+      className="absolute top-1/2 right-[8%] pointer-events-none hidden md:block"
+      style={{ width: 200, height: 200, marginTop: -100 }}
     >
       <div
-        className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full shadow-lg"
-        style={{ background: dest.accentColor }}
+        className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full"
+        style={{ background: domain.accentColor, boxShadow: `0 0 10px ${domain.accentColor}` }}
       />
     </motion.div>
-    {/* Destination big text watermark */}
     <div
-      className="absolute bottom-16 right-[4%] text-[clamp(4rem,10vw,9rem)] font-black leading-none tracking-tighter select-none pointer-events-none"
-      style={{ color: `${dest.accentColor}0d`, WebkitTextStroke: `1px ${dest.accentColor}12` }}
+      className="absolute bottom-20 right-[2%] font-black leading-none tracking-tighter
+                 select-none pointer-events-none hidden xl:block"
+      style={{
+        fontSize: "clamp(3rem, 6vw, 7rem)",
+        color: `${domain.accentColor}07`,
+        WebkitTextStroke: `2px ${domain.accentColor}15`,
+      }}
     >
-      {dest.name.toUpperCase()}
+      {domain.name.toUpperCase()}
     </div>
   </motion.div>
 );
 
-/* ─── MAIN COMPONENT ─────────────────────────────────── */
+/* ─── Main Component ─────────────────────────────────── */
 const HeroSection = () => {
   const [active, setActive] = useState(0);
   const [hovSvc, setHovSvc] = useState<number | null>(null);
   const sectionRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end start"] });
-  const y  = useTransform(scrollYProgress, [0, 1], ["0%", "18%"]);
-  const op = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
-  const dest = destinations[active];
+  const domain = domains[active];
 
-  const prev = () => setActive(a => (a - 1 + destinations.length) % destinations.length);
-  const next = () => setActive(a => (a + 1) % destinations.length);
+  useEffect(() => {
+    const t = setInterval(() => setActive(a => (a + 1) % domains.length), 4500);
+    return () => clearInterval(t);
+  }, []);
+
+  const prev = () => setActive(a => (a - 1 + domains.length) % domains.length);
+  const next = () => setActive(a => (a + 1) % domains.length);
+  const DomainIcon = domain.icon;
 
   return (
     <section
       id="home"
+      ref={sectionRef}
       className="relative w-full min-h-screen flex flex-col overflow-hidden bg-background"
     >
-      {/* ── Background layers ── */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {/* Dot matrix */}
-        <div
-          className="absolute inset-0 opacity-[0.035]"
-          style={{
-            backgroundImage: "radial-gradient(circle, hsl(var(--foreground)) 1px, transparent 1px)",
-            backgroundSize: "28px 28px",
-          }}
-        />
-        {/* Hero gradient wash */}
-        <div
-          className="absolute inset-0"
-          style={{ background: "var(--gradient-hero, linear-gradient(135deg, hsl(var(--background)) 0%, hsl(var(--muted)/0.4) 100%))" }}
-        />
-      </div>
 
-      {/* ── Destination atmosphere (changes per slide) ── */}
+
+      {/* Domain atmospheres */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {destinations.map((d, i) => (
-          <DestinationSlide key={d.id} dest={d} isActive={i === active} />
+        {domains.map((d, i) => (
+          <DomainAtmosphere key={d.id} domain={d} isActive={i === active} />
         ))}
       </div>
 
-      {/* ══ CONTENT ════════════════════════════════════════ */}
-      <motion.div
-        className="relative z-10 flex-1 flex flex-col"
-      >
-        <div className="container mx-auto flex-1 flex flex-col justify-between gap-12 xl:gap-0">
+      <div className="relative z-10 flex-1 flex flex-col">
+        <div className="container mx-auto w-full flex-1 flex flex-col justify-between
+                        px-3 xs:px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 2xl:px-16
+                        py-4 xs:py-6 sm:py-8 md:py-10 lg:py-12 gap-4 xs:gap-6 sm:gap-8 md:gap-10">
 
-          {/* ── TOP SECTION: Left copy + right destination card ── */}
-          <div className="flex-1 flex flex-col xl:flex-row items-start xl:items-center gap-20 xl:gap-8 justify-between">
+          <div className="flex-1 flex flex-col lg:flex-row items-start lg:items-center gap-6 xs:gap-8 sm:gap-10 md:gap-12 lg:gap-8 xl:gap-12 justify-between">
 
-            {/* LEFT: Copy block */}
-            <div className="flex-1 max-w-2xl">
+            {/* LEFT */}
+            <div className="flex-1 w-full lg:max-w-[54%] xl:max-w-2xl 2xl:max-w-3xl">
+
               {/* Eyebrow */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
-                className="flex items-center gap-2 mb-7"
+                className="flex flex-wrap items-center gap-1.5 xs:gap-2 mb-3 xs:mb-4 sm:mb-5 md:mb-7"
               >
-                <span className="flex items-center gap-2 text-[11px] font-black tracking-[0.18em] uppercase px-3.5 py-1.5 rounded-full border border-primary/25 bg-primary/8 text-primary">
+                <span className="flex items-center gap-1.5 xs:gap-2 text-[9px] xs:text-[10px] sm:text-[11px] font-black
+                                 tracking-[0.12em] xs:tracking-[0.14em] sm:tracking-[0.16em] uppercase 
+                                 px-2 xs:px-2.5 sm:px-3 py-1 xs:py-1.5 rounded-full
+                                 border border-primary/25 bg-primary/8 text-primary">
                   <motion.span
                     animate={{ opacity: [0.4, 1, 0.4] }}
                     transition={{ duration: 1.6, repeat: Infinity }}
-                    className="w-1.5 h-1.5 rounded-full bg-primary"
+                    className="w-1 h-1 xs:w-1.5 xs:h-1.5 rounded-full bg-primary"
                   />
-                  India's #1 Travel Platform
+                  Kolkata's #1 Tech Partner
                 </span>
                 <span className="flex items-center gap-0.5">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} size={10} className="fill-amber-400 text-amber-400" />
+                    <Star key={i} size={8} className="xs:w-[9px] xs:h-[9px] sm:w-[10px] sm:h-[10px] fill-amber-400 text-amber-400" />
                   ))}
-                  <span className="text-[11px] text-muted-foreground ml-1 font-medium">4.9</span>
+                  <span className="text-[9px] xs:text-[10px] sm:text-[11px] text-muted-foreground ml-0.5 xs:ml-1 font-medium">5.0</span>
                 </span>
               </motion.div>
 
-              {/* Big headline */}
+              {/* Headline */}
               <motion.h1
                 initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.85, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
-                className="font-black tracking-tight leading-[1.0] text-foreground"
-                style={{ fontSize: "clamp(3rem, 7vw, 5.5rem)" }}
+                className="font-black tracking-tight leading-[1.05] xs:leading-[1.04] sm:leading-[1.03] text-foreground"
+                style={{ fontSize: "clamp(1.8rem, 7vw, 3.5rem)" }}
               >
-                Explore
+                We Build
                 <br />
                 <span className="relative inline-block">
                   <AnimatePresence mode="wait">
                     <motion.span
-                      key={dest.name}
-                      initial={{ opacity: 0, y: 24, filter: "blur(8px)" }}
+                      key={domain.name}
+                      initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
                       animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                      exit={{ opacity: 0, y: -20, filter: "blur(6px)" }}
+                      exit={{ opacity: 0, y: -15, filter: "blur(6px)" }}
                       transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
                       className="gradient-text block"
                     >
-                      {dest.name}
+                      {domain.name}
                     </motion.span>
                   </AnimatePresence>
-                  {/* Accent bar under name */}
                   <motion.div
-                    key={dest.accentColor}
+                    key={`ul-${domain.accentColor}`}
                     initial={{ scaleX: 0 }}
                     animate={{ scaleX: 1 }}
                     transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                    className="absolute -bottom-1 left-0 h-[4px] w-3/4 rounded-full origin-left"
-                    style={{ background: `linear-gradient(90deg, ${dest.accentColor}, transparent)` }}
+                    className="absolute -bottom-0.5 xs:-bottom-1 left-0 h-[2px] xs:h-[2.5px] sm:h-[3px] md:h-[4px] w-3/4 rounded-full origin-left"
+                    style={{ background: `linear-gradient(90deg, ${domain.accentColor}, transparent)` }}
                   />
                 </span>
                 <br />
-                <span className="text-muted-foreground font-extralight" style={{ fontSize: "0.55em", letterSpacing: "0.01em" }}>
-                  &amp; Beyond
-                </span>
+
               </motion.h1>
 
               {/* Tagline */}
@@ -232,19 +233,19 @@ const HeroSection = () => {
                 initial={{ opacity: 0, x: -16 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.3 }}
-                className="mt-5 flex items-center gap-2"
+                className="mt-2 xs:mt-3 sm:mt-4 md:mt-5 flex items-center gap-1.5 xs:gap-2"
               >
-                <div className="w-8 h-[2px] rounded-full" style={{ background: dest.accentColor }} />
+                <div className="w-4 xs:w-5 sm:w-6 md:w-8 h-[1.5px] xs:h-[2px] rounded-full shrink-0" style={{ background: domain.accentColor }} />
                 <AnimatePresence mode="wait">
                   <motion.span
-                    key={dest.tagline}
+                    key={domain.tagline}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.3 }}
-                    className="text-sm font-medium text-muted-foreground italic"
+                    className="text-[10px] xs:text-[11px] sm:text-xs md:text-sm font-medium text-muted-foreground italic"
                   >
-                    {dest.tagline}
+                    {domain.tagline}
                   </motion.span>
                 </AnimatePresence>
               </motion.div>
@@ -254,29 +255,29 @@ const HeroSection = () => {
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.32 }}
-                className="mt-6 text-sm sm:text-[15px] text-muted-foreground leading-relaxed"
+                className="mt-3 xs:mt-4 sm:mt-5 md:mt-6 text-xs xs:text-sm sm:text-[14px] md:text-[15px] text-muted-foreground leading-relaxed max-w-lg lg:max-w-xl"
               >
-                One platform for flights, hotels, insurance, e-SIM, visas, lounges
-                &amp; holiday packages. Book smarter with OnlineSavaari.
+                OS tech labs Infotech is a full-service technology company based in Kolkata. We craft
+                high-performance websites, mobile apps, AI solutions, stunning designs, and powerful
+                digital marketing strategies — all under one roof.
               </motion.p>
 
-              {/* CTA */}
+              {/* CTAs */}
               <motion.div
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.44 }}
-                className="mt-8 flex flex-wrap gap-3"
+                className="mt-4 xs:mt-5 sm:mt-6 md:mt-8 flex flex-wrap gap-2 xs:gap-2.5 sm:gap-3"
               >
-                <Button variant="hero" size="xl" className="gap-2.5 group"  onClick={() => window.open("https://onlinesavaari.com", "_blank")}
->
-                  Start Booking
+                <Button variant="hero" size="default" className="gap-1.5 xs:gap-2 text-xs xs:text-sm sm:text-base px-3 xs:px-4 sm:px-5 md:px-6 py-1.5 xs:py-2 sm:py-2.5">
+                  Get a Free Quote
                   <motion.span animate={{ x: [0, 5, 0] }} transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 2 }}>
-                    <ArrowRight size={16} />
+                    <ArrowRight size={12} className="xs:w-[13px] xs:h-[13px] sm:w-[15px] sm:h-[15px]" />
                   </motion.span>
                 </Button>
-                <Button variant="heroOutline" size="xl" className="gap-2"  onClick={() => window.open("https://onlinesavaari.com", "_blank")}>
-                  View Packages
-                  <ArrowUpRight size={14} />
+                <Button variant="heroOutline" size="default" className="gap-1.5 xs:gap-2 text-xs xs:text-sm sm:text-base px-3 xs:px-4 sm:px-5 md:px-6 py-1.5 xs:py-2 sm:py-2.5">
+                  View Our Work
+                  <ArrowUpRight size={11} className="xs:w-3 xs:h-3 sm:w-[14px] sm:h-[14px]" />
                 </Button>
               </motion.div>
 
@@ -285,187 +286,152 @@ const HeroSection = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.6 }}
-                className="mt-8 flex items-center gap-4 flex-wrap"
+                className="mt-4 xs:mt-5 sm:mt-6 md:mt-8 flex flex-wrap items-center gap-2 xs:gap-3 sm:gap-4"
               >
-                <div className="flex -space-x-2">
-                  {["#F59E0B","#3B82F6","#10B981","#8B5CF6","#EF4444"].map((c, i) => (
-                    <div key={i} className="w-7 h-7 rounded-full border-2 border-background flex items-center justify-center text-white text-[9px] font-bold" style={{ background: c }}>
-                      {["A","R","S","M","K"][i]}
+                <div className="flex -space-x-1.5 xs:-space-x-2">
+                  {["#F59E0B", "#3B82F6", "#10B981", "#8B5CF6", "#EF4444"].map((c, i) => (
+                    <div key={i} className="w-5 h-5 xs:w-6 xs:h-6 sm:w-7 sm:h-7 rounded-full border-2 border-background flex items-center justify-center text-white text-[7px] xs:text-[8px] sm:text-[9px] font-bold" style={{ background: c }}>
+                      {["A", "R", "S", "M", "K"][i]}
                     </div>
                   ))}
                 </div>
-                <span className="text-xs text-muted-foreground">
-                  <strong className="text-foreground">2M+ travelers</strong> booked this month
+                <span className="text-[10px] xs:text-[11px] sm:text-xs text-muted-foreground">
+                  <strong className="text-foreground">50+ clients</strong> trust OS tech labs
                 </span>
-                <span className="flex items-center gap-1.5 text-xs font-semibold text-emerald-500">
-                  <motion.span animate={{ scale: [1, 1.5, 1] }} transition={{ duration: 1.5, repeat: Infinity }} className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block" />
-                  247 bookings live
+                <span className="flex items-center gap-1 xs:gap-1.5 text-[10px] xs:text-[11px] sm:text-xs font-semibold text-emerald-500">
+                  <motion.span animate={{ scale: [1, 1.5, 1] }} transition={{ duration: 1.5, repeat: Infinity }} className="w-1 h-1 xs:w-1.5 xs:h-1.5 rounded-full bg-emerald-500 inline-block" />
+                  Projects ongoing
                 </span>
               </motion.div>
             </div>
 
-            {/* RIGHT: Destination switcher card */}
+            {/* RIGHT: Domain card */}
             <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.9, delay: 0.2 }}
-              className="w-full xl:w-[340px] shrink-0 "
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.85, delay: 0.2 }}
+              className="w-full lg:w-[400px] shrink-0 mt-4 lg:mt-0"
             >
-              {/* Card */}
               <div
-                className="bg-transparent relative rounded-3xl border border-border/50 backdrop-blur-xl overflow-hidden"
-                style={{ boxShadow: "0 24px 80px rgba(0,0,0,0.12), 0 0 0 1px hsl(var(--border)/0.4)" }}
+                className="relative rounded-xl xs:rounded-2xl sm:rounded-3xl border border-border/50 bg-background/85 backdrop-blur-xl overflow-hidden"
+                style={{ boxShadow: "0 10px 30px rgba(0,0,0,0.08), 0 0 0 1px hsl(var(--border)/0.4)" }}
               >
-                {/* Colored top bar — accent per destination */}
                 <AnimatePresence mode="wait">
                   <motion.div
-                    key={dest.accentColor}
-                    initial={{ scaleX: 0 }}
-                    animate={{ scaleX: 1 }}
-                    exit={{ scaleX: 0 }}
+                    key={domain.accentColor}
+                    initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} exit={{ scaleX: 0 }}
                     transition={{ duration: 0.4 }}
                     className="h-1 w-full origin-left"
-                    style={{ background: `linear-gradient(90deg, ${dest.accentColor}, ${dest.accentColor}44)` }}
+                    style={{ background: `linear-gradient(90deg, ${domain.accentColor}, ${domain.accentColor}44)` }}
                   />
                 </AnimatePresence>
 
-                <div className="p-5">
-                  {/* Card header */}
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="text-[10px] font-black tracking-[0.15em] uppercase text-muted-foreground">
-                      Featured Destinations
+                <div className="p-3 xs:p-3.5 sm:p-4 md:p-5">
+                  <div className="flex items-center justify-between mb-2 xs:mb-2.5 sm:mb-3 md:mb-4">
+                    <span className="text-[8px] xs:text-[9px] sm:text-[10px] font-black tracking-[0.12em] xs:tracking-[0.14em] uppercase text-muted-foreground">
+                      Our Expertise
                     </span>
-                    <div className="flex items-center gap-1.5">
-                      <button onClick={prev} className="w-6 h-6 rounded-full border border-border/60 flex items-center justify-center hover:bg-accent transition-colors">
-                        <ChevronLeft size={12} />
+                    <div className="flex items-center gap-0.5 xs:gap-1">
+                      <button onClick={prev} className="w-5 h-5 xs:w-6 xs:h-6 rounded-full border border-border/60 flex items-center justify-center hover:bg-accent transition-colors">
+                        <ChevronLeft size={9} className="xs:w-[10px] xs:h-[10px] sm:w-[11px] sm:h-[11px]" />
                       </button>
-                      <button onClick={next} className="w-6 h-6 rounded-full border border-border/60 flex items-center justify-center hover:bg-accent transition-colors">
-                        <ChevronRight size={12} />
+                      <button onClick={next} className="w-5 h-5 xs:w-6 xs:h-6 rounded-full border border-border/60 flex items-center justify-center hover:bg-accent transition-colors">
+                        <ChevronRight size={9} className="xs:w-[10px] xs:h-[10px] sm:w-[11px] sm:h-[11px]" />
                       </button>
                     </div>
                   </div>
 
-                  {/* Active destination detail */}
                   <AnimatePresence mode="wait">
                     <motion.div
                       key={active}
-                      initial={{ opacity: 0, y: 16 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -12 }}
-                      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                      className="mb-4"
+                      initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.38 }}
+                      className="mb-2 xs:mb-2.5 sm:mb-3 md:mb-4"
                     >
-                      <div className="flex items-start justify-between gap-3">
+                      <div className="flex items-start justify-between gap-1.5 xs:gap-2">
                         <div>
-                          <div className="flex items-center gap-2 mb-1">
-                            <span
-                              className="text-[10px] font-bold px-2 py-0.5 rounded-full"
-                              style={{ background: `${dest.accentColor}18`, color: dest.accentColor }}
-                            >
-                              {dest.badge}
-                            </span>
-                          </div>
-                          <h3 className="text-2xl font-black text-foreground tracking-tight">{dest.name}</h3>
-                          <div className="flex items-center gap-1 text-xs text-muted-foreground mt-0.5">
-                            <MapPin size={10} />
-                            {dest.country}
+                          <span
+                            className="inline-block text-[8px] xs:text-[9px] sm:text-[10px] font-bold px-1.5 xs:px-2 py-0.5 rounded-full mb-0.5 xs:mb-1"
+                            style={{ background: `${domain.accentColor}18`, color: domain.accentColor }}
+                          >
+                            {domain.badge}
+                          </span>
+                          <h3 className="text-base xs:text-lg sm:text-xl md:text-2xl font-black text-foreground tracking-tight">{domain.name}</h3>
+                          <div className="flex items-center gap-0.5 xs:gap-1 text-[10px] xs:text-[11px] sm:text-xs text-muted-foreground mt-0.5">
+                            <Zap size={8} className="xs:w-[9px] xs:h-[9px]" style={{ color: domain.accentColor }} />
+                            {domain.tagline}
                           </div>
                         </div>
-                        <div className="text-right">
-                          <div className="text-[10px] text-muted-foreground">Starting from</div>
-                          <div className="text-xl font-black text-foreground">{dest.price}</div>
-                          <div className="text-[10px] text-muted-foreground">{dest.duration} · per person</div>
+                        <div className="text-right shrink-0">
+                          <div className="text-[8px] xs:text-[9px] text-muted-foreground">Budget</div>
+                          <div className="text-sm xs:text-base sm:text-lg font-black text-foreground">{domain.price}</div>
+                          <div className="text-[8px] xs:text-[9px] text-muted-foreground">Timeline: {domain.duration}</div>
                         </div>
                       </div>
                     </motion.div>
                   </AnimatePresence>
 
-                  {/* Dot indicators */}
-                  <div className="flex items-center gap-1.5 mb-4">
-                    {destinations.map((_, i) => (
-                      <button
-                        key={i}
-                        onClick={() => setActive(i)}
-                        className="transition-all duration-300 rounded-full h-1.5"
-                        style={{
-                          width: i === active ? 20 : 6,
-                          background: i === active ? dest.accentColor : "hsl(var(--border))",
-                        }}
+                  <div className="flex items-center gap-1 xs:gap-1.5 mb-2 xs:mb-2.5 sm:mb-3 md:mb-4">
+                    {domains.map((_, i) => (
+                      <button key={i} onClick={() => setActive(i)}
+                        className="transition-all duration-300 rounded-full h-1 xs:h-1.5"
+                        style={{ width: i === active ? 14 : 4, background: i === active ? domain.accentColor : "hsl(var(--border))" }}
                       />
                     ))}
                   </div>
 
-                  {/* Mini destination list */}
-                  <div className="space-y-1.5 mb-4">
-                    {destinations.map((d, i) => (
-                      <button
-                        key={d.id}
-                        onClick={() => setActive(i)}
-                        className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-left transition-all duration-200 ${
-                          i === active ? "border" : "border border-transparent hover:bg-accent/60"
-                        }`}
-                        style={i === active ? { background: `${d.accentColor}0d`, borderColor: `${d.accentColor}30` } : {}}
-                      >
-                        <div className="w-6 h-6 rounded-lg flex items-center justify-center text-sm shrink-0" style={{ background: `${d.accentColor}18` }}>
-                          <MapPin size={11} style={{ color: d.accentColor }} />
-                        </div>
-                        <span className={`text-sm font-semibold flex-1 ${i === active ? "text-foreground" : "text-muted-foreground"}`}>{d.name}</span>
-                        <span className="text-xs font-bold" style={{ color: i === active ? d.accentColor : "hsl(var(--muted-foreground))" }}>{d.price}</span>
-                        {i === active && <ChevronRight size={12} style={{ color: d.accentColor }} />}
-                      </button>
-                    ))}
+                  <div className="space-y-1 xs:space-y-1.5 mb-2 xs:mb-2.5 sm:mb-3 md:mb-4">
+                    {domains.map((d, i) => {
+                      const Icon = d.icon;
+                      return (
+                        <button key={d.id} onClick={() => setActive(i)}
+                          className="w-full flex items-center gap-1.5 xs:gap-2 sm:gap-3 px-2 xs:px-2.5 sm:px-3 py-1 xs:py-1.5 sm:py-2 rounded-lg xs:rounded-xl text-left transition-all duration-200 border"
+                          style={i === active ? { background: `${d.accentColor}0d`, borderColor: `${d.accentColor}30` } : { borderColor: "transparent" }}
+                        >
+                          <div className="w-4 h-4 xs:w-5 xs:h-5 sm:w-6 sm:h-6 rounded-lg flex items-center justify-center shrink-0" style={{ background: `${d.accentColor}18` }}>
+                            <Icon size={9} className="xs:w-[10px] xs:h-[10px] sm:w-[11px] sm:h-[11px]" style={{ color: d.accentColor }} />
+                          </div>
+                          <span className={`text-[10px] xs:text-xs sm:text-sm font-semibold flex-1 truncate ${i === active ? "text-foreground" : "text-muted-foreground"}`}>{d.name}</span>
+                          <span className="text-[8px] xs:text-[9px] sm:text-[10px] font-bold shrink-0" style={{ color: i === active ? d.accentColor : "hsl(var(--muted-foreground))" }}>{d.price}</span>
+                          {i === active && <ChevronRight size={8} className="xs:w-[9px] xs:h-[9px] sm:w-[11px] sm:h-[11px] shrink-0" style={{ color: d.accentColor }} />}
+                        </button>
+                      );
+                    })}
                   </div>
 
-                  {/* Book button */}
                   <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.97 }}
-                    className="w-full py-3 rounded-2xl font-bold text-sm flex items-center justify-center gap-2 transition-all text-white"
-                    style={{
-                      background: `linear-gradient(135deg, ${dest.accentColor}, ${dest.accentColor}bb)`,
-                      boxShadow: `0 8px 24px ${dest.accentColor}40`,
-                    }}
+                    whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}
+                    className="w-full py-2 xs:py-2.5 sm:py-3 rounded-lg xs:rounded-xl sm:rounded-2xl font-bold text-[10px] xs:text-xs sm:text-sm flex items-center justify-center gap-1.5 xs:gap-2 text-white transition-all"
+                    style={{ background: `linear-gradient(135deg, ${domain.accentColor}, ${domain.accentColor}cc)`, boxShadow: `0 4px 15px ${domain.accentColor}40` }}
                   >
-                    <Plane size={14} />
-                    Book {dest.name} Package
+                    <DomainIcon size={11} className="xs:w-3 xs:h-3 sm:w-[13px] sm:h-[13px]" />
+                    Start {domain.name} Project
                   </motion.button>
                 </div>
               </div>
             </motion.div>
           </div>
 
-          {/* ── Stats strip ── */}
+          {/* Stats */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7 }}
-            className="grid grid-cols-2 sm:grid-cols-4 gap-4 border-t border-border/40 pt-8"
+            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }}
+            className="grid grid-cols-2 justify-center sm:grid-cols-4 gap-2 xs:gap-3 sm:gap-4 border-t border-border/40 pt-3 xs:pt-4 sm:pt-5 md:pt-6 lg:pt-8"
           >
-            {[
-              { val: "2M+",  lbl: "Happy Travelers", color: "#3B82F6" },
-              { val: "150+", lbl: "Destinations",     color: "#10B981" },
-              { val: "4.9★", lbl: "Average Rating",   color: "#F59E0B" },
-              { val: "24/7", lbl: "Expert Support",   color: "#8B5CF6" },
-            ].map((s, i) => (
-              <motion.div
-                key={s.val}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.75 + i * 0.08 }}
-                className="flex items-center gap-3 justify-center"
-              >
-                <div className="w-1 h-8 rounded-full shrink-0" style={{ background: s.color }} />
+            {stats.map((s, i) => (
+              <motion.div key={s.val} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.75 + i * 0.08 }} className="flex items-center justify-center gap-1.5 xs:gap-2 sm:gap-3">
+                <div className="w-0.5 xs:w-1 h-5 xs:h-6 sm:h-7 md:h-8 rounded-full shrink-0 bg-primary transition-colors duration-500" />
                 <div>
-                  <div className="text-xl font-black text-foreground tracking-tight">{s.val}</div>
-                  <div className="text-[11px] text-muted-foreground font-medium">{s.lbl}</div>
+                  <div className="text-sm xs:text-base sm:text-lg md:text-xl font-black text-foreground tracking-tight leading-tight" style={{ color: domain.accentColor }}
+                  >{s.val}</div>
+                  <div className="text-[8px] xs:text-[9px] sm:text-[10px] md:text-[11px] text-muted-foreground font-medium leading-tight">{s.lbl}</div>
                 </div>
               </motion.div>
             ))}
           </motion.div>
         </div>
-      </motion.div>
+      </div>
 
-     
+
     </section>
   );
 };

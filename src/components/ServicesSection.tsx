@@ -1,410 +1,225 @@
-import { motion, useInView, useMotionValue, useTransform } from "framer-motion";
+import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useState } from "react";
 import {
-  Plane, Hotel, Shield, Smartphone, Stamp, Armchair, Palmtree,
-  ArrowRight, Sparkles, Globe, Clock,
+  Globe, Smartphone, Brain, Palette, Megaphone, LayoutDashboard, Code2,
+  ChevronRight, ArrowUpRight, Dot,
 } from "lucide-react";
 
-/* ─── DATA ─────────────────────────────────────────────── */
-const services = [
+const SERVICES = [
   {
-    icon: Plane,
-    title: "Flights",
-    short: "Fly anywhere for less",
-    description: "Search 200+ airlines in real time. Domestic & international fares with instant confirmation.",
+    num: "01", icon: Globe, title: "Web Development",
+    tagline: "React · Next.js · Laravel · Node.js",
     color: "#3B82F6",
-    stat: "200+ Airlines",
-    statIcon: Globe,
-    size: "large",   // spans 2 cols on desktop
+    description: "We build blazing-fast websites, SaaS platforms, e-commerce stores, and web portals using the latest stacks. Clean architecture, pixel-perfect UI, and rock-solid backend APIs.",
+    stack: ["React", "Next.js", "Node.js", "Laravel", "PostgreSQL", "TypeScript"],
+    deliverables: ["Custom Website", "E-Commerce Store", "Web Portal", "REST / GraphQL API"],
+    timeline: "2–6 weeks", from: "₹15,000",
   },
   {
-    icon: Hotel,
-    title: "Hotels",
-    short: "Stay in style",
-    description: "4,000+ handpicked properties with verified reviews and exclusive member rates.",
+    num: "02", icon: Smartphone, title: "Mobile App Development",
+    tagline: "Flutter · React Native · iOS · Android",
     color: "#10B981",
-    stat: "4000+ Properties",
-    statIcon: Sparkles,
-    size: "normal",
+    description: "Cross-platform and native mobile apps that feel at home on every device. From MVP to full launch — UI design, development, Play Store & App Store publishing included.",
+    stack: ["Flutter", "React Native", "Swift", "Kotlin", "Firebase", "REST APIs"],
+    deliverables: ["iOS App", "Android App", "Cross-Platform App", "App Store Launch"],
+    timeline: "4–10 weeks", from: "₹25,000",
   },
   {
-    icon: Shield,
-    title: "Insurance",
-    short: "Travel worry-free",
-    description: "Full coverage for medical, cancellations, baggage loss, and delays.",
-    color: "#F59E0B",
-    stat: "Full Coverage",
-    statIcon: Shield,
-    size: "normal",
-  },
-  {
-    icon: Palmtree,
-    title: "Holidays",
-    short: "Dream getaways",
-    description: "All-inclusive curated packages — flights, hotels & experiences bundled at unbeatable prices.",
-    color: "#F97316",
-    stat: "150+ Packages",
-    statIcon: Sparkles,
-    size: "large",   // spans 2 cols on desktop
-  },
-  {
-    icon: Smartphone,
-    title: "e-SIM",
-    short: "Stay connected",
-    description: "Instant data in 190+ countries. No roaming charges, no physical SIM needed.",
+    num: "03", icon: Brain, title: "AI / ML Solutions",
+    tagline: "Python · TensorFlow · OpenAI · LangChain",
     color: "#8B5CF6",
-    stat: "190+ Countries",
-    statIcon: Globe,
-    size: "normal",
+    description: "Custom AI models, intelligent chatbots, recommendation engines, LLM integrations, and predictive analytics. We turn your data into decisions and workflows into automation.",
+    stack: ["Python", "TensorFlow", "OpenAI", "LangChain", "FastAPI", "Pandas"],
+    deliverables: ["AI Chatbot", "ML Model", "Data Pipeline", "LLM Integration"],
+    timeline: "6–12 weeks", from: "₹40,000",
   },
   {
-    icon: Stamp,
-    title: "Visa",
-    short: "Hassle-free entry",
-    description: "Expert processing for 50+ countries with document checks and fast turnaround.",
-    color: "#EF4444",
-    stat: "50+ Countries",
-    statIcon: Clock,
-    size: "normal",
-  },
-  {
-    icon: Armchair,
-    title: "Lounges",
-    short: "Premium comfort",
-    description: "Access exclusive airport lounges worldwide. Dine, relax, and arrive refreshed.",
+    num: "04", icon: LayoutDashboard, title: "UI / UX Design",
+    tagline: "Figma · Wireframes · Prototyping · Design Systems",
     color: "#0EA5E9",
-    stat: "1200+ Lounges",
-    statIcon: Sparkles,
-    size: "normal",
+    description: "User research, information architecture, wireframes, interactive prototypes, and production-ready UI components. Interfaces that users love and devs can build without friction.",
+    stack: ["Figma", "FigJam", "Protopie", "Zeplin", "Design Tokens"],
+    deliverables: ["UI Design", "UX Audit", "Interactive Prototype", "Design System"],
+    timeline: "1–4 weeks", from: "₹10,000",
+  },
+  {
+    num: "05", icon: Palette, title: "Graphics Design",
+    tagline: "Brand Identity · Social Media · Motion · Print",
+    color: "#EF4444",
+    description: "Logo design, full brand identity kits, social media creatives, pitch decks, brochures, and motion graphics. Visual storytelling that makes your brand impossible to ignore.",
+    stack: ["Illustrator", "Photoshop", "After Effects", "InDesign", "Canva Pro"],
+    deliverables: ["Logo & Brand Kit", "Social Media Pack", "Pitch Deck", "Motion Graphics"],
+    timeline: "1–3 weeks", from: "₹5,000",
+  },
+  {
+    num: "06", icon: Megaphone, title: "Digital Marketing",
+    tagline: "SEO · Google Ads · Social Media · Email",
+    color: "#F59E0B",
+    description: "Data-driven campaigns that deliver real ROI — organic traffic growth, qualified lead generation, and measurable conversions. SEO, PPC, social ads, and email under one strategy.",
+    stack: ["Google Ads", "Meta Ads", "Ahrefs", "SEMrush", "Mailchimp", "GA4"],
+    deliverables: ["SEO Audit & Execution", "Ad Campaigns", "Content Calendar", "Monthly Reports"],
+    timeline: "Ongoing", from: "₹8,000/mo",
+  },
+  {
+    num: "07", icon: Code2, title: "CRM & ERP Systems",
+    tagline: "Custom · Scalable · Cloud-Ready · Role-Based",
+    color: "#F97316",
+    description: "Tailor-made CRM, ERP, and internal tools built to your exact workflow. Replace spreadsheets with smart dashboards, automated pipelines, and granular access control.",
+    stack: ["React", "Django", "MySQL", "AWS", "Docker", "Redis"],
+    deliverables: ["CRM System", "ERP Module", "Admin Dashboard", "API Integration"],
+    timeline: "6–16 weeks", from: "₹35,000",
   },
 ];
 
-/* ─── Tilt card wrapper ─────────────────────────────────── */
-const TiltCard = ({
-  children,
-  className = "",
-  style = {},
-}: {
-  children: React.ReactNode;
-  className?: string;
-  style?: React.CSSProperties;
-}) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const rotateX = useTransform(y, [-60, 60], [4, -4]);
-  const rotateY = useTransform(x, [-60, 60], [-4, 4]);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = ref.current?.getBoundingClientRect();
-    if (!rect) return;
-    x.set(e.clientX - rect.left - rect.width / 2);
-    y.set(e.clientY - rect.top - rect.height / 2);
-  };
-  const handleMouseLeave = () => { x.set(0); y.set(0); };
-
-  return (
-    <motion.div
-      ref={ref}
-      style={{ rotateX, rotateY, transformStyle: "preserve-3d", ...style }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      className={className}
-    >
-      {children}
-    </motion.div>
-  );
-};
-
-/* ─── Service Card ─────────────────────────────────────── */
-const ServiceCard = ({
-  service,
-  index,
-  inView,
-  isLarge = false,
-}: {
-  service: typeof services[0];
-  index: number;
-  inView: boolean;
-  isLarge?: boolean;
-}) => {
-  const [hovered, setHovered] = useState(false);
-  const StatIcon = service.statIcon;
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 32 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.55, delay: index * 0.07, ease: [0.16, 1, 0.3, 1] }}
-      className={isLarge ? "sm:col-span-2" : ""}
-    >
-      <TiltCard className="h-full">
-        <div
-          onMouseEnter={() => setHovered(true)}
-          onMouseLeave={() => setHovered(false)}
-          className="relative h-full rounded-2xl sm:rounded-3xl border border-border bg-background
-                     overflow-hidden cursor-pointer group transition-all duration-500
-                     hover:shadow-[0_20px_60px_rgba(0,0,0,0.1)] hover:border-transparent"
-          style={{ minHeight: isLarge ? 220 : 200 }}
-        >
-          {/* Animated gradient wash on hover */}
-          <motion.div
-            animate={{ opacity: hovered ? 1 : 0 }}
-            transition={{ duration: 0.4 }}
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background: `radial-gradient(ellipse at 20% 50%, ${service.color}12 0%, transparent 65%)`,
-            }}
-          />
-
-          {/* Colored left border strip */}
-          <motion.div
-            animate={{ scaleY: hovered ? 1 : 0.3, opacity: hovered ? 1 : 0.4 }}
-            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute left-0 top-4 bottom-4 w-[3px] rounded-full origin-center"
-            style={{ background: service.color }}
-          />
-
-          <div className={`relative flex flex-col h-full ${isLarge ? "p-6 sm:p-8" : "p-5 sm:p-6"}`}>
-
-            {/* Top row: icon + stat badge */}
-            <div className="flex items-start justify-between mb-4 sm:mb-6">
-              {/* Icon */}
-              <motion.div
-                animate={{
-                  scale: hovered ? 1.08 : 1,
-                  rotate: hovered ? -6 : 0,
-                }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                className={`${isLarge ? "w-14 h-14 sm:w-16 sm:h-16" : "w-12 h-12 sm:w-13 sm:h-13"} 
-                            rounded-2xl flex items-center justify-center shrink-0`}
-                style={{ background: `${service.color}15` }}
-              >
-                <service.icon
-                  size={isLarge ? 26 : 22}
-                  style={{ color: service.color }}
-                />
-              </motion.div>
-
-              {/* Stat badge */}
-              <motion.div
-                animate={{ y: hovered ? -2 : 0 }}
-                transition={{ duration: 0.3 }}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-bold"
-                style={{
-                  background: `${service.color}0a`,
-                  borderColor: `${service.color}20`,
-                  color: service.color,
-                }}
-              >
-                <StatIcon size={11} />
-                {service.stat}
-              </motion.div>
-            </div>
-
-            {/* Text */}
-            <div className="flex-1">
-              <h3
-                className={`font-black text-foreground tracking-tight mb-1.5 ${isLarge ? "text-xl sm:text-2xl" : "text-lg sm:text-[1.2rem]"
-                  }`}
-              >
-                {service.title}
-              </h3>
-              <p className="text-xs font-semibold mb-2" style={{ color: service.color }}>
-                {service.short}
-              </p>
-              <p className={`text-muted-foreground leading-relaxed ${isLarge ? "text-sm sm:text-[15px]" : "text-xs sm:text-sm"}`}>
-                {service.description}
-              </p>
-            </div>
-
-            {/* Bottom CTA */}
-            <motion.div
-              animate={{ opacity: hovered ? 1 : 0, x: hovered ? 0 : -8 }}
-              transition={{ duration: 0.25 }}
-              className="mt-4 flex items-center gap-1.5 text-xs font-bold"
-              style={{ color: service.color }}
-            >
-              Explore
-              <motion.span
-                animate={{ x: hovered ? 3 : 0 }}
-                transition={{ duration: 0.25 }}
-              >
-                <ArrowRight size={12} />
-              </motion.span>
-            </motion.div>
-          </div>
-        </div>
-      </TiltCard>
-    </motion.div>
-  );
-};
-
-/* ─── Main Section ─────────────────────────────────────── */
-const ServicesSection = () => {
+export default function ServicesSection() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
-
-  // Split: larges and normals to build bento rows
-  const large = services.filter(s => s.size === "large");
-  const normals = services.filter(s => s.size !== "large");
+  const [open, setOpen] = useState<number | null>(0);
+  const [hovered, setHovered] = useState<number | null>(null);
 
   return (
-    <section
-      id="services"
-      className="py-20 bg-muted/20 overflow-hidden"
-      ref={ref}
-    >
-      <div className="container mx-auto">
+    <section id="services" className="section-padding bg-background overflow-hidden relative" ref={ref}>
+      {/* Dot grid */}
+      <div className="absolute inset-0 pointer-events-none"
+        style={{ backgroundImage: "radial-gradient(circle, hsl(var(--foreground)/0.04) 1px, transparent 1px)", backgroundSize: "32px 32px" }} />
 
-        {/* ── Header ─────────────────────────────────────── */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="mb-10 sm:mb-14"
-        >
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 sm:gap-6">
+      <div className="container mx-auto relative">
+
+        {/* Header */}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }} className="mb-12">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
             <div>
               <div className="flex items-center gap-3 mb-3">
-                <div className="h-px w-8 bg-primary/50 rounded-full" />
-                <span className="text-primary font-bold text-xs uppercase tracking-[0.18em]">
-                  Our Services
-                </span>
+                <div className="h-px w-8 bg-primary/50" />
+                <span className="text-primary font-bold text-[11px] uppercase tracking-[0.2em] font-mono">// services</span>
               </div>
-              <h2
-                className="font-extrabold leading-tight tracking-tight text-foreground"
-                style={{ fontSize: "clamp(1.75rem, 4vw, 3rem)" }}
-              >
-                Everything You Need to{" "}
-                <span className="gradient-text">Travel Smart</span>
+              <h2 className="font-extrabold leading-tight tracking-tight text-foreground"
+                style={{ fontSize: "clamp(1.75rem, 4vw, 3rem)" }}>
+                What We Build &{" "}
+                <span className="gradient-text">Deliver</span>
               </h2>
             </div>
+            
           </div>
-
-          {/* Service count pills */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.3 }}
-            className="flex flex-wrap gap-2 mt-6"
-          >
-            {services.map((s) => (
-              <span
-                key={s.title}
-                className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-full border"
-                style={{
-                  background: `${s.color}08`,
-                  borderColor: `${s.color}20`,
-                  color: s.color,
-                }}
-              >
-                <s.icon size={11} />
-                {s.title}
-              </span>
-            ))}
-          </motion.div>
         </motion.div>
 
-        {/* ── Bento Grid ─────────────────────────────────── */}
-        {/* Row 1: 1 large (2-col) + 2 normal = 4-col grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-          {/* Large: Flights */}
-          <ServiceCard service={services[0]} index={0} inView={inView} isLarge />
-          {/* Normal: Hotels */}
-          <ServiceCard service={services[1]} index={1} inView={inView} />
-          {/* Normal: Insurance */}
-          <ServiceCard service={services[2]} index={2} inView={inView} />
-        </div>
-
-        {/* Row 2: 2 normal + 1 large (2-col) = 4-col grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-          {/* Normal: e-SIM */}
-          <ServiceCard service={services[4]} index={4} inView={inView} />
-          {/* Normal: Visa */}
-          <ServiceCard service={services[5]} index={5} inView={inView} />
-          {/* Large: Holidays */}
-          <ServiceCard service={services[3]} index={3} inView={inView} isLarge />
-        </div>
-
-        {/* Row 3: 1 normal + CTA card = fills remaining */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {/* Normal: Lounges */}
-          <ServiceCard service={services[6]} index={6} inView={inView} />
-
-          {/* CTA Card — spans 3 cols on lg */}
-          <motion.div
-            initial={{ opacity: 0, y: 28 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.55, delay: 7 * 0.07 }}
-            className="sm:col-span-1 lg:col-span-3"
-          >
-            <div
-              className="relative h-full rounded-2xl sm:rounded-3xl overflow-hidden cursor-pointer
-                         flex flex-col sm:flex-row items-center justify-between
-                         px-6 sm:px-10 py-8 sm:py-0 sm:h-[200px] gap-6 sm:gap-0
-                         transition-all duration-300 hover:shadow-[0_20px_60px_hsl(var(--secondary)/0.3)]"
-              style={{
-                background:
-                  "linear-gradient(120deg, hsl(var(--secondary)), hsl(var(--secondary)/0.75))",
-              }}
-            >
-              {/* Dot texture */}
-              <div
-                className="absolute inset-0 opacity-[0.07] pointer-events-none"
+        {/* Two-column editorial grid */}
+        <div className="grid md:grid-cols-2 gap-3">
+          {SERVICES.map((s, i) => {
+            const isOpen = open === i;
+            const isHov = hovered === i;
+            return (
+              <motion.div key={s.num}
+                initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: i * 0.07, duration: 0.5 }}
+                onHoverStart={() => setHovered(i)} onHoverEnd={() => setHovered(null)}
+                className={`rounded-2xl border overflow-hidden cursor-pointer transition-all duration-300 ${
+                  isOpen ? "md:col-span-2" : ""
+                }`}
                 style={{
-                  backgroundImage:
-                    "radial-gradient(circle, white 1px, transparent 1px)",
-                  backgroundSize: "22px 22px",
+                  borderColor: isOpen ? `${s.color}35` : isHov ? `${s.color}20` : "hsl(var(--border)/0.35)",
+                  background: isOpen ? `${s.color}05` : "hsl(var(--muted)/0.12)",
+                  boxShadow: isOpen ? `0 8px 32px ${s.color}12` : "none",
                 }}
-              />
-              {/* Diagonal lines */}
-              <div
-                className="absolute inset-0 opacity-[0.04] pointer-events-none"
-                style={{
-                  backgroundImage:
-                    "repeating-linear-gradient(45deg, white 0, white 1px, transparent 0, transparent 50%)",
-                  backgroundSize: "30px 30px",
-                }}
-              />
-
-              {/* Left: text */}
-              <div className="relative z-10 text-center sm:text-left">
-                <div className="text-white/70 text-xs font-bold uppercase tracking-widest mb-2">
-                  Ready to travel?
-                </div>
-                <div className="text-white font-black text-2xl sm:text-3xl leading-tight">
-                  Plan your perfect trip today
-                </div>
-                <div className="text-white/70 text-sm mt-2">
-                  Flights + Hotels + Insurance in one booking
-                </div>
-              </div>
-
-              {/* Right: CTA button */}
-              <motion.button
-                whileHover={{ scale: 1.04 }}
-                whileTap={{ scale: 0.97 }}
-                className="relative z-10 shrink-0 flex items-center gap-2.5 px-6 sm:px-8 py-3.5
-                           rounded-2xl bg-white text-primary font-black text-sm sm:text-base
-                           shadow-[0_8px_30px_rgba(0,0,0,0.15)] transition-all"
-                onClick={() => window.open("https://onlinesavaari.com", "_blank")}
-
+                onClick={() => setOpen(isOpen ? null : i)}
               >
-                Get Started
-                <motion.span
-                  animate={{ x: [0, 4, 0] }}
-                  transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 2 }}
-                >
-                  <ArrowRight size={16} />
-                </motion.span>
-              </motion.button>
-            </div>
-          </motion.div>
+                {/* Card header — always visible */}
+                <div className="flex items-center gap-4 px-5 py-4">
+                  {/* Number */}
+                  <span className="text-[12px] font-black font-mono shrink-0 w-6 transition-colors"
+                    style={{ color: isOpen ? s.color : "hsl(var(--muted-foreground)/0.35)" }}>
+                    {s.num}
+                  </span>
+
+                  {/* Colored icon box */}
+                  <motion.div
+                    animate={{ scale: isHov ? 1.08 : 1 }}
+                    className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300"
+                    style={{ background: `${s.color}${isOpen ? "20" : "12"}` }}>
+                    <s.icon size={18} style={{ color: s.color }} />
+                  </motion.div>
+
+                  {/* Title */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-0.5 sm:gap-3">
+                      <span className={`text-sm sm:text-base font-bold transition-colors ${isOpen ? "text-foreground" : "text-foreground/80"}`}>
+                        {s.title}
+                      </span>
+                      <span className="text-[11px] font-mono text-muted-foreground/60 hidden sm:block truncate">{s.tagline}</span>
+                    </div>
+                  </div>
+
+                  {/* Price + chevron */}
+                  <div className="flex items-center gap-3 shrink-0">
+                    <span className="text-xs font-bold hidden sm:block" style={{ color: s.color }}>from {s.from}</span>
+                    <motion.div animate={{ rotate: isOpen ? 90 : 0 }} transition={{ duration: 0.22 }}>
+                      <ChevronRight size={16} className="text-muted-foreground" />
+                    </motion.div>
+                  </div>
+                </div>
+
+                {/* Expanded detail — full-width when open */}
+                <AnimatePresence initial={false}>
+                  {isOpen && (
+                    <motion.div
+                      key="detail"
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                      className="overflow-hidden"
+                    >
+                      <div className="px-5 pb-6 pt-1 border-t border-border/20 grid sm:grid-cols-[1fr_1fr_auto] gap-6 items-start">
+                        {/* Description */}
+                        <div>
+                          <p className="text-sm text-muted-foreground leading-relaxed mb-4">{s.description}</p>
+                          <div className="flex flex-wrap gap-1.5">
+                            {s.stack.map(t => (
+                              <span key={t} className="text-[10px] font-bold px-2 py-0.5 rounded-md border font-mono"
+                                style={{ background: `${s.color}0a`, borderColor: `${s.color}20`, color: s.color }}>
+                                {t}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Deliverables */}
+                        <div>
+                          <span className="text-[10px] font-black uppercase tracking-wider text-muted-foreground font-mono block mb-2">Deliverables</span>
+                          <div className="space-y-1.5">
+                            {s.deliverables.map(d => (
+                              <div key={d} className="flex items-center gap-2 text-sm text-muted-foreground">
+                                <Dot size={16} style={{ color: s.color }} className="shrink-0" />{d}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Meta + CTA */}
+                        <div className="flex flex-col items-start sm:items-end gap-3 shrink-0">
+                          <div>
+                            <div className="text-[10px] text-muted-foreground font-mono">Timeline</div>
+                            <div className="text-sm font-bold text-foreground">{s.timeline}</div>
+                          </div>
+                          <div>
+                            <div className="text-[10px] text-muted-foreground font-mono">Starting from</div>
+                            <div className="text-base font-black" style={{ color: s.color }}>{s.from}</div>
+                          </div>
+                          <button className="flex items-center gap-1.5 text-xs font-bold px-4 py-2 rounded-lg transition-all hover:opacity-80"
+                            style={{ background: `${s.color}18`, color: s.color }}>
+                            Get Quote <ArrowUpRight size={12} />
+                          </button>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>
   );
-};
-
-export default ServicesSection;
+}
