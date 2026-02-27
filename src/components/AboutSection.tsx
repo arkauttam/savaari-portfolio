@@ -92,16 +92,20 @@ export default function AboutSection() {
   }, []);
 
   return (
-    <section id="about" className="section-padding bg-muted/10 overflow-hidden relative" ref={ref}>
-      <div className="absolute inset-0 pointer-events-none opacity-[0.025]"
-        style={{ backgroundImage: "linear-gradient(hsl(var(--foreground)) 1px,transparent 1px),linear-gradient(90deg,hsl(var(--foreground)) 1px,transparent 1px)", backgroundSize: "48px 48px" }} />
+    <section
+      id="about"
+      className="pt-20 bg-muted/10 relative overflow-hidden"
+      ref={ref}
+    >      
+    <div className="absolute inset-0 pointer-events-none opacity-[0.025]"
+      style={{ backgroundImage: "linear-gradient(hsl(var(--foreground)) 1px,transparent 1px),linear-gradient(90deg,hsl(var(--foreground)) 1px,transparent 1px)", backgroundSize: "48px 48px" }} />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
-          className="flex items-center gap-2 sm:gap-3 mb-8 sm:mb-10 md:mb-12"
+          className="flex items-center gap-2 sm:gap-3 mb-8"
         >
           <div className="h-px w-6 sm:w-8 bg-primary/40" />
           <span className="text-primary font-bold text-[9px] sm:text-[10px] md:text-[11px] uppercase tracking-[0.15em] sm:tracking-[0.2em] font-mono whitespace-nowrap">
@@ -120,7 +124,7 @@ export default function AboutSection() {
           >
             {/* Title */}
             <h2 className="font-extrabold leading-[1.06] tracking-tight text-foreground mb-4 sm:mb-5"
-              style={{ fontSize: "clamp(1.8rem, 4vw, 2.5rem) sm:clamp(2rem, 4.5vw, 3.2rem)" }}
+              style={{ fontSize: "clamp(1.75rem, 4vw, 3rem)" }}
             >
               Your Dedicated{" "}
               <span className="gradient-text">Tech Partner</span>
@@ -128,7 +132,6 @@ export default function AboutSection() {
                 Kolkata · Web · Mobile · AI · Design · Marketing
               </span>
             </h2>
-
             {/* Description */}
             <p className="text-sm sm:text-[15px] text-muted-foreground leading-relaxed mb-6 sm:mb-8 max-w-lg">
               OS tech labs Infotech is a full-service IT company that designs, builds, and scales digital
@@ -152,7 +155,13 @@ export default function AboutSection() {
                     {/* Gradient background on hover */}
                     <div className="absolute inset-0 bg-gradient-to-r opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl blur-md"
                       style={{ background: `linear-gradient(135deg, ${p.color}20, transparent)` }} />
-
+                    <div
+                      className="absolute -top-20 -right-20 w-64 h-64 rounded-full pointer-events-none"
+                      style={{
+                        background: `radial-gradient(circle, ${p.color} 0%, transparent 30%)`,
+                        filter: "blur(40px)",
+                      }}
+                    />
                     {/* Card content */}
                     <div className="relative bg-background border cursor-pointer rounded-xl p-3 sm:p-4 border-primary/30 transition-all duration-10">
                       <div className="flex items-start gap-3">
@@ -216,11 +225,23 @@ export default function AboutSection() {
             initial={{ opacity: 0, x: 24 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className=" relative"
-          >
-            <div className="sticky top-24 rounded-xl sm:rounded-2xl overflow-hidden border border-border/40 bg-white shadow-xl"
-              style={{ boxShadow: "0 20px 40px -10px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.02)" }}>
+            className="flex-1 sticky top-20 self-start w-full"
 
+          >
+            <div className=" rounded-xl sm:rounded-2xl overflow-hidden border border-border/40 bg-white shadow-xl"
+              style={{
+                background: `linear-gradient(145deg, #3B82F6 0f 0%, hsl(var(--background)) 55%)`,
+                border: `1px solid #3B82F6 30`,
+                boxShadow: `0 24px 64px #3B82F618, 0 0 0 1px #3B82F615`,
+                minHeight: 480,
+              }}>
+              <div
+                className="absolute -top-20 -right-20 w-64 h-64 rounded-full pointer-events-none"
+                style={{
+                  background: `radial-gradient(circle, #3B82F61e 0%, transparent 70%)`,
+                  filter: "blur(40px)",
+                }}
+              />
               {/* Chrome bar - Light theme */}
               <div className="flex items-center justify-between px-3 sm:px-4 py-2 sm:py-3 border-b border-gray-100 bg-gray-100">
                 <div className="flex items-center gap-2 sm:gap-3">
@@ -229,7 +250,7 @@ export default function AboutSection() {
                       <div key={c} className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full opacity-70" style={{ background: c }} />
                     ))}
                   </div>
-                  <span className="font-mono text-[9px] sm:text-[10px] md:text-[11px] text-gray-500">OS tech labs — live dashboard</span>
+                  <span className="font-mono text-[16px] text-gray-500">OS tech labs — live dashboard</span>
                 </div>
                 <div className="flex items-center gap-1 sm:gap-1.5">
                   <motion.div animate={{ opacity: [0.4, 1, 0.4] }} transition={{ duration: 1.4, repeat: Infinity }}
@@ -248,9 +269,8 @@ export default function AboutSection() {
                     transition={{ delay: 0.4 + i * 0.08 }}
                     className="px-1.5 sm:px-2 md:px-3 py-2.5 sm:py-3 md:py-4 text-center hover:bg-gray-50 transition-colors "
                   >
-                    <div className="text-sm sm:text-base md:text-lg font-black font-mono" style={{ color: m.color }}>{m.val}</div>
-                    <div className="text-[7px] sm:text-[8px] md:text-[9px] font-bold text-gray-500 mt-0.5">{m.label}</div>
-                    <div className="text-[7px] sm:text-[8px] md:text-[9px] font-mono text-gray-400 mt-0.5 hidden sm:block">{m.hint}</div>
+                    <div className="text-sm font-black" style={{ color: m.color }}>{m.val}</div>
+                    <div className="text-sm font-bold text-gray-500 mt-0.5">{m.label}</div>
                   </motion.div>
                 ))}
               </div>
@@ -280,8 +300,8 @@ export default function AboutSection() {
                           style={{ background: `${a.color}12` }}>
                           <Icon size={9} className="sm:w-[10px] sm:h-[10px] md:w-[11px] md:h-[11px]" style={{ color: a.color }} />
                         </div>
-                        <span className="font-mono text-[9px] sm:text-[10px] md:text-[11px] text-gray-700 flex-1 truncate">{a.text}</span>
-                        <span className="font-mono text-[8px] sm:text-[9px] md:text-[10px] text-gray-400 shrink-0">{a.time}</span>
+                        <span className="font-mono text-[10px] sm:text-[13px] md:text-[16px] text-gray-700 flex-1 truncate">{a.text}</span>
+                        <span className="font-mono text-[9px] sm:text-[12px] md:text-[15px] text-gray-400 shrink-0">{a.time}</span>
                         {isActive && (
                           <motion.div
                             animate={{ scale: [1, 1.2, 1] }}

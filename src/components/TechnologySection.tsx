@@ -104,7 +104,7 @@ export default function TechnologySection() {
   const snippet = CODE_SNIPPETS[activeCat];
 
   return (
-    <section id="technology" className="section-padding bg-background overflow-hidden relative" ref={ref}>
+    <section id="technology" className="pt-20 bg-background overflow-hidden relative" ref={ref}>
       {/* Dot grid */}
       <div className="absolute inset-0 pointer-events-none"
         style={{ backgroundImage: "radial-gradient(circle, hsl(var(--foreground)/0.04) 1px, transparent 1px)", backgroundSize: "32px 32px" }} />
@@ -132,7 +132,7 @@ export default function TechnologySection() {
           className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 mb-10">
           {CATEGORIES.map((c) => (
             <button key={c.key} onClick={() => setActiveCat(c.key)}
-              className="p-4 rounded-xl border text-left transition-all duration-200 hover:scale-[1.02] group"
+              className="p-4 rounded-xl border text-left transition-all duration-200 hover:scale-[1.02] group shadow-md"
               style={c.key === activeCat
                 ? { borderColor: `${c.color}30`, background: `${c.color}08` }
                 : { borderColor: "hsl(var(--border)/0.35)", background: "hsl(var(--muted)/0.12)" }
@@ -192,7 +192,7 @@ export default function TechnologySection() {
                   </div>
 
                   {/* Code body */}
-                  <div className="p-5 min-h-[240px]">
+                  <div className="p-5 min-h-[200px]">
                     <AnimatePresence mode="wait">
                       <motion.div key={activeCat}
                         initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }}
