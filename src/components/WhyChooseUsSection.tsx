@@ -97,7 +97,7 @@ const ReasonRow = ({
           filter: "blur(40px)",
         }}
       />
-     
+
       <div className="relative flex flex-col sm:flex-row items-start sm:items-center gap-6 p-6 sm:p-8">
         {/* Giant number */}
         <div
@@ -111,13 +111,7 @@ const ReasonRow = ({
           {r.n}
         </div>
 
-        {/* Icon */}
-        <div
-          className="shrink-0 w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center"
-          style={{ background: `${r.color}18`, border: `1.5px solid ${r.color}30` }}
-        >
-          <r.icon size={22} style={{ color: r.color }} />
-        </div>
+
 
         {/* Text */}
         <div className="flex-1 min-w-0">
@@ -209,9 +203,8 @@ export default function WhyChooseUsSection() {
         </div>
 
         {/* ── Three-column: badges + comparison + CTA ── */}
-        <div className="grid lg:grid-cols-[1fr_1.6fr] gap-5 mb-12">
+        {/* <div className="grid lg:grid-cols-[1fr_1.6fr] gap-5 mb-12">
 
-          {/* LEFT: Trust badges 2×2 */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
@@ -238,7 +231,6 @@ export default function WhyChooseUsSection() {
               </motion.div>
             ))}
 
-            {/* CTA card */}
             <motion.div
               initial={{ opacity: 0, scale: 0.94 }}
               animate={inView ? { opacity: 1, scale: 1 } : {}}
@@ -260,7 +252,6 @@ export default function WhyChooseUsSection() {
             </motion.div>
           </motion.div>
 
-          {/* RIGHT: Comparison table */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
@@ -272,7 +263,6 @@ export default function WhyChooseUsSection() {
               className="rounded-2xl overflow-hidden h-full border border-border bg-background shadow-md"
             >
               
-              {/* Header */}
               <div
                 className="grid grid-cols-[1fr_auto_auto] items-center px-5 sm:px-6 py-4 border-b border-border bg-muted/80"
               >
@@ -322,7 +312,7 @@ export default function WhyChooseUsSection() {
               ))}
             </div>
           </motion.div>
-        </div>
+        </div> */}
 
         {/* ── Process: elegant numbered timeline ── */}
         <motion.div

@@ -71,8 +71,8 @@ export default function TestimonialsSection() {
 
   const t = TESTIMONIALS[active];
 
-  return (
-    <section id="testimonials" className="section-padding bg-muted/10 overflow-hidden relative" ref={ref}>
+  return ( 
+    <section id="testimonials" className="pt-16 muted/10 overflow-hidden relative" ref={ref}> 
       <div className="absolute inset-0 pointer-events-none opacity-[0.025]"
         style={{ backgroundImage: "linear-gradient(hsl(var(--foreground)) 1px,transparent 1px),linear-gradient(90deg,hsl(var(--foreground)) 1px,transparent 1px)", backgroundSize: "48px 48px" }} />
 
@@ -169,48 +169,6 @@ export default function TestimonialsSection() {
             </div>
           </div>
         </motion.div>
-
-        {/* ── Review grid ── */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
-          {TESTIMONIALS.map((item, i) => (
-            <motion.div key={item.name}
-              initial={{ opacity: 0, y: 16 }} animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.3 + i * 0.07 }}
-              onClick={() => setActive(i)}
-              className={`cursor-pointer p-[18px] rounded-xl border transition-all duration-300 ${
-                i === active
-                  ? "border-primary/20 bg-primary/[0.04]"
-                  : "border-border/30 bg-background hover:bg-muted/20 hover:border-primary/10"
-              }`}>
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-black text-xs font-mono"
-                    style={{ background: item.color }}>{item.init}</div>
-                  <div>
-                    <div className="flex items-center gap-1">
-                      <span className="text-sm font-bold text-foreground">{item.name}</span>
-                      <CheckCircle2 size={10} className="text-primary" />
-                    </div>
-                    <span className="text-[10px] text-muted-foreground">{item.company}</span>
-                  </div>
-                </div>
-                <Stars n={item.rating} />
-              </div>
-
-              <p className="text-xs text-muted-foreground leading-relaxed line-clamp-3 mb-3">{item.content}</p>
-
-              <div className="flex items-center justify-between">
-                <span className="text-[10px] font-bold font-mono flex items-center gap-1" style={{ color: item.serviceColor }}>
-                  <Code2 size={9} />{item.service}
-                </span>
-                <span className="text-[10px] font-black font-mono px-2 py-0.5 rounded-md"
-                  style={{ background: `${item.serviceColor}10`, color: item.serviceColor }}>
-                  {item.metric}
-                </span>
-              </div>
-            </motion.div>
-          ))}
-        </div>
       </div>
     </section>
   );

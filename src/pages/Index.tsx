@@ -8,6 +8,7 @@ import TestimonialsSection from "@/components/TestimonialsSection";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
 import ScrollProgress from "@/components/ScrollProgress";
+import { ContactSection } from "@/components/ContactSection";
 
 const Index = () => {
   return (
@@ -22,6 +23,7 @@ const Index = () => {
         <WhyChooseUsSection />
         <TechnologySection />
         <TestimonialsSection />
+        <ContactSection />
       </main>
       <Footer />
     </div>

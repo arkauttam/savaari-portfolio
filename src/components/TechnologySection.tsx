@@ -104,7 +104,7 @@ export default function TechnologySection() {
   const snippet = CODE_SNIPPETS[activeCat];
 
   return (
-    <section id="technology" className="pt-20 bg-background overflow-hidden relative" ref={ref}>
+    <section id="technology" className=" bg-background overflow-hidden relative" ref={ref}>
       {/* Dot grid */}
       <div className="absolute inset-0 pointer-events-none"
         style={{ backgroundImage: "radial-gradient(circle, hsl(var(--foreground)/0.04) 1px, transparent 1px)", backgroundSize: "32px 32px" }} />
@@ -166,8 +166,8 @@ export default function TechnologySection() {
                 {/* Glow */}
                 <div className="absolute inset-8 blur-3xl opacity-[0.08] pointer-events-none rounded-3xl" style={{ background: cat.color }} />
 
-                <div className="relative rounded-2xl overflow-hidden border border-border/40"
-                  style={{ background: "hsl(222 47% 7%)", boxShadow: "0 24px 64px rgba(0,0,0,0.28)" }}>
+                <div className="relative rounded-2xl overflow-hidden border border-border/40 w-full"
+                  style={{ background: "hsl(222 47% 7%)" }}>
                   {/* Chrome */}
                   <div className="flex items-center justify-between px-4 py-3 border-b border-white/[0.05]"
                     style={{ background: "hsl(222 47% 10%)" }}>
@@ -252,25 +252,7 @@ export default function TechnologySection() {
               </motion.div>
             </AnimatePresence>
 
-            {/* Feature cards */}
-            <div className="grid grid-cols-2 gap-2.5">
-              {FEATURES.map((f, i) => (
-                <motion.div key={f.title}
-                  initial={{ opacity: 0, y: 12 }} animate={inView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ delay: 0.4 + i * 0.08 }}
-                  className="group flex items-start gap-3 p-3.5 rounded-xl border
-                   border-primary/15 bg-muted/30 transition-all duration-300">
-                  <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform"
-                    style={{ background: `${f.color}12` }}>
-                    <f.icon size={14} style={{ color: f.color }} />
-                  </div>
-                  <div>
-                    <div className="text-xs font-bold text-foreground">{f.title}</div>
-                    <div className="text-[11px] text-muted-foreground mt-0.5 leading-relaxed">{f.desc}</div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+           
 
             <motion.a href="#contact" initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}}
               transition={{ delay: 0.65 }}

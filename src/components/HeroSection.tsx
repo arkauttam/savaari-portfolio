@@ -62,8 +62,8 @@ const services = [
 ];
 
 const stats = [
-  { val: "200+", lbl: "Projects Done" },
-  { val: "50+", lbl: "Happy Clients" },
+  { val: "50+", lbl: "Projects Done" },
+  { val: "10+", lbl: "Happy Clients" },
   { val: "5★", lbl: "Avg Rating" },
   { val: "24/7", lbl: "Support" },
 ];
@@ -164,33 +164,7 @@ const HeroSection = () => {
           <div className="flex-1 flex flex-col lg:flex-row items-start lg:items-center gap-6 xs:gap-8 sm:gap-10 md:gap-12 lg:gap-8 xl:gap-12 justify-between">
 
             {/* LEFT */}
-            <div className="flex-1 w-full lg:max-w-[54%] xl:max-w-2xl 2xl:max-w-3xl">
-
-              {/* Eyebrow */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-                className="flex flex-wrap items-center gap-1.5 xs:gap-2 mb-3 xs:mb-4 sm:mb-5 md:mb-7"
-              >
-                <span className="flex items-center gap-1.5 xs:gap-2 text-[9px] xs:text-[10px] sm:text-[11px] font-black
-                                 tracking-[0.12em] xs:tracking-[0.14em] sm:tracking-[0.16em] uppercase 
-                                 px-2 xs:px-2.5 sm:px-3 py-1 xs:py-1.5 rounded-full
-                                 border border-primary/25 bg-primary/8 text-primary">
-                  <motion.span
-                    animate={{ opacity: [0.4, 1, 0.4] }}
-                    transition={{ duration: 1.6, repeat: Infinity }}
-                    className="w-1 h-1 xs:w-1.5 xs:h-1.5 rounded-full bg-primary"
-                  />
-                  Kolkata's #1 Tech Partner
-                </span>
-                <span className="flex items-center gap-0.5">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} size={8} className="xs:w-[9px] xs:h-[9px] sm:w-[10px] sm:h-[10px] fill-amber-400 text-amber-400" />
-                  ))}
-                  <span className="text-[9px] xs:text-[10px] sm:text-[11px] text-muted-foreground ml-0.5 xs:ml-1 font-medium">5.0</span>
-                </span>
-              </motion.div>
+            <div className="mt-6 md:mt-0 flex-1 w-full lg:max-w-[54%] xl:max-w-2xl 2xl:max-w-3xl">
 
               {/* Headline */}
               <motion.h1
@@ -282,7 +256,7 @@ const HeroSection = () => {
               </motion.div>
 
               {/* Social proof */}
-              <motion.div
+              {/* <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.6 }}
@@ -302,7 +276,7 @@ const HeroSection = () => {
                   <motion.span animate={{ scale: [1, 1.5, 1] }} transition={{ duration: 1.5, repeat: Infinity }} className="w-1 h-1 xs:w-1.5 xs:h-1.5 rounded-full bg-emerald-500 inline-block" />
                   Projects ongoing
                 </span>
-              </motion.div>
+              </motion.div> */}
             </div>
 
             {/* RIGHT: Domain card */}
@@ -362,11 +336,7 @@ const HeroSection = () => {
                             {domain.tagline}
                           </div>
                         </div>
-                        <div className="text-right shrink-0">
-                          <div className="text-[8px] xs:text-[9px] text-muted-foreground">Budget</div>
-                          <div className="text-sm xs:text-base sm:text-lg font-black text-foreground">{domain.price}</div>
-                          <div className="text-[8px] xs:text-[9px] text-muted-foreground">Timeline: {domain.duration}</div>
-                        </div>
+                       
                       </div>
                     </motion.div>
                   </AnimatePresence>
@@ -392,7 +362,6 @@ const HeroSection = () => {
                             <Icon size={9} className="xs:w-[10px] xs:h-[10px] sm:w-[11px] sm:h-[11px]" style={{ color: d.accentColor }} />
                           </div>
                           <span className={`text-[10px] xs:text-xs sm:text-sm font-semibold flex-1 truncate ${i === active ? "text-foreground" : "text-muted-foreground"}`}>{d.name}</span>
-                          <span className="text-[8px] xs:text-[9px] sm:text-[10px] font-bold shrink-0" style={{ color: i === active ? d.accentColor : "hsl(var(--muted-foreground))" }}>{d.price}</span>
                           {i === active && <ChevronRight size={8} className="xs:w-[9px] xs:h-[9px] sm:w-[11px] sm:h-[11px] shrink-0" style={{ color: d.accentColor }} />}
                         </button>
                       );
@@ -415,7 +384,7 @@ const HeroSection = () => {
           {/* Stats */}
           <motion.div
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }}
-            className="grid grid-cols-2 justify-center sm:grid-cols-4 gap-2 xs:gap-3 sm:gap-4 border-t border-border/40 pt-3 xs:pt-4 sm:pt-5 md:pt-6 lg:pt-8"
+            className="grid grid-cols-2 justify-center sm:grid-cols-4 gap-4 items-center border-t border-border/40 pt-3 xs:pt-4 sm:pt-5 md:pt-6 lg:pt-8"
           >
             {stats.map((s, i) => (
               <motion.div key={s.val} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.75 + i * 0.08 }} className="flex items-center justify-center gap-1.5 xs:gap-2 sm:gap-3">

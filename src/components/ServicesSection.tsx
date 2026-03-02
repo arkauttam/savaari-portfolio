@@ -16,7 +16,7 @@ const SERVICES = [
     description: "Blazing-fast websites, SaaS platforms, e-commerce stores, and web portals. Clean architecture, pixel-perfect UI, rock-solid backend APIs.",
     stack: ["React", "Next.js", "Node.js", "Laravel", "PostgreSQL", "TypeScript"],
     deliverables: ["Custom Website", "E-Commerce Store", "Web Portal", "REST / GraphQL API"],
-    timeline: "2–6 weeks", from: "₹15,000", stat: "200+ sites shipped",
+    timeline: "2–6 weeks", stat: "200+ sites shipped",
   },
   {
     num: "02", icon: Smartphone, title: "Mobile Apps",
@@ -26,7 +26,7 @@ const SERVICES = [
     description: "Cross-platform and native apps that feel at home on every device. MVP to full launch — UI, dev, Play Store & App Store included.",
     stack: ["Flutter", "React Native", "Swift", "Kotlin", "Firebase"],
     deliverables: ["iOS App", "Android App", "Cross-Platform", "App Store Launch"],
-    timeline: "4–10 weeks", from: "₹25,000", stat: "App Store & Play Store ready",
+    timeline: "4–10 weeks",stat: "App Store & Play Store ready",
   },
   {
     num: "03", icon: Brain, title: "AI / ML Solutions",
@@ -36,7 +36,7 @@ const SERVICES = [
     description: "Custom AI models, chatbots, LLM integrations, and predictive analytics. We turn your data into decisions and workflows into automation.",
     stack: ["Python", "TensorFlow", "OpenAI", "LangChain", "FastAPI"],
     deliverables: ["AI Chatbot", "ML Model", "Data Pipeline", "LLM Integration"],
-    timeline: "6–12 weeks", from: "₹40,000", stat: "94% avg model accuracy",
+    timeline: "6–12 weeks", stat: "94% avg model accuracy",
   },
   {
     num: "04", icon: LayoutDashboard, title: "UI / UX Design",
@@ -46,7 +46,7 @@ const SERVICES = [
     description: "User research, wireframes, interactive prototypes, and production-ready UI. Interfaces that users love and devs can build without friction.",
     stack: ["Figma", "FigJam", "Protopie", "Zeplin", "Design Tokens"],
     deliverables: ["UI Design", "UX Audit", "Interactive Prototype", "Design System"],
-    timeline: "1–4 weeks", from: "₹10,000", stat: "4.8★ avg usability score",
+    timeline: "1–4 weeks", stat: "4.8★ avg usability score",
   },
   {
     num: "05", icon: Palette, title: "Graphics Design",
@@ -56,7 +56,7 @@ const SERVICES = [
     description: "Logo design, brand identity kits, social media creatives, pitch decks, brochures, and motion graphics that make your brand unforgettable.",
     stack: ["Illustrator", "Photoshop", "After Effects", "InDesign", "Canva Pro"],
     deliverables: ["Logo & Brand Kit", "Social Media Pack", "Pitch Deck", "Motion Graphics"],
-    timeline: "1–3 weeks", from: "₹5,000", stat: "500+ brand assets created",
+    timeline: "1–3 weeks", stat: "500+ brand assets created",
   },
   {
     num: "06", icon: Megaphone, title: "Digital Marketing",
@@ -66,7 +66,7 @@ const SERVICES = [
     description: "Data-driven campaigns — organic traffic growth, qualified leads, measurable ROI. SEO, PPC, social ads, and email under one strategy.",
     stack: ["Google Ads", "Meta Ads", "Ahrefs", "SEMrush", "Mailchimp", "GA4"],
     deliverables: ["SEO Audit", "Ad Campaigns", "Content Calendar", "Monthly Reports"],
-    timeline: "Ongoing", from: "₹8,000/mo", stat: "Avg 60% lower CPA",
+    timeline: "Ongoing", stat: "Avg 60% lower CPA",
   },
   {
     num: "07", icon: Code2, title: "CRM & ERP Systems",
@@ -76,7 +76,7 @@ const SERVICES = [
     description: "Tailor-made CRM, ERP, and internal tools. Replace spreadsheets with smart dashboards, automated pipelines, and granular access control.",
     stack: ["React", "Django", "MySQL", "AWS", "Docker", "Redis"],
     deliverables: ["CRM System", "ERP Module", "Admin Dashboard", "API Integration"],
-    timeline: "6–16 weeks", from: "₹35,000", stat: "Replaces 6+ manual tools",
+    timeline: "6–16 weeks", stat: "Replaces 6+ manual tools",
   },
 ];
 
@@ -140,19 +140,7 @@ const ServiceTile = ({
       </div>
     </div>
 
-    {/* Stat + price shown when active */}
-    {isActive && (
-      <motion.div
-        initial={{ opacity: 0, height: 0 }}
-        animate={{ opacity: 1, height: "auto" }}
-        className="mt-3 pt-3 border-t border-border/25 flex items-center justify-between"
-      >
-        <span className="flex items-center gap-1.5 text-[11px] font-bold" style={{ color: s.color }}>
-          <Zap size={10} />{s.stat}
-        </span>
-        <span className="text-[11px] font-mono text-muted-foreground">{s.from}</span>
-      </motion.div>
-    )}
+    
   </motion.button>
 );
 
@@ -206,7 +194,7 @@ const DetailPanel = ({ s }: { s: typeof SERVICES[0] }) => (
           >
             {s.title}
           </h3>
-          <p className="text-xs font-mono text-muted-foreground/70">{s.tagline}</p>
+          <p className=" text-[10px] sm:text-xs text-muted-foreground">{s.tagline}</p>
         </div>
       </div>
 
@@ -220,7 +208,7 @@ const DetailPanel = ({ s }: { s: typeof SERVICES[0] }) => (
       </div>
 
       {/* Description */}
-      <p className="text-[15px] text-muted-foreground leading-relaxed mb-7 max-w-lg">
+      <p className="text-[13px] text-muted-foreground leading-relaxed mb-7 max-w-xl text-gray-700">
         {s.description}
       </p>
 
@@ -257,36 +245,37 @@ const DetailPanel = ({ s }: { s: typeof SERVICES[0] }) => (
         </div>
       </div>
 
-      {/* Footer */}
-      <div className="mt-auto flex flex-wrap items-center gap-3">
+      <div className="mt-auto flex flex-wrap items-center justify-between gap-4">
+
+        {/* Timeline Card */}
         <div
-          className="flex items-center gap-4 px-4 py-3 rounded-xl"
+          className="px-5 py-4 rounded-2xl"
           style={{
-            background: "hsl(var(--background)/0.7)",
+            background: "hsl(var(--background)/0.6)",
             border: "1px solid hsl(var(--border)/0.4)",
           }}
         >
-          <div>
-            <p className="text-[10px] font-mono text-muted-foreground flex items-center gap-1">
-              <Clock size={9} /> Timeline
-            </p>
-            <p className="text-sm font-bold text-foreground">{s.timeline}</p>
-          </div>
-          <div className="w-px h-7 bg-border/40" />
-          <div>
-            <p className="text-[10px] font-mono text-muted-foreground">Starting from</p>
-            <p className="text-base font-black" style={{ color: s.color }}>{s.from}</p>
-          </div>
+          <p className="text-xs text-muted-foreground mb-1 flex items-center gap-1">
+            <Clock size={12} />
+            Estimated Timeline
+          </p>
+          <p className="text-sm font-semibold text-foreground">
+            {s.timeline}
+          </p>
         </div>
 
+        {/* CTA */}
         <motion.button
-          whileHover={{ scale: 1.03 }}
-          whileTap={{ scale: 0.97 }}
-          className="flex items-center gap-2 px-5 py-3 rounded-xl font-bold text-sm text-white"
-          style={{ background: s.color, boxShadow: `0 8px 24px ${s.color}40` }}
+          whileHover={{ scale: 1.04 }}
+          whileTap={{ scale: 0.96 }}
+          className="flex items-center gap-2 px-7 py-3 rounded-2xl font-semibold text-sm text-white"
+          style={{
+            background: s.color,
+            boxShadow: `0 10px 30px ${s.color}35`,
+          }}
         >
           Get a Quote
-          <ArrowUpRight size={14} />
+          <ArrowUpRight size={15} />
         </motion.button>
       </div>
     </div>

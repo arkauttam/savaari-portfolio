@@ -16,35 +16,36 @@ import {
 } from "lucide-react";
 
 const services = [
-  { name: "Web Development", href: "/web-development", icon: Globe },
-  { name: "Mobile App Development", href: "/mobile-apps", icon: Smartphone },
-  { name: "AI & Automation", href: "/ai-solutions", icon: Brain },
-  { name: "Cloud Solutions", href: "/cloud", icon: Cloud },
-  { name: "Cyber Security", href: "/cyber-security", icon: ShieldCheck },
-  { name: "Database Architecture", href: "/database", icon: Database },
-  { name: "Custom Software", href: "/custom-software", icon: Code2 },
+  { name: "Web Development", href: "#contact", icon: Globe },
+  { name: "Mobile App Development", href: "#contact", icon: Smartphone },
+  { name: "AI & Automation", href: "#contact", icon: Brain },
+  { name: "Cloud Solutions", href: "#contact", icon: Cloud },
+  { name: "Cyber Security", href: "#contact", icon: ShieldCheck },
+  { name: "Database Architecture", href: "#contact", icon: Database },
+  { name: "Custom Software", href: "#contact", icon: Code2 },
 ];
 
 const quickLinks = [
   { name: "Home", href: "/" },
-  { name: "About Us", href: "/about" },
-  { name: "Services", href: "/services" },
-  { name: "Portfolio", href: "/portfolio" },
-  { name: "Careers", href: "/careers" },
-  { name: "Contact", href: "/contact" },
+  { name: "About Us", href: "#about" },
+  { name: "Services", href: "#services" },
+  { name: "Why-Us", href: "#why-us" },
+  { name: "Technology", href: "#technology" },
+  {name: "Testimonials", href: "#testimonials" },
+  { name: "Contact", href: "#contact" },
 ];
 
 const socials = [
-  { icon: Instagram, href: "https://instagram.com" },
+  { icon: Instagram, href: "https://www.instagram.com/onlinesavaari/" },
   { icon: Twitter, href: "https://twitter.com" },
-  { icon: Linkedin, href: "https://linkedin.com" },
-  { icon: Facebook, href: "https://facebook.com" },
+  { icon: Linkedin, href: "https://in.linkedin.com/company/online-savaari-private-limited" },
+  { icon: Facebook, href: "https://www.facebook.com/OnlineSavaari" },
 ];
 
 const Footer = () => {
   return (
     <footer className="relative bg-gradient-to-b from-background to-muted/40 border-t">
-      <div className="container mx-auto px-6 py-16 border border-border/50 rounded-3xl bg-background/80 backdrop-blur-sm">
+      <div className="container mx-auto px-6 py-6">
         <div className="grid md:grid-cols-4 gap-12">
 
           {/* Brand Section */}
@@ -160,14 +161,14 @@ const Footer = () => {
         {/* Bottom Section */}
         <div className="mt-16 pt-8 border-t flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-muted-foreground">
           <p>
-            © {new Date().getFullYear()} OS Tech Labs. All rights reserved.
+            © {new Date().getFullYear()} <a href="https://onlinesavaari.com" className="text-primary hover:text-secondary font-semibold">Online Savaari</a>. All rights reserved.
           </p>
 
           <div className="flex gap-6">
-            <a href="/privacy-policy" className="hover:text-primary">
+            <a href="https://onlinesavaari.com/privacy-policy" className="hover:text-primary">
               Privacy Policy
             </a>
-            <a href="/terms-of-service" className="hover:text-primary">
+            <a href="https://onlinesavaari.com/terms-of-service" className="hover:text-primary">
               Terms of Service
             </a>
           </div>
