@@ -243,13 +243,13 @@ const HeroSection = () => {
                 transition={{ delay: 0.44 }}
                 className="mt-4 xs:mt-5 sm:mt-6 md:mt-8 flex flex-wrap gap-2 xs:gap-2.5 sm:gap-3"
               >
-                <Button variant="hero" size="default" className="gap-1.5 xs:gap-2 text-xs xs:text-sm sm:text-base px-3 xs:px-4 sm:px-5 md:px-6 py-1.5 xs:py-2 sm:py-2.5">
+                <Button variant="hero" onClick={() => window.location.href = "#contact"} size="default" className="gap-1.5 xs:gap-2 text-xs xs:text-sm sm:text-base px-3 xs:px-4 sm:px-5 md:px-6 py-1.5 xs:py-2 sm:py-2.5">
                   Get a Free Quote
                   <motion.span animate={{ x: [0, 5, 0] }} transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 2 }}>
                     <ArrowRight size={12} className="xs:w-[13px] xs:h-[13px] sm:w-[15px] sm:h-[15px]" />
                   </motion.span>
                 </Button>
-                <Button variant="heroOutline" size="default" className="gap-1.5 xs:gap-2 text-xs xs:text-sm sm:text-base px-3 xs:px-4 sm:px-5 md:px-6 py-1.5 xs:py-2 sm:py-2.5">
+                <Button variant="heroOutline" onClick={() => window.location.href = "#contact"} size="default" className="gap-1.5 xs:gap-2 text-xs xs:text-sm sm:text-base px-3 xs:px-4 sm:px-5 md:px-6 py-1.5 xs:py-2 sm:py-2.5">
                   View Our Work
                   <ArrowUpRight size={11} className="xs:w-3 xs:h-3 sm:w-[14px] sm:h-[14px]" />
                 </Button>
@@ -370,6 +370,7 @@ const HeroSection = () => {
 
                   <motion.button
                     whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}
+                    onClick={() => window.location.href = "#contact"}
                     className="w-full py-2 xs:py-2.5 sm:py-3 rounded-lg xs:rounded-xl sm:rounded-2xl font-bold text-[10px] xs:text-xs sm:text-sm flex items-center justify-center gap-1.5 xs:gap-2 text-white transition-all"
                     style={{ background: `linear-gradient(135deg, ${domain.accentColor}, ${domain.accentColor}cc)`, boxShadow: `0 4px 15px ${domain.accentColor}40` }}
                   >

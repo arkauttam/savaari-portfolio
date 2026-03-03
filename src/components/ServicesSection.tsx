@@ -273,6 +273,7 @@ const DetailPanel = ({ s }: { s: typeof SERVICES[0] }) => (
             background: s.color,
             boxShadow: `0 10px 30px ${s.color}35`,
           }}
+          onClick={() => window.location.href = "#contact"}
         >
           Get a Quote
           <ArrowUpRight size={15} />
