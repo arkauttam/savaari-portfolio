@@ -300,8 +300,7 @@ export function ContactSection() {
             ref={ref}
             className=" bg-background overflow-hidden relative py-8"
         >
-            <div
-                className="absolute inset-0 pointer-events-none opacity-[0.025]"
+            <div className="absolute inset-0 pointer-events-none opacity-[0.025]"
                 style={{
                     backgroundImage:
                         "linear-gradient(hsl(var(--foreground)) 1px,transparent 1px)," +

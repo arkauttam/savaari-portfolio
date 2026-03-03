@@ -1,11 +1,4 @@
 import {
-  Globe,
-  Smartphone,
-  Brain,
-  Cloud,
-  ShieldCheck,
-  Database,
-  Code2,
   MapPin,
   Phone,
   Mail,
@@ -13,92 +6,79 @@ import {
   Twitter,
   Linkedin,
   Facebook,
+  MoveRight,
 } from "lucide-react";
-
-const services = [
-  { name: "Web Development", href: "#contact", icon: Globe },
-  { name: "Mobile App Development", href: "#contact", icon: Smartphone },
-  { name: "AI & Automation", href: "#contact", icon: Brain },
-  { name: "Cloud Solutions", href: "#contact", icon: Cloud },
-  { name: "Cyber Security", href: "#contact", icon: ShieldCheck },
-  { name: "Database Architecture", href: "#contact", icon: Database },
-  { name: "Custom Software", href: "#contact", icon: Code2 },
-];
 
 const quickLinks = [
   { name: "Home", href: "/" },
   { name: "About Us", href: "#about" },
   { name: "Services", href: "#services" },
-  { name: "Why-Us", href: "#why-us" },
+  { name: "Why Us", href: "#why-us" },
   { name: "Technology", href: "#technology" },
-  {name: "Testimonials", href: "#testimonials" },
+  { name: "Testimonials", href: "#testimonials" },
   { name: "Contact", href: "#contact" },
 ];
 
 const socials = [
-  { icon: Instagram, href: "https://www.instagram.com/onlinesavaari/" },
-  { icon: Twitter, href: "https://twitter.com" },
-  { icon: Linkedin, href: "https://in.linkedin.com/company/online-savaari-private-limited" },
-  { icon: Facebook, href: "https://www.facebook.com/OnlineSavaari" },
+  { icon: Instagram, href: "https://www.instagram.com/onlinesavaari/", label: "IG" },
+  { icon: Twitter, href: "https://twitter.com", label: "TW" },
+  { icon: Linkedin, href: "https://in.linkedin.com/company/online-savaari-private-limited", label: "LI" },
+  { icon: Facebook, href: "https://www.facebook.com/OnlineSavaari", label: "FB" },
 ];
 
 const Footer = () => {
   return (
-    <footer className="relative bg-gradient-to-b from-background to-muted/40 border-t">
-      <div className="container mx-auto px-6 py-6">
-        <div className="grid md:grid-cols-4 gap-12">
+    <footer className="relative bg-background overflow-hidden border border-border rounded-lg shadow-md">
 
-          {/* Brand Section */}
-          <div className="space-y-6">
+     
+
+      
+
+      {/* Main footer body */}
+      <div className="container mx-auto px-6 pt-14 pb-6 relative z-10 ">
+
+        <div className="grid grid-cols-12 gap-8">
+
+          {/* Brand col — spans 5 */}
+          <div className="col-span-12 md:col-span-5 space-y-6 pr-0 md:pr-8">
+            <img src="/logo.png" alt="OS Tech Labs" className="h-10 w-auto" />
+
+            <p className="text-muted-foreground text-sm leading-relaxed max-w-xs">
+              OS Tech Labs builds scalable web, mobile, AI and cloud
+              solutions for startups and enterprises worldwide.
+            </p>
+
+            {/* Socials */}
             <div>
-              <a
-                href="#home"
-                className="flex items-center shrink-0 pr-6 mr-1 border-r border-border/50 group"
-              >
-                <img
-                  src="/logo.png"
-                  alt="OS Tech Labs"
-                  width={120}
-                  height={44}
-                  className="h-10 w-auto object-contain transition-opacity duration-200 group-hover:opacity-85"
-                />
-              </a>
-
-              <p className="text-sm text-muted-foreground mt-3 leading-relaxed">
-                OS Tech Labs is a full-service IT company delivering
-                scalable web, mobile, AI and cloud solutions for
-                startups and enterprises worldwide.
-              </p>
-            </div>
-
-            {/* Social Icons */}
-            <div className="flex gap-4">
-              {socials.map((s, index) => (
-                <a
-                  key={index}
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-full bg-muted hover:bg-primary/20 flex items-center justify-center transition-all duration-300 hover:scale-110"
-                >
-                  <s.icon className="w-4 h-4 text-muted-foreground hover:text-primary transition-colors" />
-                </a>
-              ))}
+              <p className="text-[14px] font-semibold text-muted-foreground mb-3 text-gray-800">Follow Us</p>
+              <div className="flex gap-3">
+                {socials.map((s, i) => (
+                  <a
+                    key={i}
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 border border-border rounded-lg flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/50 hover:bg-primary/5 transition-all duration-200"
+                  >
+                    <s.icon className="w-4 h-4" />
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
 
-          {/* Quick Links */}
-          <div>
-            <h4 className="text-sm font-semibold uppercase tracking-wider text-foreground mb-6">
-              Quick Links
-            </h4>
+
+          {/* Links col */}
+          <div className="col-span-6 md:col-span-3">
+            <p className="text-[14px] font-semibold text-muted-foreground mb-5 text-gray-800">Pages</p>
             <ul className="space-y-3">
               {quickLinks.map((link) => (
                 <li key={link.name}>
                   <a
                     href={link.href}
-                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                    className="text-sm text-muted-foreground/70 hover:text-primary transition-colors flex items-center gap-1.5 group"
                   >
+                    <span className="w-0 h-px bg-primary transition-all duration-300 group-hover:w-4" />
                     {link.name}
                   </a>
                 </li>
@@ -106,73 +86,40 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Services */}
-          <div>
-            <h4 className="text-sm font-semibold uppercase tracking-wider text-foreground mb-6">
-              Our Services
-            </h4>
-            <ul className="space-y-3">
-              {services.map((service) => (
-                <li key={service.name}>
-                  <a
-                    href={service.href}
-                    className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    <service.icon className="w-4 h-4" />
-                    {service.name}
-                  </a>
-                </li>
-              ))}
-            </ul>
+          {/* Contact col */}
+          <div className="col-span-6 md:col-span-3">
+            <p className="text-[14px] font-semibold text-muted-foreground mb-5 text-gray-800">Contact</p>
+            <div className="space-y-4 text-sm text-muted-foreground/70">
+              <a href="https://maps.google.com" target="_blank" rel="noopener noreferrer" className="flex gap-3 hover:text-primary transition-colors">
+                <MapPin className="w-4 h-4 mt-0.5 shrink-0 text-primary" />
+                <span>Kolkata, India</span>
+              </a>
+              <a href="tel:+918282858285" className="flex gap-3 hover:text-primary transition-colors">
+                <Phone className="w-4 h-4 mt-0.5 shrink-0 text-primary" />
+                <span>+91 8282 858 285</span>
+              </a>
+              <a href="mailto:info@ostechlabs.com" className="flex gap-3 hover:text-primary transition-colors">
+                <Mail className="w-4 h-4 mt-0.5 shrink-0 text-primary" />
+                <span>info@ostechlabs.com</span>
+              </a>
+            </div>
           </div>
 
-          {/* Contact */}
-          <div>
-            <h4 className="text-sm font-semibold uppercase tracking-wider text-foreground mb-6">
-              Contact Us
-            </h4>
-
-            <ul className="space-y-4 text-sm text-muted-foreground">
-              <li className="flex items-start gap-3">
-                <MapPin className="w-4 h-4 text-primary mt-1" />
-                Kolkata, India
-              </li>
-
-              <li className="flex items-center gap-3">
-                <Phone className="w-4 h-4 text-primary" />
-                <a href="tel:+918282858285" className="hover:text-primary">
-                  +91 8282858285
-                </a>
-              </li>
-
-              <li className="flex items-center gap-3">
-                <Mail className="w-4 h-4 text-primary" />
-                <a
-                  href="mailto:info@ostechlabs.com"
-                  className="hover:text-primary"
-                >
-                  info@ostechlabs.com
-                </a>
-              </li>
-            </ul>
-          </div>
         </div>
 
-        {/* Bottom Section */}
-        <div className="mt-16 pt-8 border-t flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-muted-foreground">
+        {/* Bottom bar */}
+        <div className="mt-14 pt-6 border-t border-border flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-muted-foreground">
           <p>
-            © {new Date().getFullYear()} <a href="https://onlinesavaari.com" className="text-primary hover:text-secondary font-semibold">Online Savaari</a>. All rights reserved.
+            © {new Date().getFullYear()}{" "}
+            <a href="https://onlinesavaari.com" className="text-primary font-semibold">Online Savaari</a>.
+            All rights reserved.
           </p>
-
-          <div className="flex gap-6">
-            <a href="https://onlinesavaari.com/privacy-policy" className="hover:text-primary">
-              Privacy Policy
-            </a>
-            <a href="https://onlinesavaari.com/terms-of-service" className="hover:text-primary">
-              Terms of Service
-            </a>
+          <div className="flex gap-5">
+            <a href="https://onlinesavaari.com/privacy-policy" className="hover:text-primary transition-colors">Privacy Policy</a>
+            <a href="https://onlinesavaari.com/terms-of-service" className="hover:text-primary transition-colors">Terms of Service</a>
           </div>
         </div>
+
       </div>
     </footer>
   );
