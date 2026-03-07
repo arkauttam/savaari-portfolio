@@ -2,30 +2,31 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ArrowRight, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link, useNavigate } from 'react-router-dom';
 
 const navLinks = [
-  { label: "Home",          href: "#home"         },
-  { label: "About",         href: "#about"        },
-  { label: "Services",      href: "#services"     },
-  { label: "Why Choose Us", href: "#why-us"       },
-  { label: "Technology",    href: "#technology"   },
-  { label: "Testimonials",  href: "#testimonials" },
-  { label: "Contact",       href: "#contact"      },
+  { label: "Home", href: "#home" },
+  { label: "About", href: "#about" },
+  { label: "Services", href: "#services" },
+  { label: "Why Choose Us", href: "#why-us" },
+  { label: "Technology", href: "#technology" },
+  { label: "Testimonials", href: "#testimonials" },
+  { label: "Contact", href: "#contact" },
 ];
 
 // ─── IDs to observe (strips the leading "#") ───────────
 const SECTION_IDS = navLinks.map(l => l.href.slice(1));
 
 const Navbar = () => {
-  const [scrolled,   setScrolled]   = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeLink, setActiveLink] = useState("#home");
-  const [hovered,    setHovered]    = useState<string | null>(null);
+  const [hovered, setHovered] = useState<string | null>(null);
 
-  const navRef            = useRef<HTMLDivElement>(null);
+  const navRef = useRef<HTMLDivElement>(null);
   // Keep a ref to the active section so the click handler can override temporarily
-  const clickedRef        = useRef<string | null>(null);
-  const clickTimerRef     = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const clickedRef = useRef<string | null>(null);
+  const clickTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // ── Scroll-shadow ────────────────────────────────────
   useEffect(() => {
@@ -36,20 +37,14 @@ const Navbar = () => {
 
   // ── IntersectionObserver — auto-detect active section ─
   useEffect(() => {
-    // We use a "which section is most in view" approach via a Map of
-    // intersection ratios. The section with the highest visible ratio wins.
     const ratios: Record<string, number> = {};
-
     const observer = new IntersectionObserver(
       (entries) => {
-        // If user just clicked a link, let the click override for 800 ms
         if (clickedRef.current) return;
 
         entries.forEach(entry => {
           ratios[entry.target.id] = entry.intersectionRatio;
         });
-
-        // Pick the section with the highest current intersection ratio
         let best = "";
         let bestRatio = -1;
         for (const id of SECTION_IDS) {
@@ -63,9 +58,7 @@ const Navbar = () => {
         if (best) setActiveLink(`#${best}`);
       },
       {
-        // Fire at every 1% change in visibility
         threshold: Array.from({ length: 101 }, (_, i) => i / 100),
-        // Shrink the effective viewport: top offset = navbar height (~66px)
         rootMargin: "-66px 0px -40% 0px",
       }
     );
@@ -86,27 +79,27 @@ const Navbar = () => {
   const handleLink = (href: string) => {
     setActiveLink(href);
     setMobileOpen(false);
-
-    // Lock scroll-observer override for 900 ms so the active bar
-    // doesn't flicker back to the previous section mid-scroll.
     if (clickTimerRef.current) clearTimeout(clickTimerRef.current);
     clickedRef.current = href;
     clickTimerRef.current = setTimeout(() => {
       clickedRef.current = null;
     }, 900);
   };
+  const navigate = useNavigate();
 
+  const handleLoginClick = () => {
+    navigate("/auth-page");
+  };
   return (
     <>
       <motion.nav
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-        className={`border-b border-border sticky top-0 left-0 right-0 z-50 w-full transition-all duration-500 ${
-          scrolled
-            ? "bg-background/80 backdrop-blur-xl shadow-[0_1px_0_hsl(var(--border)/0.6),0_4px_20px_rgba(0,0,0,0.06)]"
-            : "bg-background "
-        }`}
+        className={`border-b border-border sticky top-0 left-0 right-0 z-50 w-full transition-all duration-500 ${scrolled
+          ? "bg-background/80 backdrop-blur-xl shadow-[0_1px_0_hsl(var(--border)/0.6),0_4px_20px_rgba(0,0,0,0.06)]"
+          : "bg-background "
+          }`}
       >
         <div className="container mx-auto">
           <div className="flex items-center h-[66px] gap-0">
@@ -119,7 +112,7 @@ const Navbar = () => {
             >
               <img
                 src="/logo.png"
-                alt="Weblogic Infotech"
+                alt="OS tech labs Infotech"
                 width={120}
                 height={44}
                 className="h-10 w-auto object-contain transition-opacity duration-200 group-hover:opacity-85"
@@ -135,7 +128,7 @@ const Navbar = () => {
             >
               {navLinks.map((link) => {
                 const isActive = activeLink === link.href;
-                const isHov    = hovered    === link.href;
+                const isHov = hovered === link.href;
                 return (
                   <a
                     key={link.href}
@@ -154,11 +147,10 @@ const Navbar = () => {
                     )}
 
                     <span
-                      className={`relative z-10 transition-colors duration-150 ${
-                        isActive
-                          ? "text-foreground font-semibold"
-                          : "text-muted-foreground hover:text-foreground"
-                      }`}
+                      className={`relative z-10 transition-colors duration-150 ${isActive
+                        ? "text-foreground font-semibold"
+                        : "text-muted-foreground hover:text-foreground"
+                        }`}
                     >
                       {link.label}
                     </span>
@@ -182,17 +174,15 @@ const Navbar = () => {
                 variant="default"
                 size="sm"
                 className="hidden lg:inline-flex items-center gap-2 group font-semibold px-5"
-                asChild
+                onClick={handleLoginClick} // Function triggered here
               >
-                <a href="#contact" onClick={() => handleLink("#contact")}>
-                  Get Started
-                  <motion.span
-                    animate={{ x: [0, 3, 0] }}
-                    transition={{ duration: 1.6, repeat: Infinity, repeatDelay: 2 }}
-                  >
-                    <ArrowRight size={14} />
-                  </motion.span>
-                </a>
+                Login
+                <motion.span
+                  animate={{ x: [0, 3, 0] }}
+                  transition={{ duration: 1.6, repeat: Infinity, repeatDelay: 2 }}
+                >
+                  <ArrowRight size={14} />
+                </motion.span>
               </Button>
 
               <button
@@ -251,11 +241,10 @@ const Navbar = () => {
                         initial={{ opacity: 0, y: 8 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: i * 0.04, duration: 0.2 }}
-                        className={`flex items-center gap-2.5 py-3 px-4 rounded-2xl text-sm font-medium border transition-all duration-150 ${
-                          isActive
-                            ? "bg-primary/[0.07] text-foreground border-primary/20"
-                            : "text-muted-foreground border-transparent hover:bg-muted/60 hover:text-foreground"
-                        }`}
+                        className={`flex items-center gap-2.5 py-3 px-4 rounded-2xl text-sm font-medium border transition-all duration-150 ${isActive
+                          ? "bg-primary/[0.07] text-foreground border-primary/20"
+                          : "text-muted-foreground border-transparent hover:bg-muted/60 hover:text-foreground"
+                          }`}
                       >
                         {isActive && (
                           <motion.span
@@ -279,13 +268,16 @@ const Navbar = () => {
                   <Button
                     variant="default"
                     className="flex-1 gap-2 group font-semibold"
+                    onClick={handleLoginClick} // Function triggered here
+
                     asChild
                   >
                     <a href="#contact" onClick={() => handleLink("#contact")}>
-                      Get Started
+                     Login
                       <ArrowRight size={14} className="transition-transform group-hover:translate-x-0.5" />
                     </a>
                   </Button>
+                  
                   <a
                     href="tel:+918967258388"
                     className="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border border-border/60 text-sm font-semibold text-foreground hover:bg-accent transition-colors"

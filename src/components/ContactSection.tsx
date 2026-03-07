@@ -204,14 +204,12 @@ export function ContactSection() {
             new Promise((resolve) => setTimeout(resolve, ms));
 
         try {
-            // Basic validation
             if (!form.name || !form.email || !form.subject || !form.message) {
                 setErrorMsg("All fields are required.");
                 setSending(false);
                 return;
             }
 
-            // Terminal start
             setTermLines([
                 { text: "$ OS tech labs --send-message", cls: "text-emerald-400" },
                 { text: "Connecting to secure mail server...", cls: "text-slate-400" },
@@ -236,37 +234,33 @@ export function ContactSection() {
                             : line
                     )
                 );
-                await delay(400);
+                await delay(300);
             };
 
             await updateProgress(25);
             await updateProgress(50);
             await updateProgress(75);
 
-            // Send main email
-            await emailjs.send(
-                import.meta.env.VITE_EMAILJS_SERVICE_ID!,
-                import.meta.env.VITE_EMAILJS_TEMPLATE_ID!,
-                {
+            // 🔵 CALL EXPRESS API
+            const response = await fetch("https://os-tech-backend.onrender.com/api", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
                     name: form.name,
                     email: form.email,
                     phone: form.phone,
                     subject: form.subject,
                     message: form.message,
-                },
-                import.meta.env.VITE_EMAILJS_PUBLIC_KEY!
-            );
+                }),
+            });
 
-            // Auto reply
-            await emailjs.send(
-                import.meta.env.VITE_EMAILJS_SERVICE_ID!,
-                import.meta.env.VITE_EMAILJS_AUTOREPLY_TEMPLATE_ID!,
-                {
-                    name: form.name,
-                    email: form.email,
-                },
-                import.meta.env.VITE_EMAILJS_PUBLIC_KEY!
-            );
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || "Failed to send message");
+            }
 
             setTermLines((prev) =>
                 prev.map((line) =>
@@ -275,14 +269,15 @@ export function ContactSection() {
                         : line
                 )
             );
+
             setSent(true);
-        } catch (error) {
+        } catch (error: any) {
             setTermLines((prev) => [
                 ...prev,
                 { text: "✗ ERROR: Failed to send message", cls: "text-red-400" },
             ]);
-            setErrorMsg("Failed to send message. Please try again.");
 
+            setErrorMsg(error.message || "Failed to send message.");
         } finally {
             setSending(false);
         }
