@@ -326,11 +326,14 @@ function Sidebar({ view, setView, projects, mobileOpen, setMobileOpen }: {
 
   return (
     <>
-      {/* Desktop */}
-      <aside className="hidden lg:flex flex-col w-[230px] xl:w-[248px] shrink-0 min-h-screen border-r"
-        style={{ background: "hsl(222 47% 7%)", borderColor: "rgba(255,255,255,0.06)" }}>
+      {/* Desktop - Sticky sidebar */}
+      <aside className="hidden lg:flex flex-col w-[230px] xl:w-[248px] shrink-0 fixed left-0 top-0 bottom-0 z-30"
+        style={{ background: "hsl(222 47% 7%)", borderRight: "1px solid rgba(255,255,255,0.06)" }}>
         {content}
       </aside>
+      {/* Spacer for desktop to offset main content */}
+      <div className="hidden lg:block w-[230px] xl:w-[248px] shrink-0" />
+      
       {/* Mobile drawer */}
       <AnimatePresence>
         {mobileOpen && (
@@ -340,8 +343,8 @@ function Sidebar({ view, setView, projects, mobileOpen, setMobileOpen }: {
             onClick={() => setMobileOpen(false)}>
             <motion.aside initial={{ x: -260 }} animate={{ x: 0 }} exit={{ x: -260 }}
               transition={{ type: "spring", stiffness: 400, damping: 35 }}
-              className="absolute left-0 top-0 bottom-0 w-[248px] border-r"
-              style={{ background: "hsl(222 47% 7%)", borderColor: "rgba(255,255,255,0.06)" }}
+              className="absolute left-0 top-0 bottom-0 w-[248px]"
+              style={{ background: "hsl(222 47% 7%)", borderRight: "1px solid rgba(255,255,255,0.06)" }}
               onClick={e => e.stopPropagation()}>
               {content}
             </motion.aside>
@@ -417,9 +420,9 @@ function Dashboard({ projects, setView, onMenu }: {
     .sort((a, b) => b.date.localeCompare(a.date)).slice(0, 6);
 
   return (
-    <div className="flex flex-col flex-1 overflow-y-auto" ref={ref}>
+    <div className="flex flex-col flex-1 h-full">
       <Topbar title="Dashboard" sub="Welcome back — Client Portal" onMenu={onMenu} />
-      <div className="p-5 sm:p-7 space-y-8">
+      <div className="flex-1 overflow-y-auto p-5 sm:p-7 space-y-8" ref={ref}>
 
         {/* ── Section label */}
         <SectionLabel text="// overview" />
@@ -541,9 +544,9 @@ function ProjectsList({ projects, setView, onNew, onMenu }: {
   );
 
   return (
-    <div className="flex flex-col flex-1 overflow-y-auto" ref={ref}>
+    <div className="flex flex-col flex-1 h-full">
       <Topbar title="My Projects" sub={`${projects.length} project${projects.length !== 1 ? "s" : ""}`} onMenu={onMenu} />
-      <div className="p-5 sm:p-7 space-y-6">
+      <div className="flex-1 overflow-y-auto p-5 sm:p-7 space-y-6" ref={ref}>
         <SectionLabel text="// all projects" />
 
         {/* Toolbar */}
@@ -631,281 +634,283 @@ function ProjectDetail({ project, onBack, onAddReq, onMenu }: {
   const sc = STATUS_CFG[project.status];
 
   return (
-    <div className="flex flex-col flex-1 overflow-y-auto" ref={ref}>
+    <div className="flex flex-col flex-1 h-full">
       <Topbar title={project.name} sub={project.type} back onBack={onBack} onMenu={onMenu} color={project.color} />
 
-      {/* ── Hero band — matches WhyChooseUs gradient style */}
-      <div className="relative px-5 sm:px-7 py-6 border-b overflow-hidden"
-        style={{
-          background: `linear-gradient(135deg, ${project.color}12 0%, hsl(222 47% 7%) 55%)`,
-          borderColor: "rgba(255,255,255,0.05)",
-        }}>
-        <div className="absolute -top-12 -right-12 w-56 h-56 rounded-full pointer-events-none"
-          style={{ background: `radial-gradient(circle, ${project.color}20, transparent 70%)`, filter: "blur(40px)" }} />
+      <div className="flex-1 overflow-y-auto" ref={ref}>
+        {/* ── Hero band — matches WhyChooseUs gradient style */}
+        <div className="relative px-5 sm:px-7 py-6 border-b overflow-hidden"
+          style={{
+            background: `linear-gradient(135deg, ${project.color}12 0%, hsl(222 47% 7%) 55%)`,
+            borderColor: "rgba(255,255,255,0.05)",
+          }}>
+          <div className="absolute -top-12 -right-12 w-56 h-56 rounded-full pointer-events-none"
+            style={{ background: `radial-gradient(circle, ${project.color}20, transparent 70%)`, filter: "blur(40px)" }} />
 
-        <div className="relative grid grid-cols-2 sm:grid-cols-4 gap-4 mb-5">
-          {[
-            { label: "Status", val: sc.label, color: sc.color, mono: false },
-            { label: "Progress", val: `${project.progress}%`, color: project.color, mono: true },
-            { label: "Budget", val: project.budget, color: "#10B981", mono: true },
-            { label: "Deadline", val: project.deadline, color: "#F59E0B", mono: true },
-          ].map(m => (
-            <div key={m.label}>
-              <div className="text-[10px] font-black font-mono uppercase tracking-[0.18em] text-slate-500 mb-1">{m.label}</div>
-              <div className={`font-black text-lg leading-tight ${m.mono ? "font-mono" : ""}`} style={{ color: m.color }}>{m.val}</div>
-            </div>
-          ))}
-        </div>
-
-        {/* Progress bar — same as ServicesSection progress */}
-        <div className="relative h-2 rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.06)" }}>
-          <motion.div className="h-full rounded-full"
-            initial={{ width: 0 }}
-            animate={{ width: `${project.progress}%` }}
-            transition={{ duration: 1.3, ease: [0.16, 1, 0.3, 1] }}
-            style={{ background: `linear-gradient(90deg, ${project.color}, ${project.color}80)` }} />
-        </div>
-        <div className="flex justify-between mt-1">
-          <span className="font-mono text-[10px] text-slate-600">Started {project.startDate}</span>
-          <span className="font-mono text-[10px] text-slate-600">Due {project.deadline}</span>
-        </div>
-      </div>
-
-      {/* ── Tabs */}
-      <div className="flex items-center gap-1 px-5 sm:px-7 py-3 border-b"
-        style={{ background: "hsl(222 47% 9%)", borderColor: "rgba(255,255,255,0.05)" }}>
-        {(["overview", "requirements", "updates"] as const).map(t => {
-          const active = tab === t;
-          return (
-            <button key={t} onClick={() => setTab(t)}
-              className="relative px-4 py-2 rounded-xl text-xs font-black uppercase tracking-[0.12em] font-mono transition-all">
-              {active && <motion.div layoutId="tabBg" className="absolute inset-0 rounded-xl"
-                style={{ background: `${project.color}18`, border: `1px solid ${project.color}28` }} />}
-              <span className="relative" style={{ color: active ? project.color : "#475569" }}>{t}</span>
-              {t === "requirements" && (
-                <span className="relative ml-1.5 text-[9px] px-1.5 py-0.5 rounded-full font-mono"
-                  style={{ background: `${project.color}18`, color: project.color }}>
-                  {project.requirements.length}
-                </span>
-              )}
-            </button>
-          );
-        })}
-        {tab === "requirements" && (
-          <motion.button onClick={() => setShowReqForm(true)} whileTap={{ scale: 0.96 }}
-            className="ml-auto flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold font-mono"
-            style={{ background: `${project.color}18`, color: project.color, border: `1px solid ${project.color}28` }}>
-            <Plus size={12} /><span className="hidden sm:block">Add Requirement</span><span className="sm:hidden">Add</span>
-          </motion.button>
-        )}
-      </div>
-
-      {/* ── Tab content */}
-      <div className="p-5 sm:p-7">
-        <AnimatePresence mode="wait">
-
-          {/* ── OVERVIEW */}
-          {tab === "overview" && (
-            <motion.div key="ov" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-              className="space-y-5">
-              <div className="grid lg:grid-cols-2 gap-5">
-                {/* Brief */}
-                <Panel>
-                  <PanelHead>
-                    <FileText size={13} className="text-primary" />
-                    <span className="text-xs font-bold text-white">Project Brief</span>
-                  </PanelHead>
-                  <div className="p-5">
-                    <p className="text-sm text-slate-400 leading-relaxed mb-4">{project.description}</p>
-                    <div className="flex flex-wrap gap-1.5">
-                      {project.stack.map(s => (
-                        <span key={s} className="text-[10px] font-bold font-mono px-2.5 py-1 rounded-lg"
-                          style={{ background: `${project.color}12`, color: project.color, border: `1px solid ${project.color}20` }}>
-                          {s}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </Panel>
-
-                {/* Team + Budget */}
-                <div className="space-y-3">
-                  <Panel className="p-5">
-                    <div className="text-[10px] font-black font-mono uppercase tracking-[0.18em] text-slate-500 mb-3">Team</div>
-                    {[
-                      { role: "Project Manager", name: project.pm },
-                      { role: "Lead Developer", name: project.dev },
-                    ].map(m => (
-                      <div key={m.role} className="flex items-center gap-3 mb-2.5 last:mb-0">
-                        <div className="w-8 h-8 rounded-xl flex items-center justify-center text-xs font-black shrink-0"
-                          style={{ background: `${project.color}18`, color: project.color }}>
-                          {m.name[0]}
-                        </div>
-                        <div>
-                          <div className="text-white text-xs font-bold">{m.name}</div>
-                          <div className="font-mono text-[10px] text-slate-500">{m.role}</div>
-                        </div>
-                      </div>
-                    ))}
-                  </Panel>
-                  <Panel className="p-5">
-                    <div className="text-[10px] font-black font-mono uppercase tracking-[0.18em] text-slate-500 mb-3">Budget</div>
-                    {[
-                      { label: "Total Budget", val: project.budget, color: "#ffffff" },
-                      { label: "Amount Spent", val: project.spent, color: project.color },
-                    ].map(b => (
-                      <div key={b.label} className="flex justify-between mb-2">
-                        <span className="text-[11px] text-slate-500">{b.label}</span>
-                        <span className="font-mono text-sm font-bold" style={{ color: b.color }}>{b.val}</span>
-                      </div>
-                    ))}
-                    <div className="h-1.5 rounded-full mt-1 overflow-hidden" style={{ background: "rgba(255,255,255,0.06)" }}>
-                      <motion.div className="h-full rounded-full"
-                        initial={{ width: 0 }}
-                        animate={{ width: `${Math.min(100, Math.round((num(project.spent) / num(project.budget)) * 100))}%` }}
-                        transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                        style={{ background: project.color }} />
-                    </div>
-                  </Panel>
-                </div>
+          <div className="relative grid grid-cols-2 sm:grid-cols-4 gap-4 mb-5">
+            {[
+              { label: "Status", val: sc.label, color: sc.color, mono: false },
+              { label: "Progress", val: `${project.progress}%`, color: project.color, mono: true },
+              { label: "Budget", val: project.budget, color: "#10B981", mono: true },
+              { label: "Deadline", val: project.deadline, color: "#F59E0B", mono: true },
+            ].map(m => (
+              <div key={m.label}>
+                <div className="text-[10px] font-black font-mono uppercase tracking-[0.18em] text-slate-500 mb-1">{m.label}</div>
+                <div className={`font-black text-lg leading-tight ${m.mono ? "font-mono" : ""}`} style={{ color: m.color }}>{m.val}</div>
               </div>
+            ))}
+          </div>
 
-              {/* Req summary — same row style as WhyChooseUs comparison table */}
-              <Panel>
-                <PanelHead>
-                  <GitBranch size={13} className="text-primary" />
-                  <span className="text-xs font-bold text-white">Requirements Breakdown</span>
-                  <span className="ml-auto font-mono text-[10px] text-slate-500">{project.requirements.length} total</span>
-                </PanelHead>
-                <div className="grid grid-cols-3 sm:grid-cols-5 divide-x">
-                  {(Object.entries(REQ_STATUS_CFG) as [ReqStatus, typeof REQ_STATUS_CFG[ReqStatus]][]).map(([k, m]) => {
-                    const count = project.requirements.filter(r => r.status === k).length;
-                    return (
-                      <div key={k} className="flex flex-col items-center py-5 gap-1.5 border-r last:border-0"
-                        style={{ borderColor: "rgba(255,255,255,0.04)" }}>
-                        <m.Icon size={14} style={{ color: m.color }} />
-                        <span className="font-mono text-xl font-black" style={{ color: m.color }}>{count}</span>
-                        <span className="font-mono text-[9px] text-slate-600 uppercase">{m.label}</span>
-                      </div>
-                    );
-                  })}
-                </div>
-              </Panel>
-            </motion.div>
-          )}
+          {/* Progress bar — same as ServicesSection progress */}
+          <div className="relative h-2 rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.06)" }}>
+            <motion.div className="h-full rounded-full"
+              initial={{ width: 0 }}
+              animate={{ width: `${project.progress}%` }}
+              transition={{ duration: 1.3, ease: [0.16, 1, 0.3, 1] }}
+              style={{ background: `linear-gradient(90deg, ${project.color}, ${project.color}80)` }} />
+          </div>
+          <div className="flex justify-between mt-1">
+            <span className="font-mono text-[10px] text-slate-600">Started {project.startDate}</span>
+            <span className="font-mono text-[10px] text-slate-600">Due {project.deadline}</span>
+          </div>
+        </div>
 
-          {/* ── REQUIREMENTS */}
+        {/* ── Tabs */}
+        <div className="flex items-center gap-1 px-5 sm:px-7 py-3 border-b sticky top-0 z-10"
+          style={{ background: "hsl(222 47% 9%)", borderColor: "rgba(255,255,255,0.05)" }}>
+          {(["overview", "requirements", "updates"] as const).map(t => {
+            const active = tab === t;
+            return (
+              <button key={t} onClick={() => setTab(t)}
+                className="relative px-4 py-2 rounded-xl text-xs font-black uppercase tracking-[0.12em] font-mono transition-all">
+                {active && <motion.div layoutId="tabBg" className="absolute inset-0 rounded-xl"
+                  style={{ background: `${project.color}18`, border: `1px solid ${project.color}28` }} />}
+                <span className="relative" style={{ color: active ? project.color : "#475569" }}>{t}</span>
+                {t === "requirements" && (
+                  <span className="relative ml-1.5 text-[9px] px-1.5 py-0.5 rounded-full font-mono"
+                    style={{ background: `${project.color}18`, color: project.color }}>
+                    {project.requirements.length}
+                  </span>
+                )}
+              </button>
+            );
+          })}
           {tab === "requirements" && (
-            <motion.div key="rq" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-              className="space-y-3">
-              {project.requirements.length === 0 && (
-                <div className="text-center py-16 font-mono text-sm text-slate-600">
-                  No requirements yet.{" "}
-                  <button onClick={() => setShowReqForm(true)} className="underline" style={{ color: project.color }}>
-                    Add the first one →
-                  </button>
-                </div>
-              )}
-              {project.requirements.map((req, i) => {
-                const rs = REQ_STATUS_CFG[req.status];
-                const rp = PRIORITY_CFG[req.priority];
-                return (
-                  <motion.div key={req.id}
-                    initial={{ opacity: 0, x: -10 }} animate={inView ? { opacity: 1, x: 0 } : {}}
-                    transition={{ delay: i * 0.07 }}>
-                    <Panel className="p-5">
-                      <div className="flex items-start justify-between gap-3 mb-2">
-                        <div className="flex items-center gap-2.5 flex-1 min-w-0">
-                          <rs.Icon size={14} style={{ color: rs.color }} className="shrink-0 mt-0.5" />
-                          <h3 className="text-white text-sm font-bold leading-tight">{req.title}</h3>
-                        </div>
-                        <div className="flex items-center gap-2 shrink-0 flex-wrap justify-end">
-                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full"
-                            style={{ background: `${rp.color}18`, color: rp.color }}>{rp.label}</span>
-                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full"
-                            style={{ background: `${rs.color}15`, color: rs.color }}>{rs.label}</span>
-                        </div>
+            <motion.button onClick={() => setShowReqForm(true)} whileTap={{ scale: 0.96 }}
+              className="ml-auto flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold font-mono"
+              style={{ background: `${project.color}18`, color: project.color, border: `1px solid ${project.color}28` }}>
+              <Plus size={12} /><span className="hidden sm:block">Add Requirement</span><span className="sm:hidden">Add</span>
+            </motion.button>
+          )}
+        </div>
+
+        {/* ── Tab content */}
+        <div className="p-5 sm:p-7">
+          <AnimatePresence mode="wait">
+
+            {/* ── OVERVIEW */}
+            {tab === "overview" && (
+              <motion.div key="ov" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+                className="space-y-5">
+                <div className="grid lg:grid-cols-2 gap-5">
+                  {/* Brief */}
+                  <Panel>
+                    <PanelHead>
+                      <FileText size={13} className="text-primary" />
+                      <span className="text-xs font-bold text-white">Project Brief</span>
+                    </PanelHead>
+                    <div className="p-5">
+                      <p className="text-sm text-slate-400 leading-relaxed mb-4">{project.description}</p>
+                      <div className="flex flex-wrap gap-1.5">
+                        {project.stack.map(s => (
+                          <span key={s} className="text-[10px] font-bold font-mono px-2.5 py-1 rounded-lg"
+                            style={{ background: `${project.color}12`, color: project.color, border: `1px solid ${project.color}20` }}>
+                            {s}
+                          </span>
+                        ))}
                       </div>
-                      <p className="text-sm text-slate-400 leading-relaxed ml-[22px] mb-3">{req.description}</p>
-                      {req.notes && (
-                        <div className="ml-[22px] px-4 py-2.5 rounded-xl text-xs text-slate-400 italic border"
-                          style={{ background: "hsl(222 47% 6%)", borderColor: "rgba(255,255,255,0.05)" }}>
-                          💬 {req.notes}
+                    </div>
+                  </Panel>
+
+                  {/* Team + Budget */}
+                  <div className="space-y-3">
+                    <Panel className="p-5">
+                      <div className="text-[10px] font-black font-mono uppercase tracking-[0.18em] text-slate-500 mb-3">Team</div>
+                      {[
+                        { role: "Project Manager", name: project.pm },
+                        { role: "Lead Developer", name: project.dev },
+                      ].map(m => (
+                        <div key={m.role} className="flex items-center gap-3 mb-2.5 last:mb-0">
+                          <div className="w-8 h-8 rounded-xl flex items-center justify-center text-xs font-black shrink-0"
+                            style={{ background: `${project.color}18`, color: project.color }}>
+                            {m.name[0]}
+                          </div>
+                          <div>
+                            <div className="text-white text-xs font-bold">{m.name}</div>
+                            <div className="font-mono text-[10px] text-slate-500">{m.role}</div>
+                          </div>
                         </div>
-                      )}
-                      <div className="flex items-center gap-4 mt-3 ml-[22px]">
-                        <span className="font-mono text-[10px] text-slate-600 flex items-center gap-1"><CalendarDays size={9} />{req.createdAt}</span>
-                        <span className="font-mono text-[10px] text-slate-600 flex items-center gap-1"><User size={9} />{req.createdBy === "client" ? "You" : "OS tech labs Team"}</span>
+                      ))}
+                    </Panel>
+                    <Panel className="p-5">
+                      <div className="text-[10px] font-black font-mono uppercase tracking-[0.18em] text-slate-500 mb-3">Budget</div>
+                      {[
+                        { label: "Total Budget", val: project.budget, color: "#ffffff" },
+                        { label: "Amount Spent", val: project.spent, color: project.color },
+                      ].map(b => (
+                        <div key={b.label} className="flex justify-between mb-2">
+                          <span className="text-[11px] text-slate-500">{b.label}</span>
+                          <span className="font-mono text-sm font-bold" style={{ color: b.color }}>{b.val}</span>
+                        </div>
+                      ))}
+                      <div className="h-1.5 rounded-full mt-1 overflow-hidden" style={{ background: "rgba(255,255,255,0.06)" }}>
+                        <motion.div className="h-full rounded-full"
+                          initial={{ width: 0 }}
+                          animate={{ width: `${Math.min(100, Math.round((num(project.spent) / num(project.budget)) * 100))}%` }}
+                          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                          style={{ background: project.color }} />
                       </div>
                     </Panel>
-                  </motion.div>
-                );
-              })}
-            </motion.div>
-          )}
+                  </div>
+                </div>
 
-          {/* ── UPDATES / TIMELINE */}
-          {tab === "updates" && (
-            <motion.div key="up" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-              className="relative">
-              {/* Vertical timeline rail */}
-              <div className="absolute left-5 top-5 bottom-5 w-px hidden sm:block"
-                style={{ background: "rgba(255,255,255,0.04)" }} />
-
-              <div className="space-y-4">
-                {project.updates.map((upd, i) => {
-                  const tc = UPD_TYPE_CFG[upd.type];
-                  return (
-                    <motion.div key={upd.id}
-                      initial={{ opacity: 0, x: -10 }} animate={inView ? { opacity: 1, x: 0 } : {}}
-                      transition={{ delay: i * 0.08 }}
-                      className="flex items-start gap-4 sm:gap-5">
-                      {/* Node */}
-                      <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 relative z-10 hidden sm:flex"
-                        style={{ background: `${tc.color}14`, border: `1.5px solid ${tc.color}28` }}>
-                        <tc.Icon size={15} style={{ color: tc.color }} />
-                      </div>
-                      <Panel className="flex-1 p-5">
-                        <div className="flex items-start justify-between gap-3 mb-2">
-                          <div className="flex-1 min-w-0">
-                            {/* Type label */}
-                            <div className="flex items-center gap-2 mb-1">
-                              <span className="text-[9px] font-black font-mono uppercase tracking-[0.15em] px-2 py-0.5 rounded-full"
-                                style={{ background: `${tc.color}14`, color: tc.color }}>
-                                {tc.label}
-                              </span>
-                            </div>
-                            <h3 className="text-white text-sm font-bold leading-tight">{upd.title}</h3>
-                            <div className="flex items-center gap-3 mt-0.5">
-                              <span className="font-mono text-[10px] text-slate-500 flex items-center gap-1"><CalendarDays size={9} />{upd.date}</span>
-                              <span className="font-mono text-[10px] text-slate-600 flex items-center gap-1"><User size={9} />{upd.author}</span>
-                            </div>
-                          </div>
-                          {upd.pct !== undefined && (
-                            <span className="font-mono text-base font-black shrink-0" style={{ color: project.color }}>{upd.pct}%</span>
-                          )}
+                {/* Req summary — same row style as WhyChooseUs comparison table */}
+                <Panel>
+                  <PanelHead>
+                    <GitBranch size={13} className="text-primary" />
+                    <span className="text-xs font-bold text-white">Requirements Breakdown</span>
+                    <span className="ml-auto font-mono text-[10px] text-slate-500">{project.requirements.length} total</span>
+                  </PanelHead>
+                  <div className="grid grid-cols-3 sm:grid-cols-5 divide-x">
+                    {(Object.entries(REQ_STATUS_CFG) as [ReqStatus, typeof REQ_STATUS_CFG[ReqStatus]][]).map(([k, m]) => {
+                      const count = project.requirements.filter(r => r.status === k).length;
+                      return (
+                        <div key={k} className="flex flex-col items-center py-5 gap-1.5 border-r last:border-0"
+                          style={{ borderColor: "rgba(255,255,255,0.04)" }}>
+                          <m.Icon size={14} style={{ color: m.color }} />
+                          <span className="font-mono text-xl font-black" style={{ color: m.color }}>{count}</span>
+                          <span className="font-mono text-[9px] text-slate-600 uppercase">{m.label}</span>
                         </div>
-                        <p className="text-sm text-slate-400 leading-relaxed">{upd.body}</p>
-                        {upd.pct !== undefined && (
-                          <div className="mt-3 h-1 rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.06)" }}>
-                            <motion.div className="h-full rounded-full"
-                              initial={{ width: 0 }}
-                              animate={{ width: `${upd.pct}%` }}
-                              transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.1 * i }}
-                              style={{ background: `linear-gradient(90deg,${project.color},${project.color}70)` }} />
+                      );
+                    })}
+                  </div>
+                </Panel>
+              </motion.div>
+            )}
+
+            {/* ── REQUIREMENTS */}
+            {tab === "requirements" && (
+              <motion.div key="rq" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+                className="space-y-3">
+                {project.requirements.length === 0 && (
+                  <div className="text-center py-16 font-mono text-sm text-slate-600">
+                    No requirements yet.{" "}
+                    <button onClick={() => setShowReqForm(true)} className="underline" style={{ color: project.color }}>
+                      Add the first one →
+                    </button>
+                  </div>
+                )}
+                {project.requirements.map((req, i) => {
+                  const rs = REQ_STATUS_CFG[req.status];
+                  const rp = PRIORITY_CFG[req.priority];
+                  return (
+                    <motion.div key={req.id}
+                      initial={{ opacity: 0, x: -10 }} animate={inView ? { opacity: 1, x: 0 } : {}}
+                      transition={{ delay: i * 0.07 }}>
+                      <Panel className="p-5">
+                        <div className="flex items-start justify-between gap-3 mb-2">
+                          <div className="flex items-center gap-2.5 flex-1 min-w-0">
+                            <rs.Icon size={14} style={{ color: rs.color }} className="shrink-0 mt-0.5" />
+                            <h3 className="text-white text-sm font-bold leading-tight">{req.title}</h3>
+                          </div>
+                          <div className="flex items-center gap-2 shrink-0 flex-wrap justify-end">
+                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full"
+                              style={{ background: `${rp.color}18`, color: rp.color }}>{rp.label}</span>
+                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full"
+                              style={{ background: `${rs.color}15`, color: rs.color }}>{rs.label}</span>
+                          </div>
+                        </div>
+                        <p className="text-sm text-slate-400 leading-relaxed ml-[22px] mb-3">{req.description}</p>
+                        {req.notes && (
+                          <div className="ml-[22px] px-4 py-2.5 rounded-xl text-xs text-slate-400 italic border"
+                            style={{ background: "hsl(222 47% 6%)", borderColor: "rgba(255,255,255,0.05)" }}>
+                            💬 {req.notes}
                           </div>
                         )}
+                        <div className="flex items-center gap-4 mt-3 ml-[22px]">
+                          <span className="font-mono text-[10px] text-slate-600 flex items-center gap-1"><CalendarDays size={9} />{req.createdAt}</span>
+                          <span className="font-mono text-[10px] text-slate-600 flex items-center gap-1"><User size={9} />{req.createdBy === "client" ? "You" : "OS tech labs Team"}</span>
+                        </div>
                       </Panel>
                     </motion.div>
                   );
                 })}
-                {project.updates.length === 0 && (
-                  <div className="text-center py-14 font-mono text-sm text-slate-600">No updates posted yet.</div>
-                )}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+              </motion.div>
+            )}
+
+            {/* ── UPDATES / TIMELINE */}
+            {tab === "updates" && (
+              <motion.div key="up" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+                className="relative">
+                {/* Vertical timeline rail */}
+                <div className="absolute left-5 top-5 bottom-5 w-px hidden sm:block"
+                  style={{ background: "rgba(255,255,255,0.04)" }} />
+
+                <div className="space-y-4">
+                  {project.updates.map((upd, i) => {
+                    const tc = UPD_TYPE_CFG[upd.type];
+                    return (
+                      <motion.div key={upd.id}
+                        initial={{ opacity: 0, x: -10 }} animate={inView ? { opacity: 1, x: 0 } : {}}
+                        transition={{ delay: i * 0.08 }}
+                        className="flex items-start gap-4 sm:gap-5">
+                        {/* Node */}
+                        <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 relative z-10 hidden sm:flex"
+                          style={{ background: `${tc.color}14`, border: `1.5px solid ${tc.color}28` }}>
+                          <tc.Icon size={15} style={{ color: tc.color }} />
+                        </div>
+                        <Panel className="flex-1 p-5">
+                          <div className="flex items-start justify-between gap-3 mb-2">
+                            <div className="flex-1 min-w-0">
+                              {/* Type label */}
+                              <div className="flex items-center gap-2 mb-1">
+                                <span className="text-[9px] font-black font-mono uppercase tracking-[0.15em] px-2 py-0.5 rounded-full"
+                                  style={{ background: `${tc.color}14`, color: tc.color }}>
+                                  {tc.label}
+                                </span>
+                              </div>
+                              <h3 className="text-white text-sm font-bold leading-tight">{upd.title}</h3>
+                              <div className="flex items-center gap-3 mt-0.5">
+                                <span className="font-mono text-[10px] text-slate-500 flex items-center gap-1"><CalendarDays size={9} />{upd.date}</span>
+                                <span className="font-mono text-[10px] text-slate-600 flex items-center gap-1"><User size={9} />{upd.author}</span>
+                              </div>
+                            </div>
+                            {upd.pct !== undefined && (
+                              <span className="font-mono text-base font-black shrink-0" style={{ color: project.color }}>{upd.pct}%</span>
+                            )}
+                          </div>
+                          <p className="text-sm text-slate-400 leading-relaxed">{upd.body}</p>
+                          {upd.pct !== undefined && (
+                            <div className="mt-3 h-1 rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.06)" }}>
+                              <motion.div className="h-full rounded-full"
+                                initial={{ width: 0 }}
+                                animate={{ width: `${upd.pct}%` }}
+                                transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.1 * i }}
+                                style={{ background: `linear-gradient(90deg,${project.color},${project.color}70)` }} />
+                            </div>
+                          )}
+                        </Panel>
+                      </motion.div>
+                    );
+                  })}
+                  {project.updates.length === 0 && (
+                    <div className="text-center py-14 font-mono text-sm text-slate-600">No updates posted yet.</div>
+                  )}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       </div>
 
       {/* Requirement modal */}
