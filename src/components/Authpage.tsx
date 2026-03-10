@@ -51,7 +51,7 @@ function TerminalDecor() {
 
     return (
         <div className="rounded-2xl overflow-hidden border border-white/[0.07]"
-            style={{ background: "hsl(222 47% 6%)", boxShadow: "0 24px 64px rgba(0,0,0,0.4)" }}>
+            style={{ background: "hsl(222 47% 6%)" }}>
             {/* Chrome */}
             <div className="flex items-center gap-2 px-4 py-3 border-b border-white/[0.06]"
                 style={{ background: "hsl(222 47% 9%)" }}>
@@ -87,57 +87,95 @@ function TerminalDecor() {
    FIELD COMPONENT
 ═══════════════════════════════════════════════════════════ */
 function AuthField({
-    label, icon: Icon, type = "text", accent = "#3B82F6",
-    value, onChange, placeholder, error, rightSlot,
-    disabled = false,
+  label,
+  icon: Icon,
+  type = "text",
+  accent = "#3B82F6",
+  value,
+  onChange,
+  placeholder,
+  error,
+  rightSlot,
+  disabled = false,
 }: {
-    label: string; icon: React.ElementType; type?: string; accent?: string;
-    value: string; onChange: (v: string) => void; placeholder?: string;
-    error?: string; rightSlot?: React.ReactNode; disabled?: boolean;
+  label: string
+  icon: React.ElementType
+  type?: string
+  accent?: string
+  value: string
+  onChange: (v: string) => void
+  placeholder?: string
+  error?: string
+  rightSlot?: React.ReactNode
+  disabled?: boolean
 }) {
-    const [focused, setFocused] = useState(false);
-    const hasError = !!error;
+  const [focused, setFocused] = useState(false)
+  const hasError = !!error
 
-    return (
-        <div>
-            <label className="block text-[10px] font-black uppercase tracking-[0.18em] font-mono mb-1.5"
-                style={{ color: hasError ? "#ef4444" : "#475569" }}>
-                {label}
-            </label>
-            <div className="flex items-center rounded-xl border transition-all duration-200"
-                style={{
-                    borderColor: hasError ? "#ef444455" : focused ? `${accent}55` : "rgba(255,255,255,0.09)",
-                    background: hasError ? "rgba(239,68,68,0.05)" : focused ? `${accent}08` : "rgba(255,255,255,0.03)",
-                    boxShadow: hasError ? "0 0 0 3px rgba(239,68,68,0.1)" : focused ? `0 0 0 3px ${accent}12` : "none",
-                }}>
-                <div className="pl-3.5 shrink-0">
-                    <Icon size={14} className="transition-colors duration-200"
-                        style={{ color: hasError ? "#ef4444" : focused ? accent : "#475569" }} />
-                </div>
-                <input
-                    type={type} value={value} disabled={disabled}
-                    onChange={e => onChange(e.target.value)}
-                    onFocus={() => setFocused(true)}
-                    onBlur={() => setFocused(false)}
-                    placeholder={placeholder}
-                    className="flex-1 bg-transparent px-3 py-3 text-sm text-white placeholder:text-slate-600
-                     focus:outline-none font-mono disabled:opacity-50"
-                />
-                {rightSlot && <div className="pr-3.5 shrink-0">{rightSlot}</div>}
-            </div>
-            <AnimatePresence>
-                {hasError && (
-                    <motion.p initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-                        className="flex items-center gap-1.5 mt-1.5 text-[11px] font-mono"
-                        style={{ color: "#ef4444" }}>
-                        <AlertCircle size={11} />{error}
-                    </motion.p>
-                )}
-            </AnimatePresence>
+  return (
+    <div>
+      <label
+        className="block text-[10px] font-semibold mb-1.5"
+        style={{ color: hasError ? "#ef4444" : "#475569" }}
+      >
+        {label}
+      </label>
+
+      <div
+        className="flex items-center rounded-xl border transition-all duration-200"
+        style={{
+          borderColor: hasError
+            ? "#ef4444"
+            : focused
+            ? accent
+            : "#e2e8f0",
+          background: "#ffffff",
+          boxShadow: hasError
+            ? "0 0 0 3px rgba(239,68,68,0.12)"
+            : focused
+            ? `0 0 0 3px ${accent}22`
+            : "none",
+        }}
+      >
+        <div className="pl-3.5 shrink-0">
+          <Icon
+            size={14}
+            style={{
+              color: hasError ? "#ef4444" : focused ? accent : "#64748b",
+            }}
+          />
         </div>
-    );
-}
 
+        <input
+          type={type}
+          value={value}
+          disabled={disabled}
+          onChange={(e) => onChange(e.target.value)}
+          onFocus={() => setFocused(true)}
+          onBlur={() => setFocused(false)}
+          placeholder={placeholder}
+          className="flex-1 bg-transparent px-3 py-3 text-sm text-gray-800 placeholder:text-slate-400 focus:outline-none disabled:opacity-50"
+        />
+
+        {rightSlot && <div className="pr-3.5 shrink-0">{rightSlot}</div>}
+      </div>
+
+      <AnimatePresence>
+        {hasError && (
+          <motion.p
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            className="flex items-center gap-1.5 mt-1.5 text-[11px] font-mono text-red-500"
+          >
+            <AlertCircle size={11} />
+            {error}
+          </motion.p>
+        )}
+      </AnimatePresence>
+    </div>
+  )
+}
 /* ═══════════════════════════════════════════════════════════
    LOGIN FORM
 ═══════════════════════════════════════════════════════════ */
@@ -409,18 +447,9 @@ export function AuthPage({ onLogin }: { onLogin?: (user: AuthUser) => void }) {
     };
 
     return (
-        <div className="min-h-screen flex" style={{ background: "hsl(222 47% 6%)" }}>
-            <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&display=swap');
-        * { box-sizing: border-box; }
-        ::-webkit-scrollbar { width:4px; }
-        ::-webkit-scrollbar-track { background:transparent; }
-        ::-webkit-scrollbar-thumb { background:rgba(255,255,255,0.07); border-radius:4px; }
-      `}</style>
-
+        <div className="min-h-screen flex">
             {/* ── LEFT PANEL (hidden on mobile) */}
-            <div className="hidden lg:flex flex-col w-[440px] xl:w-[480px] shrink-0 relative overflow-hidden border-r"
-                style={{ background: "hsl(222 47% 7%)", borderColor: "rgba(255,255,255,0.06)" }}>
+            <div className="hidden lg:flex flex-col w-[440px] xl:w-[480px] shrink-0 relative overflow-hidden border-r shadow-xl bg-slate-100">
 
                 {/* Ambient blobs */}
                 <div className="absolute -top-24 -left-24 w-72 h-72 rounded-full pointer-events-none"
@@ -456,7 +485,7 @@ export function AuthPage({ onLogin }: { onLogin?: (user: AuthUser) => void }) {
                             <div className="h-px w-6 bg-blue-500/50" />
                             <span className="text-blue-400 font-black text-[10px] uppercase tracking-[0.2em] font-mono">// your workspace</span>
                         </div>
-                        <h1 className="text-white font-black text-3xl xl:text-4xl leading-tight mb-3"
+                        <h1 className="text-gray-600 font-black text-3xl xl:text-4xl leading-tight mb-3"
                             style={{ letterSpacing: "-0.02em" }}>
                             Track every sprint.<br />
                             <span style={{
@@ -501,34 +530,45 @@ export function AuthPage({ onLogin }: { onLogin?: (user: AuthUser) => void }) {
                 <div className="w-full max-w-[420px]">
 
                     {/* Card */}
-                    <div className="rounded-2xl border overflow-hidden"
+                    <div
+                        className="rounded-2xl sm:rounded-3xl border border-gray-200 bg-white overflow-hidden"
                         style={{
-                            background: "hsl(222 47% 8%)",
-                            borderColor: "rgba(255,255,255,0.08)",
-                            boxShadow: "0 32px 80px rgba(0,0,0,0.35)",
-                        }}>
+                            boxShadow: "0 10px 30px rgba(0,0,0,0.06)"
+                        }}
+                    >
 
                         {/* ── Mode toggle tabs */}
-                        <div className="flex border-b" style={{ borderColor: "rgba(255,255,255,0.06)", background: "hsl(222 47% 10%)" }}>
-                            {(["login", "signup"] as const).map(m => {
+                        <div className="flex border-b border-gray-200 text-gray-500">
+                            {(["login", "signup"] as const).map((m) => {
                                 const active = mode === m;
                                 return (
-                                    <button key={m} onClick={() => setMode(m)}
+                                    <button
+                                        key={m}
+                                        onClick={() => setMode(m)}
                                         className="flex-1 relative py-4 text-xs font-black uppercase tracking-[0.14em] font-mono transition-all duration-200"
-                                        style={{ color: active ? "white" : "#475569" }}>
+                                        style={{ color: active ? "#2563eb" : "#64748b" }}
+                                    >
                                         {active && (
-                                            <motion.div layoutId="authTab"
+                                            <motion.div
+                                                layoutId="authTab"
                                                 className="absolute inset-x-0 bottom-0 h-[2px] rounded-t-sm"
-                                                style={{ background: "hsl(217 91% 60%)" }}
-                                                transition={{ type: "spring", stiffness: 500, damping: 38 }} />
+                                                style={{ background: "#2563eb" }}
+                                                transition={{ type: "spring", stiffness: 500, damping: 38 }}
+                                            />
                                         )}
+
                                         {active && (
-                                            <motion.div layoutId="authTabBg"
+                                            <motion.div
+                                                layoutId="authTabBg"
                                                 className="absolute inset-0"
-                                                style={{ background: "rgba(59,130,246,0.06)" }}
-                                                transition={{ type: "spring", stiffness: 500, damping: 38 }} />
+                                                style={{ background: "rgba(37,99,235,0.08)" }}
+                                                transition={{ type: "spring", stiffness: 500, damping: 38 }}
+                                            />
                                         )}
-                                        <span className="relative">{m === "login" ? "Sign In" : "Create Account"}</span>
+
+                                        <span className="relative">
+                                            {m === "login" ? "Sign In" : "Create Account"}
+                                        </span>
                                     </button>
                                 );
                             })}
@@ -537,10 +577,14 @@ export function AuthPage({ onLogin }: { onLogin?: (user: AuthUser) => void }) {
                         {/* ── Header */}
                         <div className="px-7 pt-7 pb-5">
                             <AnimatePresence mode="wait">
-                                <motion.div key={mode}
-                                    initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}
-                                    transition={{ duration: 0.2 }}>
-                                    <h2 className="text-white font-black text-xl leading-tight mb-1">
+                                <motion.div
+                                    key={mode}
+                                    initial={{ opacity: 0, y: 8 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -8 }}
+                                    transition={{ duration: 0.2 }}
+                                >
+                                    <h2 className="text-gray-900 font-black text-xl leading-tight mb-1">
                                         {mode === "login" ? "Welcome back" : "Get started"}
                                     </h2>
                                 </motion.div>
@@ -551,20 +595,29 @@ export function AuthPage({ onLogin }: { onLogin?: (user: AuthUser) => void }) {
                         <div className="px-7 pb-7">
                             <AnimatePresence mode="wait">
                                 {mode === "login" ? (
-                                    <motion.div key="login-form"
-                                        initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}
-                                        transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}>
+                                    <motion.div
+                                        key="login-form"
+                                        initial={{ opacity: 0, x: 20 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        exit={{ opacity: 0, x: -20 }}
+                                        transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                                    >
                                         <LoginForm onSuccess={handleSuccess} onSwitch={() => setMode("signup")} />
                                     </motion.div>
                                 ) : (
-                                    <motion.div key="signup-form"
-                                        initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}
-                                        transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}>
+                                    <motion.div
+                                        key="signup-form"
+                                        initial={{ opacity: 0, x: 20 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        exit={{ opacity: 0, x: -20 }}
+                                        transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                                    >
                                         <SignupForm onSuccess={handleSuccess} onSwitch={() => setMode("login")} />
                                     </motion.div>
                                 )}
                             </AnimatePresence>
                         </div>
+
                     </div>
                 </div>
             </div>
