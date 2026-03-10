@@ -8,6 +8,7 @@ import { Project, Requirement, Milestone } from "./client-portal/_helper/types";
 import { SEED } from "./client-portal/_helper/constants";
 import { ProjectsList } from "./client-portal/ProjectsList";
 import { ChatWindow } from "./client-portal/ChatWindow";
+import { SettingsPage } from "./client-portal/Settings";
 
 
 
@@ -159,6 +160,21 @@ export default function ClientPortal() {
               exit={{ opacity: 0 }}
             >
               <ChatWindow
+                setView={setView}
+                onNew={() => setShowNewProject(true)}
+                onMenu={() => setMobileOpen(true)}
+              />
+            </motion.div>
+          )}
+          {view === "settings" && (
+            <motion.div
+              key="settings"
+              className="flex flex-col flex-1"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              <SettingsPage
                 setView={setView}
                 onNew={() => setShowNewProject(true)}
                 onMenu={() => setMobileOpen(true)}

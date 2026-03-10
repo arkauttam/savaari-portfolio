@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
-import { 
-  FileText, GitBranch, CalendarDays, User, Plus, 
+import {
+  FileText, GitBranch, CalendarDays, User, Plus,
   MessageSquare, Activity, Zap, AlertCircle, Upload,
   Wallet, Milestone
 } from "lucide-react";
@@ -22,13 +22,13 @@ interface ProjectDetailProps {
   onPaymentSubmit: (milestoneId: string, paymentDetails: any) => void;
 }
 
-export function ProjectDetail({ 
-  project, 
-  onBack, 
-  onAddReq, 
+export function ProjectDetail({
+  project,
+  onBack,
+  onAddReq,
   onAddMilestone,
-  onMenu, 
-  onPaymentSubmit 
+  onMenu,
+  onPaymentSubmit
 }: ProjectDetailProps) {
   const [tab, setTab] = useState<"overview" | "requirements" | "updates" | "payments">("overview");
   const [showReqForm, setShowReqForm] = useState(false);
@@ -39,29 +39,29 @@ export function ProjectDetail({
 
   return (
     <div className="flex flex-col flex-1 h-full">
-      <Topbar 
-        title={project.name} 
-        sub={project.type} 
-        back 
-        onBack={onBack} 
-        onMenu={onMenu} 
-        color={project.color} 
+      <Topbar
+        title={project.name}
+        sub={project.type}
+        back
+        onBack={onBack}
+        onMenu={onMenu}
+        color={project.color}
       />
 
       <div className="flex-1 overflow-y-auto" ref={ref}>
         {/* Hero band */}
-        <div 
+        <div
           className="relative px-5 sm:px-7 py-6 border-b border-border/50 overflow-hidden"
           style={{
             background: `linear-gradient(135deg, ${project.color}08 0%, hsl(var(--background)) 75%)`,
           }}
         >
-          <div 
+          <div
             className="absolute -top-12 -right-12 w-56 h-56 rounded-full pointer-events-none"
-            style={{ 
-              background: `radial-gradient(circle, ${project.color}10, transparent 70%)`, 
-              filter: "blur(40px)" 
-            }} 
+            style={{
+              background: `radial-gradient(circle, ${project.color}10, transparent 70%)`,
+              filter: "blur(40px)"
+            }}
           />
 
           <div className="relative grid grid-cols-2 sm:grid-cols-4 gap-4 mb-5">
@@ -84,12 +84,12 @@ export function ProjectDetail({
 
           {/* Progress bar */}
           <div className="relative h-2 rounded-full overflow-hidden bg-border/50">
-            <motion.div 
+            <motion.div
               className="h-full rounded-full"
               initial={{ width: 0 }}
               animate={{ width: `${project.progress}%` }}
               transition={{ duration: 1.3, ease: [0.16, 1, 0.3, 1] }}
-              style={{ background: `linear-gradient(90deg, ${project.color}, ${project.color}80)` }} 
+              style={{ background: `linear-gradient(90deg, ${project.color}, ${project.color}80)` }}
             />
           </div>
           <div className="flex justify-between mt-1">
@@ -99,30 +99,30 @@ export function ProjectDetail({
         </div>
 
         {/* Tabs */}
-        <div 
+        <div
           className="flex items-center gap-1 px-5 sm:px-7 py-3 border-b border-border/50 sticky top-0 z-10"
           style={{ background: "hsl(var(--background)/0.95)", backdropFilter: "blur(12px)" }}
         >
           {(["overview", "requirements", "updates", "payments"] as const).map(t => {
             const active = tab === t;
             return (
-              <button 
-                key={t} 
+              <button
+                key={t}
                 onClick={() => setTab(t)}
                 className="relative px-4 py-2 rounded-xl text-xs font-black uppercase tracking-[0.12em] font-mono transition-all"
               >
                 {active && (
-                  <motion.div 
-                    layoutId="tabBg" 
+                  <motion.div
+                    layoutId="tabBg"
                     className="absolute inset-0 rounded-xl"
-                    style={{ background: `${project.color}08`, border: `1px solid ${project.color}15` }} 
+                    style={{ background: `${project.color}08`, border: `1px solid ${project.color}15` }}
                   />
                 )}
                 <span className="relative" style={{ color: active ? project.color : "hsl(var(--muted-foreground))" }}>
                   {t === "payments" ? "💰 Payments" : t}
                 </span>
                 {t === "requirements" && (
-                  <span 
+                  <span
                     className="relative ml-1.5 text-[9px] px-1.5 py-0.5 rounded-full font-mono"
                     style={{ background: `${project.color}08`, color: project.color }}
                   >
@@ -130,9 +130,9 @@ export function ProjectDetail({
                   </span>
                 )}
                 {t === "payments" && project.milestones && (
-                  <span 
+                  <span
                     className="relative ml-1.5 text-[9px] px-1.5 py-0.5 rounded-full font-mono"
-                    style={{ 
+                    style={{
                       background: `${project.milestones.filter(m => m.status === "pending").length > 0 ? "#ea580c15" : "#16a34a15"}`,
                       color: project.milestones.filter(m => m.status === "pending").length > 0 ? "#ea580c" : "#16a34a"
                     }}
@@ -143,12 +143,12 @@ export function ProjectDetail({
               </button>
             );
           })}
-          
+
           {/* Dynamic Add Button based on active tab */}
           <div className="ml-auto flex items-center gap-2">
             {tab === "requirements" && (
-              <motion.button 
-                onClick={() => setShowReqForm(true)} 
+              <motion.button
+                onClick={() => setShowReqForm(true)}
                 whileTap={{ scale: 0.96 }}
                 className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold font-mono"
                 style={{ background: `${project.color}08`, color: project.color, border: `1px solid ${project.color}15` }}
@@ -158,10 +158,10 @@ export function ProjectDetail({
                 <span className="sm:hidden">Add</span>
               </motion.button>
             )}
-            
+
             {tab === "payments" && (
-              <motion.button 
-                onClick={() => setShowMilestoneForm(true)} 
+              <motion.button
+                onClick={() => setShowMilestoneForm(true)}
                 whileTap={{ scale: 0.96 }}
                 className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold font-mono"
                 style={{ background: `${project.color}08`, color: project.color, border: `1px solid ${project.color}15` }}
@@ -180,10 +180,10 @@ export function ProjectDetail({
 
             {/* OVERVIEW */}
             {tab === "overview" && (
-              <motion.div 
-                key="ov" 
-                initial={{ opacity: 0, y: 8 }} 
-                animate={{ opacity: 1, y: 0 }} 
+              <motion.div
+                key="ov"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
                 className="space-y-5"
               >
@@ -198,13 +198,13 @@ export function ProjectDetail({
                       <p className="text-sm text-muted-foreground leading-relaxed mb-4">{project.description}</p>
                       <div className="flex flex-wrap gap-1.5">
                         {project.stack.map(s => (
-                          <span 
-                            key={s} 
+                          <span
+                            key={s}
                             className="text-[10px] font-bold font-mono px-2.5 py-1 rounded-lg"
-                            style={{ 
-                              background: `${project.color}08`, 
-                              color: project.color, 
-                              border: `1px solid ${project.color}15` 
+                            style={{
+                              background: `${project.color}08`,
+                              color: project.color,
+                              border: `1px solid ${project.color}15`
                             }}
                           >
                             {s}
@@ -225,7 +225,7 @@ export function ProjectDetail({
                         { role: "Lead Developer", name: project.dev },
                       ].map(m => (
                         <div key={m.role} className="flex items-center gap-3 mb-2.5 last:mb-0">
-                          <div 
+                          <div
                             className="w-8 h-8 rounded-xl flex items-center justify-center text-xs font-black shrink-0"
                             style={{ background: `${project.color}08`, color: project.color }}
                           >
@@ -238,29 +238,23 @@ export function ProjectDetail({
                         </div>
                       ))}
                     </Card>
-                    
+
                     <Card className="p-5">
                       <div className="text-[10px] font-black font-mono uppercase tracking-[0.18em] text-muted-foreground mb-3">
                         Budget
                       </div>
+
                       {[
                         { label: "Total Budget", val: project.budget, color: "hsl(var(--foreground))" },
                         { label: "Amount Spent", val: project.spent, color: project.color },
-                      ].map(b => (
+                      ].map((b) => (
                         <div key={b.label} className="flex justify-between mb-2">
                           <span className="text-[11px] text-muted-foreground">{b.label}</span>
-                          <span className="font-mono text-sm font-bold" style={{ color: b.color }}>{b.val}</span>
+                          <span className="font-mono text-sm font-bold" style={{ color: b.color }}>
+                            {b.val}
+                          </span>
                         </div>
                       ))}
-                      <div className="h-1.5 rounded-full mt-1 overflow-hidden bg-border/50">
-                        <motion.div 
-                          className="h-full rounded-full"
-                          initial={{ width: 0 }}
-                          animate={{ width: `${Math.min(100, Math.round((num(project.spent) / num(project.budget)) * 100))}%` }}
-                          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                          style={{ background: project.color }} 
-                        />
-                      </div>
                     </Card>
                   </div>
                 </div>
@@ -278,8 +272,8 @@ export function ProjectDetail({
                     {(Object.entries(REQ_STATUS_CFG) as [ReqStatus, typeof REQ_STATUS_CFG[ReqStatus]][]).map(([k, m]) => {
                       const count = project.requirements.filter(r => r.status === k).length;
                       return (
-                        <div 
-                          key={k} 
+                        <div
+                          key={k}
                           className="flex flex-col items-center py-5 gap-1.5"
                         >
                           <m.Icon size={14} style={{ color: m.color }} />
@@ -295,10 +289,10 @@ export function ProjectDetail({
 
             {/* REQUIREMENTS */}
             {tab === "requirements" && (
-              <motion.div 
-                key="rq" 
-                initial={{ opacity: 0, y: 8 }} 
-                animate={{ opacity: 1, y: 0 }} 
+              <motion.div
+                key="rq"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
                 className="space-y-3"
               >
@@ -316,7 +310,7 @@ export function ProjectDetail({
                   return (
                     <motion.div
                       key={req.id}
-                      initial={{ opacity: 0, x: -10 }} 
+                      initial={{ opacity: 0, x: -10 }}
                       animate={inView ? { opacity: 1, x: 0 } : {}}
                       transition={{ delay: i * 0.07 }}
                     >
@@ -327,13 +321,13 @@ export function ProjectDetail({
                             <h3 className="text-foreground text-sm font-bold leading-tight">{req.title}</h3>
                           </div>
                           <div className="flex items-center gap-2 shrink-0 flex-wrap justify-end">
-                            <span 
+                            <span
                               className="text-[10px] font-bold px-2 py-0.5 rounded-full"
                               style={{ background: `${rp.color}08`, color: rp.color }}
                             >
                               {rp.label}
                             </span>
-                            <span 
+                            <span
                               className="text-[10px] font-bold px-2 py-0.5 rounded-full"
                               style={{ background: `${rs.color}08`, color: rs.color }}
                             >
@@ -343,7 +337,7 @@ export function ProjectDetail({
                         </div>
                         <p className="text-sm text-muted-foreground leading-relaxed ml-[22px] mb-3">{req.description}</p>
                         {req.notes && (
-                          <div 
+                          <div
                             className="ml-[22px] px-4 py-2.5 rounded-xl text-xs text-muted-foreground italic border border-border/50"
                             style={{ background: "hsl(var(--background))" }}
                           >
@@ -367,16 +361,16 @@ export function ProjectDetail({
 
             {/* UPDATES / TIMELINE */}
             {tab === "updates" && (
-              <motion.div 
-                key="up" 
-                initial={{ opacity: 0, y: 8 }} 
-                animate={{ opacity: 1, y: 0 }} 
+              <motion.div
+                key="up"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
                 className="relative"
               >
                 {/* Vertical timeline rail */}
-                <div 
-                  className="absolute left-5 top-5 bottom-5 w-px hidden sm:block bg-border/50" 
+                <div
+                  className="absolute left-5 top-5 bottom-5 w-px hidden sm:block bg-border/50"
                 />
 
                 <div className="space-y-4">
@@ -385,13 +379,13 @@ export function ProjectDetail({
                     return (
                       <motion.div
                         key={upd.id}
-                        initial={{ opacity: 0, x: -10 }} 
+                        initial={{ opacity: 0, x: -10 }}
                         animate={inView ? { opacity: 1, x: 0 } : {}}
                         transition={{ delay: i * 0.08 }}
                         className="flex items-start gap-4 sm:gap-5"
                       >
                         {/* Node */}
-                        <div 
+                        <div
                           className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 relative z-10 hidden sm:flex"
                           style={{ background: `${tc.color}08`, border: `1.5px solid ${tc.color}15` }}
                         >
@@ -402,7 +396,7 @@ export function ProjectDetail({
                             <div className="flex-1 min-w-0">
                               {/* Type label */}
                               <div className="flex items-center gap-2 mb-1">
-                                <span 
+                                <span
                                   className="text-[9px] font-black font-mono uppercase tracking-[0.15em] px-2 py-0.5 rounded-full"
                                   style={{ background: `${tc.color}08`, color: tc.color }}
                                 >
@@ -428,12 +422,12 @@ export function ProjectDetail({
                           <p className="text-sm text-muted-foreground leading-relaxed">{upd.body}</p>
                           {upd.pct !== undefined && (
                             <div className="mt-3 h-1 rounded-full overflow-hidden bg-border/50">
-                              <motion.div 
+                              <motion.div
                                 className="h-full rounded-full"
                                 initial={{ width: 0 }}
                                 animate={{ width: `${upd.pct}%` }}
                                 transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.1 * i }}
-                                style={{ background: `linear-gradient(90deg,${project.color},${project.color}70)` }} 
+                                style={{ background: `linear-gradient(90deg,${project.color},${project.color}70)` }}
                               />
                             </div>
                           )}
@@ -470,10 +464,10 @@ export function ProjectDetail({
       {/* Requirement modal */}
       <AnimatePresence>
         {showReqForm && (
-          <AddReqModal 
-            color={project.color} 
-            onClose={() => setShowReqForm(false)} 
-            onSave={req => { onAddReq(req); setShowReqForm(false); }} 
+          <AddReqModal
+            color={project.color}
+            onClose={() => setShowReqForm(false)}
+            onSave={req => { onAddReq(req); setShowReqForm(false); }}
           />
         )}
       </AnimatePresence>
@@ -481,13 +475,13 @@ export function ProjectDetail({
       {/* Milestone modal */}
       <AnimatePresence>
         {showMilestoneForm && (
-          <AddMilestoneModal 
-            color={project.color} 
-            onClose={() => setShowMilestoneForm(false)} 
-            onSave={milestone => { 
-              onAddMilestone(milestone); 
-              setShowMilestoneForm(false); 
-            }} 
+          <AddMilestoneModal
+            color={project.color}
+            onClose={() => setShowMilestoneForm(false)}
+            onSave={milestone => {
+              onAddMilestone(milestone);
+              setShowMilestoneForm(false);
+            }}
           />
         )}
       </AnimatePresence>
@@ -496,5 +490,5 @@ export function ProjectDetail({
 }
 
 function num(budget: string): number {
-    return parseInt(budget, 10) || 0;
+  return parseInt(budget, 10) || 0;
 }

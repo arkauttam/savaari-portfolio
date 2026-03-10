@@ -29,7 +29,7 @@ export function Sidebar({
 
   const content = (
     <div className="flex flex-col h-full bg-white ">
-      
+
       {/* Logo */}
       <div className="flex items-center gap-3 px-5 py-[18px] border-b border-gray-200 shrink-0">
         <a
@@ -76,11 +76,10 @@ export function Sidebar({
                 setView(item.id);
                 setMobileOpen(false);
               }}
-              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-medium transition-all duration-200 ${
-                active
+              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-medium transition-all duration-200 ${active
                   ? "bg-blue-50 text-blue-600 border border-blue-200"
                   : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
-              }`}
+                }`}
             >
               <item.Icon
                 size={15}
@@ -99,20 +98,51 @@ export function Sidebar({
           );
         })}
 
-       
+
       </nav>
 
       {/* Bottom */}
+      {/* Bottom */}
       <div className="px-3 py-4 border-t border-gray-200 space-y-1 shrink-0">
-        {[{ Icon: Settings, label: "Settings" }, { Icon: LogOut, label: "Sign Out" }].map((item) => (
-          <button
-            key={item.label}
-            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-all duration-200"
-          >
-            <item.Icon size={14} />
-            <span>{item.label}</span>
-          </button>
-        ))}
+
+        <p className="text-[10px] font-black font-mono uppercase tracking-[0.18em] text-gray-400 px-2 py-1">
+          Account
+        </p>
+
+        {[
+          { id: "settings", Icon: Settings, label: "Settings" },
+          { id: "logout", Icon: LogOut, label: "Sign Out" },
+        ].map((item) => {
+          const active = view === item.id;
+
+          return (
+            <button
+              key={item.id}
+              onClick={() => {
+                setView(item.id);
+                setMobileOpen(false);
+              }}
+              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-medium transition-all duration-200 ${active
+                  ? "bg-blue-50 text-blue-600 border border-blue-200"
+                  : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+                }`}
+            >
+              <item.Icon
+                size={15}
+                className={active ? "text-blue-600" : "text-gray-400"}
+              />
+
+              <span className="flex-1 text-left">{item.label}</span>
+
+              {active && (
+                <motion.div
+                  layoutId="sidebarDot"
+                  className="w-1.5 h-1.5 rounded-full bg-blue-500"
+                />
+              )}
+            </button>
+          );
+        })}
       </div>
     </div>
   );

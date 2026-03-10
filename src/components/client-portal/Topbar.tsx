@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, Menu, Bell, X } from "lucide-react";
+import { ArrowLeft, Menu, Bell, X, User, UserCircle, LogOutIcon, LogOut } from "lucide-react";
 import { Card } from "./shared/Card";
 interface TopbarProps {
   title: string;
@@ -87,14 +87,14 @@ export function Topbar({ title, sub, back, onBack, onMenu, color }: TopbarProps)
             </AnimatePresence>
           </div>
 
-          <div className="w-8 h-8 rounded-xl flex items-center justify-center font-black text-xs"
+          <div className="w-4 h-4 rounded-xl flex items-center justify-center font-black text-xs"
             style={{ 
               background: "hsl(var(--primary)/0.1)", 
               color: "hsl(var(--primary))", 
               border: "1px solid hsl(var(--primary)/0.2)" 
             }}
           >
-            CL
+            <LogOut/>
           </div>
         </div>
       </div>

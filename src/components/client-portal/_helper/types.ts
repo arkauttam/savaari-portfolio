@@ -125,3 +125,80 @@ export interface ChatThread {
   chat: Chat;
   project?: Project;
 }
+
+// Add these to your existing types.ts
+
+export interface UserProfile {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  company: string;
+  position: string;
+  avatar?: string;
+  timezone: string;
+  language: string;
+  createdAt: string;
+  lastLogin: string;
+}
+
+export interface NotificationSettings {
+  emailNotifications: boolean;
+  pushNotifications: boolean;
+  smsNotifications: boolean;
+  projectUpdates: boolean;
+  milestonePayments: boolean;
+  newMessages: boolean;
+  requirementChanges: boolean;
+  weeklyDigest: boolean;
+  marketingEmails: boolean;
+}
+
+export interface SecuritySettings {
+  twoFactorAuth: boolean;
+  loginAlerts: boolean;
+  sessionTimeout: number;
+  trustedDevices: {
+    id: string;
+    name: string;
+    device: string;
+    browser: string;
+    location: string;
+    lastActive: string;
+    current: boolean;
+  }[];
+  recentActivity: {
+    id: string;
+    action: string;
+    ip: string;
+    location: string;
+    device: string;
+    timestamp: string;
+    status: 'success' | 'failed';
+  }[];
+}
+
+export interface BillingInfo {
+  companyName: string;
+  gstNumber: string;
+  address: string;
+  city: string;
+  state: string;
+  country: string;
+  zipCode: string;
+  paymentMethod: 'card' | 'bank' | 'upi';
+  cardLast4?: string;
+  bankName?: string;
+  accountLast4?: string;
+  upiId?: string;
+}
+
+export interface ApiKey {
+  id: string;
+  name: string;
+  key: string;
+  createdAt: string;
+  lastUsed?: string;
+  permissions: string[];
+  expiresAt?: string;
+}

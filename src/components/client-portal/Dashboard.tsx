@@ -154,11 +154,7 @@ export function Dashboard({ projects, setView, onMenu }: DashboardProps) {
                   className="text-left overflow-hidden relative group"
                 >
                   <Card className="p-5 hover:translate-y-[-2px] transition-all duration-300">
-                    {/* Accent top line */}
-                    <div 
-                      className="absolute top-0 left-0 right-0 h-[2px] rounded-t-2xl"
-                      style={{ background: `linear-gradient(90deg,${p.color},${p.color}40,transparent)` }} 
-                    />
+                   
 
                     <div className="flex items-start justify-between gap-3 mb-3">
                       <div className="flex-1 min-w-0">

@@ -110,7 +110,7 @@ export function AddMilestoneModal({ color, onClose, onSave }: AddMilestoneModalP
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Describe what this milestone includes..."
-            className="w-full px-3 py-2.5 text-sm bg-transparent border border-border/50 rounded-xl focus:outline-none focus:border-border transition-all resize-none h-20"
+            className="w-full px-3 py-2.5 text-sm bg-background/50 border border-border/50 rounded-xl focus:outline-none focus:border-border transition-all resize-none h-20"
             required
           />
         </div>
