@@ -7,6 +7,7 @@ import { NewProjectModal } from "./client-portal/NewProjectModal";
 import { Project, Requirement, Milestone } from "./client-portal/_helper/types";
 import { SEED } from "./client-portal/_helper/constants";
 import { ProjectsList } from "./client-portal/ProjectsList";
+import { ChatWindow } from "./client-portal/ChatWindow";
 
 
 
@@ -15,13 +16,14 @@ export default function ClientPortal() {
   const [view, setView] = useState("dashboard");
   const [showNewProject, setShowNewProject] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [showChat, setShowChat] = useState(false);
 
   const activeProject = view.startsWith("project-")
     ? projects.find(p => p.id === view.replace("project-", ""))
     : null;
 
   const addReq = (projectId: string, req: Requirement) =>
-    setProjects(prev => prev.map(p => 
+    setProjects(prev => prev.map(p =>
       p.id === projectId ? { ...p, requirements: [req, ...p.requirements] } : p
     ));
 
@@ -31,7 +33,7 @@ export default function ClientPortal() {
         // Calculate new total budget
         const currentTotal = p.milestones?.reduce((sum, m) => sum + m.amount, 0) || 0;
         const newTotal = currentTotal + milestone.amount;
-        
+
         return {
           ...p,
           milestones: [...(p.milestones || []), milestone],
@@ -51,12 +53,12 @@ export default function ClientPortal() {
   const handlePayment = (projectId: string, milestoneId: string, paymentDetails: any) => {
     setProjects(prev => prev.map(p => {
       if (p.id === projectId) {
-        const updatedMilestones = p.milestones.map(m => 
-          m.id === milestoneId 
+        const updatedMilestones = p.milestones.map(m =>
+          m.id === milestoneId
             ? { ...m, status: "paid" as const, paidDate: new Date().toISOString().slice(0, 10) }
             : m
         );
-        
+
         // Calculate total spent
         const totalSpent = updatedMilestones
           .filter(m => m.status === "paid")
@@ -106,55 +108,70 @@ export default function ClientPortal() {
         .bg-primary { background: hsl(var(--primary)); }
       `}</style>
 
-      <Sidebar 
-        view={view} 
-        setView={setView} 
-        projects={projects} 
-        mobileOpen={mobileOpen} 
-        setMobileOpen={setMobileOpen} 
+      <Sidebar
+        view={view}
+        setView={setView}
+        projects={projects}
+        mobileOpen={mobileOpen}
+        setMobileOpen={setMobileOpen}
       />
 
       <div className="flex-1 flex flex-col min-w-0 min-h-screen">
         <AnimatePresence mode="wait">
           {view === "dashboard" && (
-            <motion.div 
-              key="dash" 
-              className="flex flex-col flex-1" 
-              initial={{ opacity: 0 }} 
-              animate={{ opacity: 1 }} 
+            <motion.div
+              key="dash"
+              className="flex flex-col flex-1"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
-              <Dashboard 
-                projects={projects} 
-                setView={setView} 
-                onMenu={() => setMobileOpen(true)} 
+              <Dashboard
+                projects={projects}
+                setView={setView}
+                onMenu={() => setMobileOpen(true)}
               />
             </motion.div>
           )}
-          
+
           {view === "projects" && (
-            <motion.div 
-              key="projs" 
-              className="flex flex-col flex-1" 
-              initial={{ opacity: 0 }} 
-              animate={{ opacity: 1 }} 
+            <motion.div
+              key="projs"
+              className="flex flex-col flex-1"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
-              <ProjectsList 
-                projects={projects} 
-                setView={setView} 
-                onNew={() => setShowNewProject(true)} 
-                onMenu={() => setMobileOpen(true)} 
+              <ProjectsList
+                projects={projects}
+                setView={setView}
+                onNew={() => setShowNewProject(true)}
+                onMenu={() => setMobileOpen(true)}
               />
             </motion.div>
           )}
-          
+          {view === "chat" && (
+            <motion.div
+              key="chat"
+              className="flex flex-col flex-1"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              <ChatWindow
+                setView={setView}
+                onNew={() => setShowNewProject(true)}
+                onMenu={() => setMobileOpen(true)}
+              />
+            </motion.div>
+          )}
+
           {activeProject && (
-            <motion.div 
-              key={view} 
-              className="flex flex-col flex-1" 
-              initial={{ opacity: 0 }} 
-              animate={{ opacity: 1 }} 
+            <motion.div
+              key={view}
+              className="flex flex-col flex-1"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
               <ProjectDetail
@@ -169,12 +186,12 @@ export default function ClientPortal() {
           )}
         </AnimatePresence>
       </div>
-
+      
       <AnimatePresence>
         {showNewProject && (
-          <NewProjectModal 
-            onClose={() => setShowNewProject(false)} 
-            onSave={addProject} 
+          <NewProjectModal
+            onClose={() => setShowNewProject(false)}
+            onSave={addProject}
           />
         )}
       </AnimatePresence>

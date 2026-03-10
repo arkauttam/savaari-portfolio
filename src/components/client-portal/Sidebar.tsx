@@ -7,6 +7,7 @@ import {
   Settings,
   LogOut,
   X,
+  MessageSquare,
 } from "lucide-react";
 import { Project } from "./_helper/types";
 
@@ -64,6 +65,7 @@ export function Sidebar({
         {[
           { id: "dashboard", Icon: LayoutDashboard, label: "Dashboard" },
           { id: "projects", Icon: FolderGit2, label: "My Projects" },
+          { id: "chat", Icon: MessageSquare, label: "Chat" },
         ].map((item) => {
           const active = view === item.id;
 
