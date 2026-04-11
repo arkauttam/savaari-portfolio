@@ -77,37 +77,7 @@ export default function ClientPortal() {
 
   return (
     <div className="flex min-h-screen bg-background text-foreground">
-      <style>{`
-        :root {
-          --primary: 217 91% 60%;
-          --primary-foreground: 0 0% 100%;
-          --background: 0 0% 100%;
-          --foreground: 222 47% 11%;
-          --muted: 210 40% 96%;
-          --muted-foreground: 215 16% 47%;
-          --accent: 210 40% 96%;
-          --accent-foreground: 222 47% 11%;
-          --border: 214 32% 91%;
-          --destructive: 0 84% 60%;
-          --destructive-foreground: 0 0% 100%;
-          --card: 0 0% 100%;
-          --card-foreground: 222 47% 11%;
-          --popover: 0 0% 100%;
-          --popover-foreground: 222 47% 11%;
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        ::-webkit-scrollbar { width: 4px; height: 4px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: hsl(var(--border)); border-radius: 4px; }
-        .line-clamp-2 {
-          display: -webkit-box;
-          -webkit-line-clamp: 2;
-          -webkit-box-orient: vertical;
-          overflow: hidden;
-        }
-        .text-primary { color: hsl(var(--primary)); }
-        .bg-primary { background: hsl(var(--primary)); }
-      `}</style>
+     
 
       <Sidebar
         view={view}

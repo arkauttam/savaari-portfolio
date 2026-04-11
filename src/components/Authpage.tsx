@@ -8,17 +8,21 @@ import {
 import { useNavigate } from "react-router-dom";
 
 /* ═══════════════════════════════════════════════════════════
-   MOCK CREDENTIALS  (replace with real auth)
+   TYPES & MOCK CREDENTIALS
 ═══════════════════════════════════════════════════════════ */
-const MOCK_USERS = [
-    { email: "client@demo.com", password: "demo123", name: "Rajesh Kumar", company: "FoodRush Pvt Ltd" },
-    { email: "demo@os.com", password: "OS tech labs", name: "Priya Sharma", company: "StyleVibe Fashion" },
-];
+export interface AuthUser { 
+    name: string; 
+    email: string; 
+    company: string;
+    role: 'client' | 'admin';
+}
 
-/* ═══════════════════════════════════════════════════════════
-   TYPES
-═══════════════════════════════════════════════════════════ */
-export interface AuthUser { name: string; email: string; company: string; }
+// Mock users with roles
+const MOCK_USERS = [
+    { email: "client@demo.com", password: "demo123", name: "Rajesh Kumar", company: "FoodRush Pvt Ltd", role: 'client' as const },
+    { email: "demo@os.com", password: "OS tech labs", name: "Priya Sharma", company: "StyleVibe Fashion", role: 'client' as const },
+    { email: "admin@os.com", password: "admin123", name: "Admin User", company: "OS Tech Labs", role: 'admin' as const },
+];
 
 /* ═══════════════════════════════════════════════════════════
    ANIMATED TERMINAL (left panel decoration)
@@ -52,7 +56,6 @@ function TerminalDecor() {
     return (
         <div className="rounded-2xl overflow-hidden border border-white/[0.07]"
             style={{ background: "hsl(222 47% 6%)" }}>
-            {/* Chrome */}
             <div className="flex items-center gap-2 px-4 py-3 border-b border-white/[0.06]"
                 style={{ background: "hsl(222 47% 9%)" }}>
                 <div className="flex gap-1.5">
@@ -67,7 +70,6 @@ function TerminalDecor() {
                     <span className="font-mono text-[10px] text-emerald-400">live</span>
                 </div>
             </div>
-            {/* Output */}
             <div className="p-5 space-y-[3px] h-full overflow-hidden">
                 {TERMINAL_LINES.slice(0, shown).map((l, i) => (
                     <motion.div key={i} initial={{ opacity: 0, x: -4 }} animate={{ opacity: 1, x: 0 }}
@@ -80,8 +82,6 @@ function TerminalDecor() {
         </div>
     );
 }
-
-
 
 /* ═══════════════════════════════════════════════════════════
    FIELD COMPONENT
@@ -176,6 +176,7 @@ function AuthField({
     </div>
   )
 }
+
 /* ═══════════════════════════════════════════════════════════
    LOGIN FORM
 ═══════════════════════════════════════════════════════════ */
@@ -206,9 +207,14 @@ function LoginForm({ onSuccess, onSwitch }: {
 
         const user = MOCK_USERS.find(u => u.email === email && u.password === password);
         if (user) {
-            onSuccess({ name: user.name, email: user.email, company: user.company });
+            onSuccess({ 
+                name: user.name, 
+                email: user.email, 
+                company: user.company,
+                role: user.role 
+            });
         } else {
-            setErrors({ form: "Invalid email or password. Try client@demo.com / demo123" });
+            setErrors({ form: "Invalid email or password. Try client@demo.com / demo123 or admin@os.com / admin123" });
             setLoading(false);
         }
     };
@@ -229,7 +235,6 @@ function LoginForm({ onSuccess, onSwitch }: {
                     </button>
                 } />
 
-            {/* Form-level error */}
             <AnimatePresence>
                 {errors.form && (
                     <motion.div initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
@@ -241,14 +246,12 @@ function LoginForm({ onSuccess, onSwitch }: {
                 )}
             </AnimatePresence>
 
-            {/* Forgot */}
             <div className="flex justify-end -mt-2">
                 <button className="text-[11px] font-mono text-slate-500 hover:text-blue-400 transition-colors">
                     Forgot password?
                 </button>
             </div>
 
-            {/* Submit */}
             <motion.button onClick={handleSubmit} disabled={loading}
                 whileHover={loading ? {} : { scale: 1.02 }}
                 whileTap={loading ? {} : { scale: 0.97 }}
@@ -260,8 +263,6 @@ function LoginForm({ onSuccess, onSwitch }: {
                 }
             </motion.button>
 
-
-            {/* Switch to signup */}
             <p className="text-center text-sm text-slate-500 font-mono">
                 New client?{" "}
                 <button onClick={onSwitch} className="font-black hover:underline transition-all" style={{ color: "hsl(217 91% 60%)" }}>
@@ -315,10 +316,9 @@ function SignupForm({ onSuccess, onSwitch }: {
         setErrors({});
         setLoading(true);
         await new Promise(r => setTimeout(r, 1400));
-        // In a real app: POST to API, then login
         setDone(true);
         await new Promise(r => setTimeout(r, 1800));
-        onSuccess({ name, email, company });
+        onSuccess({ name, email, company, role: 'client' });
     };
 
     if (done) return (
@@ -363,11 +363,9 @@ function SignupForm({ onSuccess, onSwitch }: {
                     </button>
                 } />
 
-            {/* Password strength */}
             {password && (
                 <motion.div initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }}
                     className="space-y-2 -mt-1">
-                    {/* Strength bar */}
                     <div className="flex gap-1">
                         {[0, 1, 2].map(i => (
                             <div key={i} className="flex-1 h-1 rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.06)" }}>
@@ -378,7 +376,6 @@ function SignupForm({ onSuccess, onSwitch }: {
                             </div>
                         ))}
                     </div>
-                    {/* Rule checklist */}
                     <div className="flex flex-wrap gap-x-4 gap-y-1">
                         {PASSWORD_RULES.map(r => {
                             const ok = r.test(password);
@@ -426,45 +423,42 @@ function SignupForm({ onSuccess, onSwitch }: {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   MAIN AUTH PAGE - FIXED: Now properly exported as AuthPage (capital P)
+   MAIN AUTH PAGE
 ═══════════════════════════════════════════════════════════ */
 export function AuthPage({ onLogin }: { onLogin?: (user: AuthUser) => void }) {
     const [mode, setMode] = useState<"login" | "signup">("login");
     const navigate = useNavigate();
 
-    // Handle successful login/signup
     const handleSuccess = (user: AuthUser) => {
+        localStorage.setItem("authUser", JSON.stringify(user));
+        
         if (onLogin) {
             onLogin(user);
+        }
+        
+        // Redirect based on role
+        if (user.role === 'admin') {
+            navigate("/admin-portal");
         } else {
-            // Default behavior if no onLogin prop is provided
-            console.log("User authenticated:", user);
-            // You could store in localStorage or context here
-            localStorage.setItem("authUser", JSON.stringify(user));
-            // Redirect or update UI as needed
             navigate("/client-portal");
         }
     };
 
     return (
         <div className="min-h-screen flex">
-            {/* ── LEFT PANEL (hidden on mobile) */}
+            {/* LEFT PANEL */}
             <div className="hidden lg:flex flex-col w-[440px] xl:w-[480px] shrink-0 relative overflow-hidden border-r shadow-xl bg-slate-100">
-
-                {/* Ambient blobs */}
                 <div className="absolute -top-24 -left-24 w-72 h-72 rounded-full pointer-events-none"
                     style={{ background: "radial-gradient(circle, rgba(59,130,246,0.12), transparent 70%)", filter: "blur(48px)" }} />
                 <div className="absolute -bottom-16 -right-16 w-64 h-64 rounded-full pointer-events-none"
                     style={{ background: "radial-gradient(circle, rgba(139,92,246,0.10), transparent 70%)", filter: "blur(40px)" }} />
 
                 <div className="flex flex-col flex-1 px-10 py-10 relative">
-                    {/* Logo */}
                     <div className="flex items-center gap-3 mb-12">
-
                         <div>
                             <a
-                                href="#home"
-                                onClick={() => window.location.hash = "#home"}
+                                href="/"
+                                onClick={() => window.location.hash = "/"}
                                 className="flex items-center shrink-0 pr-6 mr-1 group"
                             >
                                 <img
@@ -479,7 +473,6 @@ export function AuthPage({ onLogin }: { onLogin?: (user: AuthUser) => void }) {
                         </div>
                     </div>
 
-                    {/* Headline */}
                     <div className="mb-5">
                         <div className="flex items-center gap-2 mb-3">
                             <div className="h-px w-6 bg-blue-500/50" />
@@ -495,20 +488,15 @@ export function AuthPage({ onLogin }: { onLogin?: (user: AuthUser) => void }) {
                                 Own your project.
                             </span>
                         </h1>
-
                     </div>
 
-                    {/* Terminal */}
                     <TerminalDecor />
                 </div>
             </div>
 
-            {/* ── RIGHT PANEL — auth form */}
+            {/* RIGHT PANEL */}
             <div className="flex-1 flex flex-col items-center justify-center px-5 py-10 sm:px-10 relative overflow-y-auto">
-
-                {/* Mobile logo */}
                 <div className="flex lg:hidden items-center gap-3 mb-8">
-
                     <div>
                         <a
                             href="#home"
@@ -528,16 +516,10 @@ export function AuthPage({ onLogin }: { onLogin?: (user: AuthUser) => void }) {
                 </div>
 
                 <div className="w-full max-w-[420px]">
-
-                    {/* Card */}
                     <div
                         className="rounded-2xl sm:rounded-3xl border border-gray-200 bg-white overflow-hidden"
-                        style={{
-                            boxShadow: "0 10px 30px rgba(0,0,0,0.06)"
-                        }}
+                        style={{ boxShadow: "0 10px 30px rgba(0,0,0,0.06)" }}
                     >
-
-                        {/* ── Mode toggle tabs */}
                         <div className="flex border-b border-gray-200 text-gray-500">
                             {(["login", "signup"] as const).map((m) => {
                                 const active = mode === m;
@@ -574,7 +556,6 @@ export function AuthPage({ onLogin }: { onLogin?: (user: AuthUser) => void }) {
                             })}
                         </div>
 
-                        {/* ── Header */}
                         <div className="px-7 pt-7 pb-5">
                             <AnimatePresence mode="wait">
                                 <motion.div
@@ -591,7 +572,6 @@ export function AuthPage({ onLogin }: { onLogin?: (user: AuthUser) => void }) {
                             </AnimatePresence>
                         </div>
 
-                        {/* ── Forms */}
                         <div className="px-7 pb-7">
                             <AnimatePresence mode="wait">
                                 {mode === "login" ? (
@@ -617,7 +597,6 @@ export function AuthPage({ onLogin }: { onLogin?: (user: AuthUser) => void }) {
                                 )}
                             </AnimatePresence>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -625,7 +604,4 @@ export function AuthPage({ onLogin }: { onLogin?: (user: AuthUser) => void }) {
     );
 }
 
-/* ═══════════════════════════════════════════════════════════
-   DEFAULT EXPORT
-═══════════════════════════════════════════════════════════ */
 export default AuthPage;

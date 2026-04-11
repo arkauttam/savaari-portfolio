@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -48,10 +48,27 @@
     --brand-coral: 12 80% 60%;
 
     /* Gradients */
-    --gradient-hero: linear-gradient(160deg, hsl(212 100% 97%) 0%, hsl(0 0% 100%) 40%, hsl(195 60% 97%) 100%);
-    --gradient-cta: linear-gradient(135deg, hsl(212 93% 57%) 0%, hsl(230 70% 55%) 100%);
-    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%) 0%, hsl(220 20% 99%) 100%);
-    --gradient-service: linear-gradient(135deg, hsl(212 93% 57%) 0%, hsl(200 80% 55%) 100%);
+    --gradient-hero: linear-gradient(
+      160deg,
+      hsl(212 100% 97%) 0%,
+      hsl(0 0% 100%) 40%,
+      hsl(195 60% 97%) 100%
+    );
+    --gradient-cta: linear-gradient(
+      135deg,
+      hsl(212 93% 57%) 0%,
+      hsl(230 70% 55%) 100%
+    );
+    --gradient-card: linear-gradient(
+      145deg,
+      hsl(0 0% 100%) 0%,
+      hsl(220 20% 99%) 100%
+    );
+    --gradient-service: linear-gradient(
+      135deg,
+      hsl(212 93% 57%) 0%,
+      hsl(200 80% 55%) 100%
+    );
 
     /* Shadows */
     --shadow-xs: 0 1px 2px hsl(220 20% 10% / 0.04);
@@ -72,6 +89,34 @@
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 212 93% 57%;
   }
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 4px;
+  }
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .text-primary {
+    color: hsl(var(--primary));
+  }
+  .bg-primary {
+    background: hsl(var(--primary));
+  }
 }
 
 @layer base {
@@ -87,7 +132,7 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+    font-family: "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
   }
 }
 
@@ -133,16 +178,29 @@
 
   .gradient-text {
     @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--brand-ocean)) 50%, hsl(var(--brand-indigo)) 100%);
+    background-image: linear-gradient(
+      135deg,
+      hsl(var(--primary)) 0%,
+      hsl(var(--brand-ocean)) 50%,
+      hsl(var(--brand-indigo)) 100%
+    );
   }
 
   .scroll-progress {
     @apply fixed top-0 left-0 h-[2px] z-[100];
-    background: linear-gradient(90deg, hsl(var(--primary)), hsl(var(--brand-indigo)));
+    background: linear-gradient(
+      90deg,
+      hsl(var(--primary)),
+      hsl(var(--brand-indigo))
+    );
   }
 
   .service-icon-bg {
-    background: linear-gradient(135deg, hsl(var(--primary) / 0.1) 0%, hsl(var(--brand-ocean) / 0.05) 100%);
+    background: linear-gradient(
+      135deg,
+      hsl(var(--primary) / 0.1) 0%,
+      hsl(var(--brand-ocean) / 0.05) 100%
+    );
   }
 
   .floating-shape {
@@ -153,7 +211,7 @@
   .container-tight {
     @apply max-w-6xl mx-auto;
   }
-  .container{
+  .container {
     @apply max-w-7xl mx-auto px-10;
   }
 }
